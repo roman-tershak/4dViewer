@@ -11,6 +11,7 @@ import com.viewer4d.geometry.RotationPlane4DEnum;
 import com.viewer4d.geometry.simple.Vector;
 import com.viewer4d.geometry.simple.Dimensional.UNIT_VECTORS;
 import com.viewer4d.projectors.AbstractEnablingProjector;
+import com.viewer4d.projectors.AbstractProjectingProjector;
 import com.viewer4d.projectors.auxiliary.CubeXYZOrtsProjector;
 import com.viewer4d.projectors.auxiliary.Simple3DSpaceIntersectorAtZeroW;
 import com.viewer4d.projectors.auxiliary.XYZWOrtsProjector;
@@ -19,6 +20,7 @@ import com.viewer4d.projectors.combining.CombiningProjector;
 import com.viewer4d.projectors.from4dto3d.FrontIsometricProjectorOnXYZAlongW;
 import com.viewer4d.projectors.from4dto3d.ParallelProjectorOnXYZAlongW;
 import com.viewer4d.projectors.from4dto3d.PerspectiveMovableProjector;
+import com.viewer4d.projectors.from4dto3d.PerspectiveMovingProjector;
 import com.viewer4d.projectors.from4dto3d.PerspectiveProjectorOnXYZAlongW;
 import com.viewer4d.projectors.from4dto3d.PerspectiveProjectorOnXYZCuttingW;
 
@@ -42,7 +44,7 @@ public class ViewContainer {
     private Figure projection3d;
     
     private CombinedAuxAndMainProjectors projectorMain;
-    private CombiningProjector<AbstractEnablingProjector> combining4DProjector;
+    private CombiningProjector<AbstractProjectingProjector> combining4DProjector;
     private AbstractEnablingProjector ortsProjector;
     private AbstractEnablingProjector cubeOrtsProjector;
     private Simple3DSpaceIntersectorAtZeroW spaceIntersector;
@@ -61,10 +63,11 @@ public class ViewContainer {
     public ViewContainer(FigureMovable figure) {
         this.figure = figure;
         
-        combining4DProjector = new CombiningProjector<AbstractEnablingProjector>(
+        combining4DProjector = new CombiningProjector<AbstractProjectingProjector>(
                 new PerspectiveProjectorOnXYZAlongW(W_4D_DISTANCE_DEFAULT),
                 new ParallelProjectorOnXYZAlongW(),
                 new FrontIsometricProjectorOnXYZAlongW(),
+                new PerspectiveMovingProjector(W_4D_DISTANCE_DEFAULT),
                 new PerspectiveMovableProjector(W_4D_DISTANCE_DEFAULT),
                 new PerspectiveProjectorOnXYZCuttingW(W_4D_DISTANCE_DEFAULT)
         );
@@ -152,13 +155,22 @@ public class ViewContainer {
     }
     
     // 4D projectors manipulating methods
+    public AbstractProjectingProjector get4DProjector(int projectorNumber) {
+        return combining4DProjector.getProjectors().get(projectorNumber);
+    }
+    
+    public void setMovableProjector(UNIT_VECTORS vector, boolean forward) {
+        ((PerspectiveMovableProjector) get4DProjector(4)).setProjector(vector, forward);
+        doFullProjection();
+    }
+    
     public void toggle4DProjector(int projectorNumber) {
         enable4DProjector(projectorNumber);
         doFullProjection();
     }
 
     protected void enable4DProjector(int projectorNumber) {
-        List<AbstractEnablingProjector> projectors = combining4DProjector.getProjectors();
+        List<AbstractProjectingProjector> projectors = combining4DProjector.getProjectors();
         for (int i = 0; i < projectors.size(); i++) {
             projectors.get(i).enable(i == projectorNumber);
         }

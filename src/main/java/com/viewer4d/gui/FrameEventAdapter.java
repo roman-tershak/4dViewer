@@ -219,6 +219,30 @@ KeyListener, MouseListener, MouseMotionListener, MouseWheelListener, WindowState
                 mainFrame.stopFigureMovement();
                 viewContainer.selectNextCell();
                 break;
+            case '!':
+                viewContainer.setMovableProjector(UNIT_VECTORS.X, true);
+                break;
+            case '@':
+                viewContainer.setMovableProjector(UNIT_VECTORS.X, false);
+                break;
+            case '#':
+                viewContainer.setMovableProjector(UNIT_VECTORS.Y, true);
+                break;
+            case '$':
+                viewContainer.setMovableProjector(UNIT_VECTORS.Y, false);
+                break;
+            case '%':
+                viewContainer.setMovableProjector(UNIT_VECTORS.Z, true);
+                break;
+            case '^':
+                viewContainer.setMovableProjector(UNIT_VECTORS.Z, false);
+                break;
+            case '&':
+                viewContainer.setMovableProjector(UNIT_VECTORS.W, true);
+                break;
+            case '*':
+                viewContainer.setMovableProjector(UNIT_VECTORS.W, false);
+                break;
             }
         }
     }

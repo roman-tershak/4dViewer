@@ -27,8 +27,8 @@ public class XYZWOrtsProjector extends AbstractEnablingProjector {
     protected final Edge Z = new Edge(ZA, ZB);
     protected final Edge W = new Edge(WA, WB);
     
-    protected final Edge LX1 = new Edge(new Vertex(ORT_LEN-0.06, 0.12, 0, 0), new Vertex(ORT_LEN, 0.03, 0, 0));
-    protected final Edge LX2 = new Edge(new Vertex(ORT_LEN, 0.12, 0, 0), new Vertex(ORT_LEN-0.06, 0.03, 0, 0));
+    protected final Edge LX1 = new Edge(new Vertex(ORT_LEN-0.06, 0, 0.12, 0), new Vertex(ORT_LEN, 0, 0.03, 0));
+    protected final Edge LX2 = new Edge(new Vertex(ORT_LEN, 0, 0.12, 0), new Vertex(ORT_LEN-0.06, 0, 0.03, 0));
     protected final Edge LY1 = new Edge(new Vertex(-0.11, ORT_LEN, 0, 0), new Vertex(-0.08, ORT_LEN-0.045, 0, 0));
     protected final Edge LY2 = new Edge(new Vertex(-0.05, ORT_LEN, 0, 0), new Vertex(-0.11, ORT_LEN-0.09, 0, 0));
     protected final Edge LZ1 = new Edge(new Vertex(0, 0.05, ORT_LEN, 0), new Vertex(0, 0.11, ORT_LEN, 0));
