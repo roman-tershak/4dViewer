@@ -59,8 +59,7 @@ public class PerspectiveMovableProjector extends AbstractProjectingProjector imp
     @Override
     protected Vertex projectVertex(Vertex vertex) {
         double[] ppCoords = projectPerspective(
-                transform(
-                        vertex)).getCoords();
+                transform(vertex)).getCoords();
 
         return new Vertex(ppCoords[0], ppCoords[1], ppCoords[2], vertex.getCoords()[3]);
     }

@@ -2,7 +2,7 @@ package com.viewer4d.view;
 
 import java.awt.Color;
 
-import com.viewer4d.geometry.Edge;
+import com.viewer4d.geometry.Vertex;
 import com.viewer4d.geometry.simple.Pointable;
 
 
@@ -19,18 +19,16 @@ public class ColoredMonoscopicViewer extends MonoscopicViewer {
     }
     
     @Override
-    protected Color getColor(Edge edge) {
-        double w1 = edge.getA().getCoords()[3];
-        double w2 = edge.getB().getCoords()[3];
-        return getColorProportionally(w1, w2);
+    protected Color getColor(Vertex vertex) {
+        return getColorProportionally(vertex.getCoords()[3]);
     }
 
     @Override
-    protected Color getColorSelected(Edge edge) {
+    protected Color getColorSelected(Vertex vertex) {
         return SELECTED_COLORED_COLOR;
     }
 
-    public static Color getColorProportionally(double w1, double w2) {
+    public static Color getColorProportionally(double w1) {
         Color color;
         if (Math.abs(w1 - 0) > Pointable.PRECISION) {
             double colorOppCoef = OPP_COLOR_BASE / (Math.abs(w1) + OPP_COLOR_BASE);
@@ -50,21 +48,4 @@ public class ColoredMonoscopicViewer extends MonoscopicViewer {
         return color;
     }
 
-    public static Color getColorBackwardProportionally(double w1, double w2) {
-        Color color;
-        if (Math.abs(w1 - 0) > Pointable.PRECISION || Math.abs(w2 - 0) > Pointable.PRECISION) {
-            int wc = (int) (150 / w1);
-            int mainC = (int) ((wc > 255 || wc < -255 ? 255 : Math.abs(wc)) * 0.75);
-            int oppC1 = (int) (mainC * 0.67);
-            int oppC2 = (int) (mainC * 0.33);
-            if (wc < 0) {
-                color = new Color(mainC, oppC1, oppC2);
-            } else {
-                color = new Color(oppC2, oppC1, mainC);
-            }
-        } else {
-            color = ZERO_W_COLOR;
-        }
-        return color;
-    }
 }

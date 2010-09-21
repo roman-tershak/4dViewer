@@ -10,6 +10,7 @@ import java.util.Comparator;
 
 import com.viewer4d.geometry.Edge;
 import com.viewer4d.geometry.Figure;
+import com.viewer4d.geometry.Vertex;
 import com.viewer4d.geometry.simple.Point;
 
 public abstract class AbstractViewer implements Viewer {
@@ -55,8 +56,10 @@ public abstract class AbstractViewer implements Viewer {
     }
 
     protected void paintEdge(Edge edge, int centerX, int centerY, double ratio, Graphics2D g2d) {
-        double[] aCoords = edge.getA().getCoords();
-        double[] bCoords = edge.getB().getCoords();
+        Vertex a = edge.getA();
+        Vertex b = edge.getB();
+        double[] aCoords = a.getCoords();
+        double[] bCoords = b.getCoords();
         
         int x1 = centerX + (int) (aCoords[0] * ratio);
         int y1 = centerY - (int) (aCoords[1] * ratio);
@@ -66,11 +69,11 @@ public abstract class AbstractViewer implements Viewer {
         Color c1;
         Color c2;
         if (edge.isSelected()) {
-            c1 = getColorSelected(edge);
-            c2 = getColorSelected(edge);
+            c1 = getColorSelected(a);
+            c2 = getColorSelected(b);
         } else {
-            c1 = getColor(edge);
-            c2 = getColor(edge);
+            c1 = getColor(a);
+            c2 = getColor(b);
 
         }
         
@@ -81,9 +84,9 @@ public abstract class AbstractViewer implements Viewer {
         g2d.drawLine(x1, y1, x2, y2);
     }
 
-    protected abstract Color getColor(Edge edge);
+    protected abstract Color getColor(Vertex vertex);
     
-    protected abstract Color getColorSelected(Edge edge);
+    protected abstract Color getColorSelected(Vertex vertex);
 
     public double checkAltitudeLimit(double deltaAltitude, double currAltitude) {
         if (currAltitude + deltaAltitude > ALTITUDE_LIMIT) {

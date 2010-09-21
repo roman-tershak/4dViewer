@@ -10,9 +10,9 @@ import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 
-import com.viewer4d.geometry.Edge;
 import com.viewer4d.geometry.Figure;
 import com.viewer4d.geometry.RotationPlane4DEnum;
+import com.viewer4d.geometry.Vertex;
 import com.viewer4d.geometry.simple.MovablePoint;
 import com.viewer4d.projectors.from3dto2d.Perspective2DMonoProjector;
 
@@ -226,12 +226,12 @@ public class StereoscopicViewer extends AbstractViewer {
     }
 
     @Override
-    protected Color getColor(Edge edge) {
+    protected Color getColor(Vertex vertex) {
         return PAINT_COLOR;
     }
 
     @Override
-    protected Color getColorSelected(Edge edge) {
+    protected Color getColorSelected(Vertex vertex) {
         return SELECTED_BW_COLOR;
     }
 }

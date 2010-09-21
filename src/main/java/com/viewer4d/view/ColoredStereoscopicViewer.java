@@ -2,7 +2,7 @@ package com.viewer4d.view;
 
 import java.awt.Color;
 
-import com.viewer4d.geometry.Edge;
+import com.viewer4d.geometry.Vertex;
 
 
 public class ColoredStereoscopicViewer extends StereoscopicViewer {
@@ -11,14 +11,12 @@ public class ColoredStereoscopicViewer extends StereoscopicViewer {
     }
     
     @Override
-    protected Color getColor(Edge edge) {
-        double w1 = edge.getA().getCoords()[3];
-        double w2 = edge.getB().getCoords()[3];
-        return ColoredMonoscopicViewer.getColorProportionally(w1, w2);
+    protected Color getColor(Vertex vertex) {
+        return ColoredMonoscopicViewer.getColorProportionally(vertex.getCoords()[3]);
     }
 
     @Override
-    protected Color getColorSelected(Edge edge) {
+    protected Color getColorSelected(Vertex vertex) {
         return SELECTED_COLORED_COLOR;
     }
 
