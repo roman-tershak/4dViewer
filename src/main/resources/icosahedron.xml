@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<figure xmlns="tests:4DViewer:PlainFigureConfig">
+
+	<precision>1e-9</precision>
+
+	<vertex name="vxy1" coords="+1, +1.61803398875, 0" />
+	<vertex name="vxy2" coords="-1, +1.61803398875, 0" />
+	<vertex name="vxy3" coords="+1, -1.61803398875, 0" />
+	<vertex name="vxy4" coords="-1, -1.61803398875, 0" />
+
+	<vertex name="vxz1" coords="+1.61803398875, 0, +1" />
+	<vertex name="vxz2" coords="+1.61803398875, 0, -1" />
+	<vertex name="vxz3" coords="-1.61803398875, 0, +1" />
+	<vertex name="vxz4" coords="-1.61803398875, 0, -1" />
+
+	<vertex name="vyz1" coords="0, +1, +1.61803398875" />
+	<vertex name="vyz2" coords="0, -1, +1.61803398875" />
+	<vertex name="vyz3" coords="0, +1, -1.61803398875" />
+	<vertex name="vyz4" coords="0, -1, -1.61803398875" />
+
+	<edge name="exy1" v1="vxy1" v2="vxy2" />
+	<edge name="exy2" v1="vxy3" v2="vxy4" />
+
+	<edge name="exz1" v1="vxz1" v2="vxz2" />
+	<edge name="exz2" v1="vxz3" v2="vxz4" />
+
+	<edge name="eyz1" v1="vyz1" v2="vyz2" />
+	<edge name="eyz2" v1="vyz3" v2="vyz4" />
+
+	<edge name="e121" v1="vxy1" v2="vxz1" />
+	<edge name="e122" v1="vxy1" v2="vxz2" />
+	<edge name="e123" v1="vxy2" v2="vxz3" />
+	<edge name="e124" v1="vxy2" v2="vxz4" />
+	<edge name="e125" v1="vxy3" v2="vxz1" />
+	<edge name="e126" v1="vxy3" v2="vxz2" />
+	<edge name="e127" v1="vxy4" v2="vxz3" />
+	<edge name="e128" v1="vxy4" v2="vxz4" />
+
+	<edge name="e231" v1="vxz1" v2="vyz1" />
+	<edge name="e232" v1="vxz1" v2="vyz2" />
+	<edge name="e233" v1="vxz2" v2="vyz3" />
+	<edge name="e234" v1="vxz2" v2="vyz4" />
+	<edge name="e235" v1="vxz3" v2="vyz1" />
+	<edge name="e236" v1="vxz3" v2="vyz2" />
+	<edge name="e237" v1="vxz4" v2="vyz3" />
+	<edge name="e238" v1="vxz4" v2="vyz4" />
+
+	<edge name="e311" v1="vyz1" v2="vxy1" />
+	<edge name="e312" v1="vyz1" v2="vxy2" />
+	<edge name="e313" v1="vyz2" v2="vxy3" />
+	<edge name="e314" v1="vyz2" v2="vxy4" />
+	<edge name="e315" v1="vyz3" v2="vxy1" />
+	<edge name="e316" v1="vyz3" v2="vxy2" />
+	<edge name="e317" v1="vyz4" v2="vxy3" />
+	<edge name="e318" v1="vyz4" v2="vxy4" />
+
+	<face name="f11" edges="exy1, e311, e312"/>
+	<face name="f12" edges="exy1, e315, e316"/>
+	<face name="f13" edges="exy2, e313, e314"/>
+	<face name="f14" edges="exy2, e317, e318"/>
+
+	<face name="f21" edges="exz1, e121, e122"/>
+	<face name="f22" edges="exz1, e125, e126"/>
+	<face name="f23" edges="exz2, e123, e124"/>
+	<face name="f24" edges="exz2, e127, e128"/>
+
+	<face name="f31" edges="eyz1, e231, e232"/>
+	<face name="f32" edges="eyz1, e235, e236"/>
+	<face name="f33" edges="eyz2, e233, e234"/>
+	<face name="f34" edges="eyz2, e237, e238"/>
+
+	<face name="f41" edges="e121, e231, e311"/>
+	<face name="f42" edges="e123, e235, e312"/>
+	<face name="f43" edges="e125, e232, e313"/>
+	<face name="f44" edges="e127, e236, e314"/>
+
+	<face name="f45" edges="e122, e233, e315"/>
+	<face name="f46" edges="e124, e237, e316"/>
+	<face name="f47" edges="e126, e234, e317"/>
+	<face name="f48" edges="e128, e238, e318"/>
+
+</figure>

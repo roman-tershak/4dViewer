@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<figure xmlns="tests:4DViewer:PlainFigureConfig">
+
+	<precision>1e-9</precision>
+
+    <vertex name="v01" coords="+1, +1, +1"/>
+    <vertex name="v02" coords="+1, +1, -1"/>
+    <vertex name="v03" coords="+1, -1, +1"/>
+    <vertex name="v04" coords="+1, -1, -1"/>
+    <vertex name="v05" coords="-1, +1, +1"/>
+    <vertex name="v06" coords="-1, +1, -1"/>
+    <vertex name="v07" coords="-1, -1, +1"/>
+    <vertex name="v08" coords="-1, -1, -1"/>
+    
+    <vertex name="v11" coords="0, +0.61803398875, +1.61803398875"/>
+    <vertex name="v12" coords="0, -0.61803398875, +1.61803398875"/>
+    <vertex name="v13" coords="0, +0.61803398875, -1.61803398875"/>
+    <vertex name="v14" coords="0, -0.61803398875, -1.61803398875"/>
+    
+    <vertex name="v21" coords="+0.61803398875, +1.61803398875, 0"/>
+    <vertex name="v22" coords="-0.61803398875, +1.61803398875, 0"/>
+    <vertex name="v23" coords="+0.61803398875, -1.61803398875, 0"/>
+    <vertex name="v24" coords="-0.61803398875, -1.61803398875, 0"/>
+    
+    <vertex name="v31" coords="+1.61803398875, 0, +0.61803398875"/>
+    <vertex name="v32" coords="+1.61803398875, 0, -0.61803398875"/>
+    <vertex name="v33" coords="-1.61803398875, 0, +0.61803398875"/>
+    <vertex name="v34" coords="-1.61803398875, 0, -0.61803398875"/>
+
+	<edge name="e011" v1="v01" v2="v11"/>
+	<edge name="e012" v1="v01" v2="v21"/>
+	<edge name="e013" v1="v01" v2="v31"/>
+	
+	<edge name="e021" v1="v02" v2="v13"/>
+	<edge name="e022" v1="v02" v2="v21"/>
+	<edge name="e023" v1="v02" v2="v32"/>
+	
+	<edge name="e031" v1="v03" v2="v12"/>
+	<edge name="e032" v1="v03" v2="v23"/>
+	<edge name="e033" v1="v03" v2="v31"/>
+	
+	<edge name="e041" v1="v04" v2="v14"/>
+	<edge name="e042" v1="v04" v2="v23"/>
+	<edge name="e043" v1="v04" v2="v32"/>
+	
+	<edge name="e051" v1="v05" v2="v11"/>
+	<edge name="e052" v1="v05" v2="v22"/>
+	<edge name="e053" v1="v05" v2="v33"/>
+	
+	<edge name="e061" v1="v06" v2="v13"/>
+	<edge name="e062" v1="v06" v2="v22"/>
+	<edge name="e063" v1="v06" v2="v34"/>
+	
+	<edge name="e071" v1="v07" v2="v12"/>
+	<edge name="e072" v1="v07" v2="v24"/>
+	<edge name="e073" v1="v07" v2="v33"/>
+	
+	<edge name="e081" v1="v08" v2="v14"/>
+	<edge name="e082" v1="v08" v2="v24"/>
+	<edge name="e083" v1="v08" v2="v34"/>
+	
+	<edge name="e11" v1="v11" v2="v12"/>
+	<edge name="e12" v1="v13" v2="v14"/>
+
+	<edge name="e21" v1="v21" v2="v22"/>
+	<edge name="e22" v1="v23" v2="v24"/>
+
+	<edge name="e31" v1="v31" v2="v32"/>
+	<edge name="e32" v1="v33" v2="v34"/>
+
+	<face name="f01" edges="e011, e013, e031, e033, e11"/>
+	<face name="f02" edges="e011, e012, e051, e052, e21"/>
+	<face name="f03" edges="e051, e053, e071, e073, e11"/>
+	<face name="f04" edges="e031, e032, e071, e072, e22"/>
+	
+	<face name="f05" edges="e012, e013, e022, e023, e31"/>
+	<face name="f06" edges="e032, e033, e042, e043, e31"/>
+	<face name="f07" edges="e052, e053, e062, e063, e32"/>
+	<face name="f08" edges="e072, e073, e082, e083, e32"/>
+	
+	<face name="f09" edges="e021, e023, e041, e043, e12"/>
+	<face name="f10" edges="e021, e022, e061, e062, e21"/>
+	<face name="f11" edges="e061, e063, e081, e083, e12"/>
+	<face name="f12" edges="e041, e042, e081, e082, e22"/>
+
+</figure>

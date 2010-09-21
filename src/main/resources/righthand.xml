@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<figure xmlns="tests:4DViewer:PlainFigureConfig">
+
+	<vertex name="v1" coords="0.7, 0.2, 0.2, 0" />
+	<vertex name="v2" coords="0.7, 1.0, 0.2, 0" />
+	
+	<vertex name="v3" coords="0.9, 0.2, 0.2, 0" />
+	<vertex name="v4" coords="0.9, 1.4, 0.2, 0" />
+	
+	<vertex name="v5" coords="1.5, 0.2, 0.2, 0" />
+	<vertex name="v6" coords="0.7, 0.2, 0.5, 0" />
+	
+	<edge name="mf" v1="v1" v2="v2"/>
+	<edge name="df" v1="v3" v2="v4"/>
+	<edge name="th" v1="v1" v2="v5"/>
+	<edge name="mi" v1="v1" v2="v6"/>
+	
+</figure>

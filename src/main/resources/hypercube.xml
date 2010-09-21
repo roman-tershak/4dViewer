@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<figure xmlns="tests:4DViewer:PlainFigureConfig">
+
+	<vertex name="va1" coords="1, 1, 1, 1" />
+	<vertex name="va2" coords="-1, 1, 1, 1" />
+	<vertex name="va3" coords="-1, -1, 1, 1" />
+	<vertex name="va4" coords="1, -1, 1, 1" />
+	
+	<vertex name="vb1" coords="1, 1, -1, 1" />
+	<vertex name="vb2" coords="-1, 1, -1, 1" />
+	<vertex name="vb3" coords="-1, -1, -1, 1" />
+	<vertex name="vb4" coords="1, -1, -1, 1" />
+	
+	<vertex name="vc1" coords="1, 1, 1, -1" />
+	<vertex name="vc2" coords="-1, 1, 1, -1" />
+	<vertex name="vc3" coords="-1, -1, 1, -1" />
+	<vertex name="vc4" coords="1, -1, 1, -1" />
+	
+	<vertex name="vd1" coords="1, 1, -1, -1" />
+	<vertex name="vd2" coords="-1, 1, -1, -1" />
+	<vertex name="vd3" coords="-1, -1, -1, -1" />
+	<vertex name="vd4" coords="1, -1, -1, -1" />
+
+	<edge name="a1a2" v1="va1" v2="va2"/>
+	<edge name="a2a3" v1="va2" v2="va3"/>
+	<edge name="a3a4" v1="va3" v2="va4"/>
+	<edge name="a4a1" v1="va4" v2="va1"/>
+	
+	<edge name="b1b2" v1="vb1" v2="vb2"/>
+	<edge name="b2b3" v1="vb2" v2="vb3"/>
+	<edge name="b3b4" v1="vb3" v2="vb4"/>
+	<edge name="b4b1" v1="vb4" v2="vb1"/>
+	
+	<edge name="a1b1" v1="va1" v2="vb1"/>
+	<edge name="a2b2" v1="va2" v2="vb2"/>
+	<edge name="a3b3" v1="va3" v2="vb3"/>
+	<edge name="a4b4" v1="va4" v2="vb4"/>
+	
+	<edge name="c1c2" v1="vc1" v2="vc2"/>
+	<edge name="c2c3" v1="vc2" v2="vc3"/>
+	<edge name="c3c4" v1="vc3" v2="vc4"/>
+	<edge name="c4c1" v1="vc4" v2="vc1"/>
+	
+	<edge name="d1d2" v1="vd1" v2="vd2"/>
+	<edge name="d2d3" v1="vd2" v2="vd3"/>
+	<edge name="d3d4" v1="vd3" v2="vd4"/>
+	<edge name="d4d1" v1="vd4" v2="vd1"/>
+	
+	<edge name="c1d1" v1="vc1" v2="vd1"/>
+	<edge name="c2d2" v1="vc2" v2="vd2"/>
+	<edge name="c3d3" v1="vc3" v2="vd3"/>
+	<edge name="c4d4" v1="vc4" v2="vd4"/>
+	
+	<edge name="a1c1" v1="va1" v2="vc1"/>
+	<edge name="a2c2" v1="va2" v2="vc2"/>
+	<edge name="a3c3" v1="va3" v2="vc3"/>
+	<edge name="a4c4" v1="va4" v2="vc4"/>
+	
+	<edge name="b1d1" v1="vb1" v2="vd1"/>
+	<edge name="b2d2" v1="vb2" v2="vd2"/>
+	<edge name="b3d3" v1="vb3" v2="vd3"/>
+	<edge name="b4d4" v1="vb4" v2="vd4"/>
+	
+	
+	<face name="aaaa" edges="a1a2, a2a3, a3a4, a4a1"/>
+	<face name="bbbb" edges="b1b2, b2b3, b3b4, b4b1"/>
+	<face name="aabb" edges="a1a2, a1b1, b1b2, a2b2"/>
+	<face name="abba" edges="a2a3, a2b2, b2b3, a3b3"/>
+	<face name="bbaa" edges="a3a4, a3b3, b3b4, a4b4"/>
+	<face name="baab" edges="a4a1, a4b4, b4b1, a1b1"/>
+	
+	<face name="cccc" edges="c1c2, c2c3, c3c4, c4c1"/>
+	<face name="dddd" edges="d1d2, d2d3, d3d4, d4d1"/>
+	<face name="ccdd" edges="c1c2, c1d1, d1d2, c2d2"/>
+	<face name="cddc" edges="c2c3, c2d2, d2d3, c3d3"/>
+	<face name="ddcc" edges="c3c4, c3d3, d3d4, c4d4"/>
+	<face name="dccd" edges="c4c1, c4d4, d4d1, c1d1"/>
+	
+	<face name="aacc" edges="a1a2, a1c1, c1c2, a2c2"/>
+	<face name="acca" edges="a2a3, a2c2, c2c3, a3c3"/>
+	<face name="ccaa" edges="a3a4, a3c3, c3c4, a4c4"/>
+	<face name="caac" edges="a4a1, a4c4, c4c1, a1c1"/>
+	
+	<face name="abcd" edges="a1b1, b1d1, a1c1, c1d1"/>
+	<face name="bcda" edges="a2b2, b2d2, a2c2, c2d2"/>
+	<face name="cdab" edges="a3b3, b3d3, a3c3, c3d3"/>
+	<face name="dabc" edges="a4b4, b4d4, a4c4, c4d4"/>
+	
+	<face name="bbdd" edges="b1b2, b1d1, d1d2, b2d2"/>
+	<face name="bddb" edges="b2b3, b2d2, d2d3, b3d3"/>
+	<face name="ddbb" edges="b3b4, b3d3, d3d4, b4d4"/>
+	<face name="dbbd" edges="b4b1, b4d4, d4d1, b1d1"/>
+	
+</figure>

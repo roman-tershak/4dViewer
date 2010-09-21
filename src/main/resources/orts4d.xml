@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<figure xmlns="tests:4DViewer:PlainFigureConfig">
+
+	<vertex name="x1" coords="2, 0, 0, 0" />
+	<vertex name="x2" coords="-2, 0, 0, 0" />
+	<vertex name="y1" coords="0, 2, 0, 0" />
+	<vertex name="y2" coords="0, -2, 0, 0" />
+	<vertex name="z1" coords="0, 0, 2, 0" />
+	<vertex name="z2" coords="0, 0, -2, 0" />
+	<vertex name="w1" coords="0, 0, 0, 2" />
+	<vertex name="w2" coords="0, 0, 0, -2" />
+	
+	<edge name="x" v1="x1" v2="x2"/>
+	<edge name="y" v1="y1" v2="y2"/>
+	<edge name="z" v1="z1" v2="z2"/>
+	<edge name="w" v1="w1" v2="w2"/>
+	
+</figure>

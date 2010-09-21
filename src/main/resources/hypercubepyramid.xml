@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<figure xmlns="tests:4DViewer:PlainFigureConfig">
+
+	<vertex name="va1" coords="1, 1, 1, 1" />
+	<vertex name="va2" coords="-1, 1, 1, 1" />
+	<vertex name="va3" coords="-1, -1, 1, 1" />
+	<vertex name="va4" coords="1, -1, 1, 1" />
+	
+	<vertex name="vb1" coords="1, 1, -1, 1" />
+	<vertex name="vb2" coords="-1, 1, -1, 1" />
+	<vertex name="vb3" coords="-1, -1, -1, 1" />
+	<vertex name="vb4" coords="1, -1, -1, 1" />
+	
+	<vertex name="ve" coords="0, 0, 0, -1" />
+
+	<edge name="a1a2" v1="va1" v2="va2"/>
+	<edge name="a2a3" v1="va2" v2="va3"/>
+	<edge name="a3a4" v1="va3" v2="va4"/>
+	<edge name="a4a1" v1="va4" v2="va1"/>
+	
+	<edge name="b1b2" v1="vb1" v2="vb2"/>
+	<edge name="b2b3" v1="vb2" v2="vb3"/>
+	<edge name="b3b4" v1="vb3" v2="vb4"/>
+	<edge name="b4b1" v1="vb4" v2="vb1"/>
+	
+	<edge name="a1b1" v1="va1" v2="vb1"/>
+	<edge name="a2b2" v1="va2" v2="vb2"/>
+	<edge name="a3b3" v1="va3" v2="vb3"/>
+	<edge name="a4b4" v1="va4" v2="vb4"/>
+	
+	<edge name="a1e" v1="va1" v2="ve"/>
+	<edge name="a2e" v1="va2" v2="ve"/>
+	<edge name="a3e" v1="va3" v2="ve"/>
+	<edge name="a4e" v1="va4" v2="ve"/>
+	
+	<edge name="b1e" v1="vb1" v2="ve"/>
+	<edge name="b2e" v1="vb2" v2="ve"/>
+	<edge name="b3e" v1="vb3" v2="ve"/>
+	<edge name="b4e" v1="vb4" v2="ve"/>
+	
+	<face name="aaaa" edges="a1a2, a2a3, a3a4, a4a1"/>
+	<face name="bbbb" edges="b1b2, b2b3, b3b4, b4b1"/>
+	<face name="aabb" edges="a1a2, a1b1, b1b2, a2b2"/>
+	<face name="abba" edges="a2a3, a2b2, b2b3, a3b3"/>
+	<face name="bbaa" edges="a3a4, a3b3, b3b4, a4b4"/>
+	<face name="baab" edges="a4a1, a4b4, b4b1, a1b1"/>
+	
+	<face name="aae1" edges="a1a2, a1e, a2e"/>
+	<face name="aae2" edges="a2a3, a2e, a3e"/>
+	<face name="aae3" edges="a3a4, a3e, a4e"/>
+	<face name="aae4" edges="a4a1, a4e, a1e"/>
+	
+	<face name="abe1" edges="a1b1, b1e, a1e"/>
+	<face name="abe2" edges="a2b2, b2e, a2e"/>
+	<face name="abe3" edges="a3b3, b3e, a3e"/>
+	<face name="abe4" edges="a4b4, b4e, a4e"/>
+	
+	<face name="bbe1" edges="b1b2, b1e, b2e"/>
+	<face name="bbe2" edges="b2b3, b2e, b3e"/>
+	<face name="bbe3" edges="b3b4, b3e, b4e"/>
+	<face name="bbe4" edges="b4b1, b4e, b1e"/>
+	
+</figure>

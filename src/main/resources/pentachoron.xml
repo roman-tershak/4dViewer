@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<figure xmlns="tests:4DViewer:PlainFigureConfig">
+
+	<vertex name="a" coords="1.4, -0.808290376864, -0.7620634755314, -0.7620634755314" />
+	<vertex name="b" coords="0, 1.61658075373, -0.7620634755314, -0.7620634755314" />
+	<vertex name="c" coords="-1.4, -0.808290376864, -0.7620634755314, -0.7620634755314" />
+	<vertex name="d" coords="0, 0, 1.5241269510642, -0.7620634755314" />
+	<vertex name="e" coords="0, 0, 0, 1.5241269510642" />
+	
+	<edge name="ab" v1="a" v2="b"/>
+	<edge name="bc" v1="b" v2="c"/>
+	<edge name="ca" v1="c" v2="a"/>
+	<edge name="ad" v1="a" v2="d"/>
+	<edge name="bd" v1="b" v2="d"/>
+	<edge name="cd" v1="c" v2="d"/>
+	<edge name="ae" v1="a" v2="e"/>
+	<edge name="be" v1="b" v2="e"/>
+	<edge name="ce" v1="c" v2="e"/>
+	<edge name="de" v1="d" v2="e"/>
+	
+	<face name="abc" edges="ab,bc,ca"/>
+	<face name="abd" edges="ab,bd,ad"/>
+	<face name="bcd" edges="bc,bd,cd"/>
+	<face name="cad" edges="ca,cd,ad"/>
+	<face name="abe" edges="ab,be,ae"/>
+	<face name="bce" edges="bc,ce,be"/>
+	<face name="cae" edges="ca,ae,ce"/>
+	<face name="ade" edges="ad,de,ae"/>
+	<face name="bde" edges="bd,de,be"/>
+	<face name="cde" edges="cd,de,ce"/>
+	
+</figure>

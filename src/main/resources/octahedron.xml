@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<figure xmlns="tests:4DViewer:PlainFigureConfig">
+
+	<vertex name="vx1" coords="1.7, 0, 0, 0" />
+	<vertex name="vx2" coords="-1.7, 0, 0, 0" />
+	<vertex name="vy1" coords="0, 1.7, 0, 0" />
+	<vertex name="vy2" coords="0, -1.7, 0, 0" />
+	<vertex name="vz1" coords="0, 0, 1.7, 0" />
+	<vertex name="vz2" coords="0, 0, -1.7, 0" />
+	
+	<edge name="x1y1" v1="vx1" v2="vy1"/>
+	<edge name="y1x2" v1="vy1" v2="vx2"/>
+	<edge name="x2y2" v1="vx2" v2="vy2"/>
+	<edge name="y2x1" v1="vy2" v2="vx1"/>
+	
+	<edge name="z1x1" v1="vz1" v2="vx1"/>
+	<edge name="z1y1" v1="vz1" v2="vy1"/>
+	<edge name="z1x2" v1="vz1" v2="vx2"/>
+	<edge name="z1y2" v1="vz1" v2="vy2"/>
+	
+	<edge name="z2x1" v1="vz2" v2="vx1"/>
+	<edge name="z2y1" v1="vz2" v2="vy1"/>
+	<edge name="z2x2" v1="vz2" v2="vx2"/>
+	<edge name="z2y2" v1="vz2" v2="vy2"/>
+	
+	<face name="f1" edges="x1y1, z1x1, z1y1"/>
+	<face name="f2" edges="y1x2, z1y1, z1x2"/>
+	<face name="f3" edges="x2y2, z1x2, z1y2"/>
+	<face name="f4" edges="y2x1, z1y2, z1x1"/>
+	<face name="f5" edges="x1y1, z2x1, z2y1"/>
+	<face name="f6" edges="y1x2, z2y1, z2x2"/>
+	<face name="f7" edges="x2y2, z2x2, z2y2"/>
+	<face name="f8" edges="y2x1, z2y2, z2x1"/>
+	
+</figure>

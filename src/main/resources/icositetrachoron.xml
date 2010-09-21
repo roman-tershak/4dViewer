@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<figure xmlns="tests:4DViewer:PlainFigureConfig">
+
+    <vertex name="v0" coords="-1.75, 0, 0, 0"/>
+    <vertex name="v1" coords="0, -1.75, 0, 0"/>
+    <vertex name="v2" coords="0, 0, -1.75, 0"/>
+    <vertex name="v3" coords="0, 0, 0, -1.75"/>
+    <vertex name="v4" coords="1.75, 0, 0, 0"/>
+    <vertex name="v5" coords="0, 1.75, 0, 0"/>
+    <vertex name="v6" coords="0, 0, 1.75, 0"/>
+    <vertex name="v7" coords="0, 0, 0, 1.75"/>
+    <vertex name="v8" coords="-0.875, -0.875, -0.875, -0.875"/>
+    <vertex name="v9" coords="-0.875, -0.875, -0.875, 0.875"/>
+    <vertex name="v10" coords="-0.875, -0.875, 0.875, -0.875"/>
+    <vertex name="v11" coords="-0.875, -0.875, 0.875, 0.875"/>
+    <vertex name="v12" coords="-0.875, 0.875, -0.875, -0.875"/>
+    <vertex name="v13" coords="-0.875, 0.875, -0.875, 0.875"/>
+    <vertex name="v14" coords="-0.875, 0.875, 0.875, -0.875"/>
+    <vertex name="v15" coords="-0.875, 0.875, 0.875, 0.875"/>
+    <vertex name="v16" coords="0.875, -0.875, -0.875, -0.875"/>
+    <vertex name="v17" coords="0.875, -0.875, -0.875, 0.875"/>
+    <vertex name="v18" coords="0.875, -0.875, 0.875, -0.875"/>
+    <vertex name="v19" coords="0.875, -0.875, 0.875, 0.875"/>
+    <vertex name="v20" coords="0.875, 0.875, -0.875, -0.875"/>
+    <vertex name="v21" coords="0.875, 0.875, -0.875, 0.875"/>
+    <vertex name="v22" coords="0.875, 0.875, 0.875, -0.875"/>
+    <vertex name="v23" coords="0.875, 0.875, 0.875, 0.875"/>
+
+    <edge name="e0" v1="v0" v2="v8"/>
+    <edge name="e1" v1="v8" v2="v9"/>
+    <edge name="e2" v1="v9" v2="v0"/>
+    <edge name="e3" v1="v8" v2="v10"/>
+    <edge name="e4" v1="v10" v2="v0"/>
+    <edge name="e5" v1="v1" v2="v8"/>
+    <edge name="e6" v1="v9" v2="v1"/>
+    <edge name="e7" v1="v10" v2="v1"/>
+    <edge name="e8" v1="v10" v2="v11"/>
+    <edge name="e9" v1="v11" v2="v0"/>
+    <edge name="e10" v1="v9" v2="v11"/>
+    <edge name="e11" v1="v11" v2="v1"/>
+    <edge name="e12" v1="v8" v2="v12"/>
+    <edge name="e13" v1="v12" v2="v0"/>
+    <edge name="e14" v1="v2" v2="v8"/>
+    <edge name="e15" v1="v9" v2="v2"/>
+    <edge name="e16" v1="v12" v2="v2"/>
+    <edge name="e17" v1="v12" v2="v13"/>
+    <edge name="e18" v1="v13" v2="v0"/>
+    <edge name="e19" v1="v9" v2="v13"/>
+    <edge name="e20" v1="v13" v2="v2"/>
+    <edge name="e21" v1="v3" v2="v8"/>
+    <edge name="e22" v1="v10" v2="v3"/>
+    <edge name="e23" v1="v12" v2="v3"/>
+    <edge name="e24" v1="v12" v2="v14"/>
+    <edge name="e25" v1="v14" v2="v0"/>
+    <edge name="e26" v1="v10" v2="v14"/>
+    <edge name="e27" v1="v14" v2="v3"/>
+    <edge name="e28" v1="v8" v2="v16"/>
+    <edge name="e29" v1="v16" v2="v1"/>
+    <edge name="e30" v1="v16" v2="v2"/>
+    <edge name="e31" v1="v9" v2="v17"/>
+    <edge name="e32" v1="v17" v2="v1"/>
+    <edge name="e33" v1="v17" v2="v2"/>
+    <edge name="e34" v1="v16" v2="v17"/>
+    <edge name="e35" v1="v16" v2="v3"/>
+    <edge name="e36" v1="v10" v2="v18"/>
+    <edge name="e37" v1="v18" v2="v1"/>
+    <edge name="e38" v1="v16" v2="v18"/>
+    <edge name="e39" v1="v18" v2="v3"/>
+    <edge name="e40" v1="v16" v2="v20"/>
+    <edge name="e41" v1="v20" v2="v2"/>
+    <edge name="e42" v1="v20" v2="v3"/>
+    <edge name="e43" v1="v12" v2="v20"/>
+    <edge name="e44" v1="v14" v2="v15"/>
+    <edge name="e45" v1="v15" v2="v0"/>
+    <edge name="e46" v1="v13" v2="v15"/>
+    <edge name="e47" v1="v5" v2="v12"/>
+    <edge name="e48" v1="v13" v2="v5"/>
+    <edge name="e49" v1="v14" v2="v5"/>
+    <edge name="e50" v1="v15" v2="v5"/>
+    <edge name="e51" v1="v11" v2="v15"/>
+    <edge name="e52" v1="v6" v2="v10"/>
+    <edge name="e53" v1="v11" v2="v6"/>
+    <edge name="e54" v1="v14" v2="v6"/>
+    <edge name="e55" v1="v15" v2="v6"/>
+    <edge name="e56" v1="v7" v2="v9"/>
+    <edge name="e57" v1="v11" v2="v7"/>
+    <edge name="e58" v1="v13" v2="v7"/>
+    <edge name="e59" v1="v15" v2="v7"/>
+    <edge name="e60" v1="v11" v2="v19"/>
+    <edge name="e61" v1="v19" v2="v1"/>
+    <edge name="e62" v1="v18" v2="v19"/>
+    <edge name="e63" v1="v18" v2="v6"/>
+    <edge name="e64" v1="v19" v2="v6"/>
+    <edge name="e65" v1="v17" v2="v7"/>
+    <edge name="e66" v1="v17" v2="v19"/>
+    <edge name="e67" v1="v19" v2="v7"/>
+    <edge name="e68" v1="v17" v2="v21"/>
+    <edge name="e69" v1="v21" v2="v2"/>
+    <edge name="e70" v1="v13" v2="v21"/>
+    <edge name="e71" v1="v21" v2="v7"/>
+    <edge name="e72" v1="v4" v2="v16"/>
+    <edge name="e73" v1="v17" v2="v4"/>
+    <edge name="e74" v1="v18" v2="v4"/>
+    <edge name="e75" v1="v19" v2="v4"/>
+    <edge name="e76" v1="v20" v2="v4"/>
+    <edge name="e77" v1="v20" v2="v21"/>
+    <edge name="e78" v1="v21" v2="v4"/>
+    <edge name="e79" v1="v20" v2="v22"/>
+    <edge name="e80" v1="v22" v2="v3"/>
+    <edge name="e81" v1="v18" v2="v22"/>
+    <edge name="e82" v1="v22" v2="v4"/>
+    <edge name="e83" v1="v20" v2="v5"/>
+    <edge name="e84" v1="v21" v2="v5"/>
+    <edge name="e85" v1="v14" v2="v22"/>
+    <edge name="e86" v1="v22" v2="v5"/>
+    <edge name="e87" v1="v22" v2="v6"/>
+    <edge name="e88" v1="v22" v2="v23"/>
+    <edge name="e89" v1="v23" v2="v4"/>
+    <edge name="e90" v1="v21" v2="v23"/>
+    <edge name="e91" v1="v23" v2="v5"/>
+    <edge name="e92" v1="v19" v2="v23"/>
+    <edge name="e93" v1="v23" v2="v6"/>
+    <edge name="e94" v1="v23" v2="v7"/>
+    <edge name="e95" v1="v15" v2="v23"/>
+    
+    <face name="f00" vertices="v0, v8, v9"/>
+    <face name="f01" vertices="v0, v8, v10"/>
+    <face name="f02" vertices="v1, v8, v9"/>
+    <face name="f03" vertices="v1, v8, v10"/>
+    <face name="f04" vertices="v0, v10, v11"/>
+    <face name="f05" vertices="v0, v9, v11"/>
+    <face name="f06" vertices="v1, v10, v11"/>
+    <face name="f07" vertices="v1, v9, v11"/>
+    <face name="f08" vertices="v0, v8, v12"/>
+    <face name="f09" vertices="v2, v8, v9"/>
+    <face name="f10" vertices="v2, v8, v12"/>
+    <face name="f11" vertices="v0, v12, v13"/>
+    <face name="f12" vertices="v0, v9, v13"/>
+    <face name="f13" vertices="v2, v9, v13"/>
+    <face name="f14" vertices="v2, v12, v13"/>
+    <face name="f15" vertices="v3, v8, v10"/>
+    <face name="f16" vertices="v3, v8, v12"/>
+    <face name="f17" vertices="v0, v12, v14"/>
+    <face name="f18" vertices="v0, v10, v14"/>
+    <face name="f19" vertices="v3, v12, v14"/>
+    <face name="f20" vertices="v3, v10, v14"/>
+    <face name="f21" vertices="v1, v8, v16"/>
+    <face name="f22" vertices="v2, v8, v16"/>
+    <face name="f23" vertices="v1, v9, v17"/>
+    <face name="f24" vertices="v2, v9, v17"/>
+    <face name="f25" vertices="v1, v16, v17"/>
+    <face name="f26" vertices="v2, v16, v17"/>
+    <face name="f27" vertices="v3, v8, v16"/>
+    <face name="f28" vertices="v1, v10, v18"/>
+    <face name="f29" vertices="v1, v16, v18"/>
+    <face name="f30" vertices="v3, v16, v18"/>
+    <face name="f31" vertices="v3, v10, v18"/>
+    <face name="f32" vertices="v2, v16, v20"/>
+    <face name="f33" vertices="v3, v16, v20"/>
+    <face name="f34" vertices="v2, v12, v20"/>
+    <face name="f35" vertices="v3, v12, v20"/>
+    <face name="f36" vertices="v0, v14, v15"/>
+    <face name="f37" vertices="v0, v13, v15"/>
+    <face name="f38" vertices="v5, v12, v13"/>
+    <face name="f39" vertices="v5, v12, v14"/>
+    <face name="f40" vertices="v5, v14, v15"/>
+    <face name="f41" vertices="v5, v13, v15"/>
+    <face name="f42" vertices="v0, v11, v15"/>
+    <face name="f43" vertices="v6, v10, v11"/>
+    <face name="f44" vertices="v6, v10, v14"/>
+    <face name="f45" vertices="v6, v14, v15"/>
+    <face name="f46" vertices="v6, v11, v15"/>
+    <face name="f47" vertices="v7, v9, v11"/>
+    <face name="f48" vertices="v7, v9, v13"/>
+    <face name="f49" vertices="v7, v13, v15"/>
+    <face name="f50" vertices="v7, v11, v15"/>
+    <face name="f51" vertices="v1, v11, v19"/>
+    <face name="f52" vertices="v1, v18, v19"/>
+    <face name="f53" vertices="v6, v10, v18"/>
+    <face name="f54" vertices="v6, v18, v19"/>
+    <face name="f55" vertices="v6, v11, v19"/>
+    <face name="f56" vertices="v7, v9, v17"/>
+    <face name="f57" vertices="v1, v17, v19"/>
+    <face name="f58" vertices="v7, v17, v19"/>
+    <face name="f59" vertices="v7, v11, v19"/>
+    <face name="f60" vertices="v2, v17, v21"/>
+    <face name="f61" vertices="v2, v13, v21"/>
+    <face name="f62" vertices="v7, v17, v21"/>
+    <face name="f63" vertices="v7, v13, v21"/>
+    <face name="f64" vertices="v4, v16, v17"/>
+    <face name="f65" vertices="v4, v16, v18"/>
+    <face name="f66" vertices="v4, v18, v19"/>
+    <face name="f67" vertices="v4, v17, v19"/>
+    <face name="f68" vertices="v4, v16, v20"/>
+    <face name="f69" vertices="v2, v20, v21"/>
+    <face name="f70" vertices="v4, v20, v21"/>
+    <face name="f71" vertices="v4, v17, v21"/>
+    <face name="f72" vertices="v3, v20, v22"/>
+    <face name="f73" vertices="v3, v18, v22"/>
+    <face name="f74" vertices="v4, v20, v22"/>
+    <face name="f75" vertices="v4, v18, v22"/>
+    <face name="f76" vertices="v5, v12, v20"/>
+    <face name="f77" vertices="v5, v20, v21"/>
+    <face name="f78" vertices="v5, v13, v21"/>
+    <face name="f79" vertices="v3, v14, v22"/>
+    <face name="f80" vertices="v5, v20, v22"/>
+    <face name="f81" vertices="v5, v14, v22"/>
+    <face name="f82" vertices="v6, v18, v22"/>
+    <face name="f83" vertices="v6, v14, v22"/>
+    <face name="f84" vertices="v4, v22, v23"/>
+    <face name="f85" vertices="v4, v21, v23"/>
+    <face name="f86" vertices="v5, v22, v23"/>
+    <face name="f87" vertices="v5, v21, v23"/>
+    <face name="f88" vertices="v4, v19, v23"/>
+    <face name="f89" vertices="v6, v22, v23"/>
+    <face name="f90" vertices="v6, v19, v23"/>
+    <face name="f91" vertices="v7, v21, v23"/>
+    <face name="f92" vertices="v7, v19, v23"/>
+    <face name="f93" vertices="v5, v15, v23"/>
+    <face name="f94" vertices="v6, v15, v23"/>
+    <face name="f95" vertices="v7, v15, v23"/>
+    
+</figure>

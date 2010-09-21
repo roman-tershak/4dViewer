@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<figure xmlns="tests:4DViewer:PlainFigureConfig">
+
+	<vertex name="vx1" coords="1.7, 0, 0, 0" />
+	<vertex name="vx2" coords="-1.7, 0, 0, 0" />
+	<vertex name="vy1" coords="0, 1.7, 0, 0" />
+	<vertex name="vy2" coords="0, -1.7, 0, 0" />
+	<vertex name="vz1" coords="0, 0, 1.7, 0" />
+	<vertex name="vz2" coords="0, 0, -1.7, 0" />
+	<vertex name="vw1" coords="0, 0, 0, 1.7" />
+	<vertex name="vw2" coords="0, 0, 0, -1.7" />
+	
+	<edge name="x1y1" v1="vx1" v2="vy1"/>
+	<edge name="y1x2" v1="vy1" v2="vx2"/>
+	<edge name="x2y2" v1="vx2" v2="vy2"/>
+	<edge name="y2x1" v1="vy2" v2="vx1"/>
+	
+	<edge name="z1x1" v1="vz1" v2="vx1"/>
+	<edge name="z1y1" v1="vz1" v2="vy1"/>
+	<edge name="z1x2" v1="vz1" v2="vx2"/>
+	<edge name="z1y2" v1="vz1" v2="vy2"/>
+	
+	<edge name="z2x1" v1="vz2" v2="vx1"/>
+	<edge name="z2y1" v1="vz2" v2="vy1"/>
+	<edge name="z2x2" v1="vz2" v2="vx2"/>
+	<edge name="z2y2" v1="vz2" v2="vy2"/>
+	
+	<edge name="w1x1" v1="vw1" v2="vx1"/>
+	<edge name="w1y1" v1="vw1" v2="vy1"/>
+	<edge name="w1x2" v1="vw1" v2="vx2"/>
+	<edge name="w1y2" v1="vw1" v2="vy2"/>
+	<edge name="w1z1" v1="vw1" v2="vz1"/>
+	<edge name="w1z2" v1="vw1" v2="vz2"/>
+	
+	<edge name="w2x1" v1="vw2" v2="vx1"/>
+	<edge name="w2y1" v1="vw2" v2="vy1"/>
+	<edge name="w2x2" v1="vw2" v2="vx2"/>
+	<edge name="w2y2" v1="vw2" v2="vy2"/>
+	<edge name="w2z1" v1="vw2" v2="vz1"/>
+	<edge name="w2z2" v1="vw2" v2="vz2"/>
+	
+	<face name="f01" edges="x1y1, z1x1, z1y1"/>
+	<face name="f02" edges="y1x2, z1y1, z1x2"/>
+	<face name="f03" edges="x2y2, z1x2, z1y2"/>
+	<face name="f04" edges="y2x1, z1y2, z1x1"/>
+	<face name="f05" edges="x1y1, z2x1, z2y1"/>
+	<face name="f06" edges="y1x2, z2y1, z2x2"/>
+	<face name="f07" edges="x2y2, z2x2, z2y2"/>
+	<face name="f08" edges="y2x1, z2y2, z2x1"/>
+	
+	<face name="f09" edges="x1y1, w1x1, w1y1"/>
+	<face name="f10" edges="y1x2, w1y1, w1x2"/>
+	<face name="f11" edges="x2y2, w1x2, w1y2"/>
+	<face name="f12" edges="y2x1, w1y2, w1x1"/>
+	<face name="f13" edges="z1x1, w1x1, w1z1"/>
+	<face name="f14" edges="z1y1, w1y1, w1z1"/>
+	<face name="f15" edges="z1x2, w1x2, w1z1"/>
+	<face name="f16" edges="z1y2, w1y2, w1z1"/>
+	<face name="f17" edges="z2x1, w1x1, w1z2"/>
+	<face name="f18" edges="z2y1, w1y1, w1z2"/>
+	<face name="f19" edges="z2x2, w1x2, w1z2"/>
+	<face name="f20" edges="z2y2, w1y2, w1z2"/>
+	
+	<face name="f21" edges="x1y1, w2x1, w2y1"/>
+	<face name="f22" edges="y1x2, w2y1, w2x2"/>
+	<face name="f23" edges="x2y2, w2x2, w2y2"/>
+	<face name="f24" edges="y2x1, w2y2, w2x1"/>
+	<face name="f25" edges="z1x1, w2x1, w2z1"/>
+	<face name="f26" edges="z1y1, w2y1, w2z1"/>
+	<face name="f27" edges="z1x2, w2x2, w2z1"/>
+	<face name="f28" edges="z1y2, w2y2, w2z1"/>
+	<face name="f29" edges="z2x1, w2x1, w2z2"/>
+	<face name="f30" edges="z2y1, w2y1, w2z2"/>
+	<face name="f31" edges="z2x2, w2x2, w2z2"/>
+	<face name="f32" edges="z2y2, w2y2, w2z2"/>
+	
+</figure>

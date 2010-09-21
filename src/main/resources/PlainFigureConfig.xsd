@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="tests:4DViewer:PlainFigureConfig"
+	xmlns="tests:4DViewer:PlainFigureConfig"
+	elementFormDefault="qualified"
+	
+    xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+	jaxb:version="2.1" 
+	xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+	jaxb:extensionBindingPrefixes="xjc">
+	
+	<xs:annotation>
+		<xs:appinfo>
+			<jaxb:bindings schemaLocation="PlainFigureConfig.xsd">
+				<jaxb:schemaBindings>
+					<jaxb:package name="com.viewer4d.config.model" />
+				</jaxb:schemaBindings>
+			</jaxb:bindings>
+		</xs:appinfo>
+	</xs:annotation>
+	
+	<xs:complexType name="VertexType">
+		<xs:attribute name="name" type="xs:string" use="required"/>
+		<xs:attribute name="coords" type="xs:string" use="required"/>
+	</xs:complexType>
+	
+	<xs:complexType name="EdgeType">
+		<xs:attribute name="name" type="xs:string" use="required"/>
+		<xs:attribute name="v1" type="xs:string" use="required"/>
+		<xs:attribute name="v2" type="xs:string" use="required"/>
+	</xs:complexType>
+	
+	<xs:complexType name="FaceType">
+		<xs:attribute name="name" type="xs:string" use="required"/>
+		<xs:attribute name="edges" type="xs:string" use="optional"/>
+		<xs:attribute name="vertices" type="xs:string" use="optional"/>
+	</xs:complexType>
+	
+	<xs:complexType name="FigureType">
+		<xs:sequence>
+			<xs:element name="precision" type="xs:double" minOccurs="0" maxOccurs="1"/>
+			
+			<xs:sequence minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:appinfo>
+						<jaxb:property name="vertices" />
+					</xs:appinfo>
+				</xs:annotation>
+				<xs:element name="vertex" type="VertexType" />
+			</xs:sequence>
+			
+			<xs:sequence minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:appinfo>
+						<jaxb:property name="edges" />
+					</xs:appinfo>
+				</xs:annotation>
+				<xs:element name="edge" type="EdgeType" />
+			</xs:sequence>
+			
+			<xs:sequence minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:appinfo>
+						<jaxb:property name="faces" />
+					</xs:appinfo>
+				</xs:annotation>
+				<xs:element name="face" type="FaceType" />
+			</xs:sequence>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:element name="figure" type="FigureType"/>
+	
+</xs:schema>
