@@ -1,4 +1,4 @@
-package com.viewer4d.projectors;
+package com.viewer4d.projector;
 
 import java.util.HashSet;
 

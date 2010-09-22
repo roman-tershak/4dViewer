@@ -10,19 +10,19 @@ import com.viewer4d.geometry.FigureMovable;
 import com.viewer4d.geometry.RotationPlane4DEnum;
 import com.viewer4d.geometry.simple.Vector;
 import com.viewer4d.geometry.simple.Dimensional.UNIT_VECTORS;
-import com.viewer4d.projectors.AbstractEnablingProjector;
-import com.viewer4d.projectors.AbstractProjectingProjector;
-import com.viewer4d.projectors.auxiliary.CubeXYZOrtsProjector;
-import com.viewer4d.projectors.auxiliary.Simple3DSpaceIntersectorAtZeroW;
-import com.viewer4d.projectors.auxiliary.XYZWOrtsProjector;
-import com.viewer4d.projectors.combining.CombinedAuxAndMainProjectors;
-import com.viewer4d.projectors.combining.CombiningProjector;
-import com.viewer4d.projectors.from4dto3d.FrontIsometricProjectorOnXYZAlongW;
-import com.viewer4d.projectors.from4dto3d.ParallelProjectorOnXYZAlongW;
-import com.viewer4d.projectors.from4dto3d.PerspectiveMovableProjector;
-import com.viewer4d.projectors.from4dto3d.PerspectiveMovingProjector;
-import com.viewer4d.projectors.from4dto3d.PerspectiveProjectorOnXYZAlongW;
-import com.viewer4d.projectors.from4dto3d.PerspectiveProjectorOnXYZCuttingW;
+import com.viewer4d.projector.AbstractEnablingProjector;
+import com.viewer4d.projector.AbstractProjectingProjector;
+import com.viewer4d.projector.auxiliary.CubeXYZOrtsProjector;
+import com.viewer4d.projector.auxiliary.Simple3DSpaceIntersectorAtZeroW;
+import com.viewer4d.projector.auxiliary.XYZWOrtsProjector;
+import com.viewer4d.projector.combining.CombinedAuxAndMainProjectors;
+import com.viewer4d.projector.combining.CombiningProjector;
+import com.viewer4d.projector.from4dto3d.FrontIsometricProjectorOnXYZAlongW;
+import com.viewer4d.projector.from4dto3d.ParallelProjectorOnXYZAlongW;
+import com.viewer4d.projector.from4dto3d.PerspectiveMovableProjector;
+import com.viewer4d.projector.from4dto3d.PerspectiveMovingProjector;
+import com.viewer4d.projector.from4dto3d.PerspectiveProjectorOnXYZAlongW;
+import com.viewer4d.projector.from4dto3d.PerspectiveProjectorOnXYZCuttingW;
 
 public class ViewContainer {
 

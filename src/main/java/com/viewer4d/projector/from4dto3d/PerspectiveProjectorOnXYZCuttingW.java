@@ -1,4 +1,4 @@
-package com.viewer4d.projectors.from4dto3d;
+package com.viewer4d.projector.from4dto3d;
 
 import com.viewer4d.geometry.Edge;
 import com.viewer4d.geometry.Vertex;

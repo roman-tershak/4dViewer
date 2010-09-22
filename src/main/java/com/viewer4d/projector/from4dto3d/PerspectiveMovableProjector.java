@@ -1,4 +1,4 @@
-package com.viewer4d.projectors.from4dto3d;
+package com.viewer4d.projector.from4dto3d;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,8 +9,8 @@ import com.viewer4d.geometry.simple.Dimensional;
 import com.viewer4d.geometry.simple.MovablePoint;
 import com.viewer4d.geometry.simple.Point;
 import com.viewer4d.geometry.simple.Dimensional.UNIT_VECTORS;
-import com.viewer4d.projectors.AbstractProjectingProjector;
-import com.viewer4d.projectors.Changeable;
+import com.viewer4d.projector.AbstractProjectingProjector;
+import com.viewer4d.projector.Changeable;
 
 public class PerspectiveMovableProjector extends AbstractProjectingProjector implements Changeable {
 

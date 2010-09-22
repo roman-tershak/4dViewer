@@ -10,7 +10,7 @@ import com.viewer4d.geometry.Figure;
 import com.viewer4d.geometry.RotationPlane4DEnum;
 import com.viewer4d.geometry.Vertex;
 import com.viewer4d.geometry.simple.MovablePoint;
-import com.viewer4d.projectors.from3dto2d.Perspective2DMonoProjector;
+import com.viewer4d.projector.from3dto2d.Perspective2DMonoProjector;
 
 public class MonoscopicViewer extends AbstractViewer {
     

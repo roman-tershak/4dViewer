@@ -1,4 +1,4 @@
-package com.viewer4d.projectors.auxiliary;
+package com.viewer4d.projector.auxiliary;
 
 import static com.viewer4d.geometry.simple.Pointable.PRECISION;
 
@@ -15,7 +15,7 @@ import com.viewer4d.geometry.Vertex;
 import com.viewer4d.geometry.impl.FigureBaseImpl;
 import com.viewer4d.geometry.simple.MovablePoint;
 import com.viewer4d.geometry.simple.Point;
-import com.viewer4d.projectors.AbstractEnablingProjector;
+import com.viewer4d.projector.AbstractEnablingProjector;
 
 public class Simple3DSpaceIntersectorAtZeroW extends AbstractEnablingProjector {
 

@@ -1,4 +1,4 @@
-package com.viewer4d.projectors.combining;
+package com.viewer4d.projector.combining;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,10 +12,10 @@ import com.viewer4d.geometry.RotationPlane4DEnum;
 import com.viewer4d.geometry.impl.FigureBaseImpl;
 import com.viewer4d.geometry.simple.Pointable;
 import com.viewer4d.geometry.simple.Vector;
-import com.viewer4d.projectors.AbstractEnablingProjector;
-import com.viewer4d.projectors.Changeable;
-import com.viewer4d.projectors.Enabling;
-import com.viewer4d.projectors.Projector;
+import com.viewer4d.projector.AbstractEnablingProjector;
+import com.viewer4d.projector.Changeable;
+import com.viewer4d.projector.Enabling;
+import com.viewer4d.projector.Projector;
 
 public class CombiningProjector<P extends Projector> extends AbstractEnablingProjector 
 implements Movable, Changeable {

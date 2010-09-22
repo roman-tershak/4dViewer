@@ -1,4 +1,4 @@
-package com.viewer4d.projectors.from4dto3d;
+package com.viewer4d.projector.from4dto3d;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,7 +9,7 @@ import com.viewer4d.geometry.FigureMovable;
 import com.viewer4d.geometry.RotationPlane4DEnum;
 import com.viewer4d.geometry.Vertex;
 import com.viewer4d.geometry.impl.FigureMovableImpl;
-import com.viewer4d.projectors.Projector;
+import com.viewer4d.projector.Projector;
 
 @Deprecated
 public class IsometricProjectorOnXYZ implements Projector {

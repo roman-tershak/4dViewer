@@ -1,9 +1,9 @@
-package com.viewer4d.projectors.from3dto2d;
+package com.viewer4d.projector.from3dto2d;
 
 import com.viewer4d.geometry.Edge;
 import com.viewer4d.geometry.Vertex;
 import com.viewer4d.geometry.simple.Pointable;
-import com.viewer4d.projectors.AbstractProjectingProjector;
+import com.viewer4d.projector.AbstractProjectingProjector;
 
 public class Perspective2DMonoProjector<P extends Pointable> extends AbstractProjectingProjector {
 

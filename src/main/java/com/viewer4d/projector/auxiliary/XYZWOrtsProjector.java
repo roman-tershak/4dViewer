@@ -1,4 +1,4 @@
-package com.viewer4d.projectors.auxiliary;
+package com.viewer4d.projector.auxiliary;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -7,7 +7,7 @@ import com.viewer4d.geometry.Edge;
 import com.viewer4d.geometry.Figure;
 import com.viewer4d.geometry.Vertex;
 import com.viewer4d.geometry.impl.FigureBaseImpl;
-import com.viewer4d.projectors.AbstractEnablingProjector;
+import com.viewer4d.projector.AbstractEnablingProjector;
 
 public class XYZWOrtsProjector extends AbstractEnablingProjector {
 

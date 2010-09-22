@@ -1,4 +1,4 @@
-package com.viewer4d.projectors.combining;
+package com.viewer4d.projector.combining;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,10 +8,10 @@ import java.util.List;
 import com.viewer4d.geometry.Edge;
 import com.viewer4d.geometry.Figure;
 import com.viewer4d.geometry.impl.FigureBaseImpl;
-import com.viewer4d.projectors.AbstractEnablingProjector;
-import com.viewer4d.projectors.Projector;
-import com.viewer4d.projectors.auxiliary.Simple3DSpaceIntersectorAtZeroW;
-import com.viewer4d.projectors.from4dto3d.PerspectiveProjectorOnXYZAlongW;
+import com.viewer4d.projector.AbstractEnablingProjector;
+import com.viewer4d.projector.Projector;
+import com.viewer4d.projector.auxiliary.Simple3DSpaceIntersectorAtZeroW;
+import com.viewer4d.projector.from4dto3d.PerspectiveProjectorOnXYZAlongW;
 
 public class CombinedAuxAndMainProjectors extends AbstractEnablingProjector {
 
