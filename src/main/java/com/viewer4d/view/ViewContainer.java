@@ -13,7 +13,6 @@ import com.viewer4d.geometry.simple.Dimensional.UNIT_VECTORS;
 import com.viewer4d.projector.AbstractEnablingProjector;
 import com.viewer4d.projector.AbstractProjectingProjector;
 import com.viewer4d.projector.auxiliary.CubeXYZOrtsProjector;
-import com.viewer4d.projector.auxiliary.Simple3DSpaceIntersectorAtZeroW;
 import com.viewer4d.projector.auxiliary.XYZWOrtsProjector;
 import com.viewer4d.projector.combining.CombinedAuxAndMainProjectors;
 import com.viewer4d.projector.combining.CombiningProjector;
@@ -23,6 +22,7 @@ import com.viewer4d.projector.from4dto3d.PerspectiveMovableProjector;
 import com.viewer4d.projector.from4dto3d.PerspectiveMovingProjector;
 import com.viewer4d.projector.from4dto3d.PerspectiveProjectorOnXYZAlongW;
 import com.viewer4d.projector.from4dto3d.PerspectiveProjectorOnXYZCuttingW;
+import com.viewer4d.projector.selector.Simple3DSpaceIntersectorAtZeroW;
 
 public class ViewContainer {
 

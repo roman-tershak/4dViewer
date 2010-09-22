@@ -10,8 +10,8 @@ import com.viewer4d.geometry.Figure;
 import com.viewer4d.geometry.impl.FigureBaseImpl;
 import com.viewer4d.projector.AbstractEnablingProjector;
 import com.viewer4d.projector.Projector;
-import com.viewer4d.projector.auxiliary.Simple3DSpaceIntersectorAtZeroW;
 import com.viewer4d.projector.from4dto3d.PerspectiveProjectorOnXYZAlongW;
+import com.viewer4d.projector.selector.Simple3DSpaceIntersectorAtZeroW;
 
 public class CombinedAuxAndMainProjectors extends AbstractEnablingProjector {
 
