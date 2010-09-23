@@ -51,4 +51,24 @@ public abstract class Pointable implements Dimensional {
         return true;
     }
 
+    public Vector sub(Pointable point) {
+        double[] vector = new double[] {0, 0, 0, 0};
+        double[] pCoords = point.getCoords();
+        
+        for (int i = 0; i < coords.length; i++) {
+            vector[i] = coords[i] - pCoords[i];
+        }
+        return new Vector(vector);
+    }
+
+    public Point add(Vector vector) {
+        double[] newCoords = new double[] {0, 0, 0, 0};
+        double[] vCoords = vector.getCoords();
+        
+        for (int i = 0; i < coords.length; i++) {
+            newCoords[i] = coords[i] + vCoords[i];
+        }
+        return new Point(newCoords);
+    }
+
 }

@@ -16,17 +16,15 @@ import com.viewer4d.projector.auxiliary.CubeXYZOrtsProjector;
 import com.viewer4d.projector.auxiliary.XYZWOrtsProjector;
 import com.viewer4d.projector.combining.CombinedAuxAndMainProjectors;
 import com.viewer4d.projector.combining.CombiningProjector;
-import com.viewer4d.projector.from4dto3d.FrontIsometricProjectorOnXYZAlongW;
-import com.viewer4d.projector.from4dto3d.ParallelProjectorOnXYZAlongW;
 import com.viewer4d.projector.from4dto3d.PerspectiveMovableProjector;
-import com.viewer4d.projector.from4dto3d.PerspectiveMovingProjector;
-import com.viewer4d.projector.from4dto3d.PerspectiveProjectorOnXYZAlongW;
-import com.viewer4d.projector.from4dto3d.PerspectiveProjectorOnXYZCuttingW;
-import com.viewer4d.projector.selector.Simple3DSpaceIntersectorAtZeroW;
+import com.viewer4d.projector.from4dto3d.PerspectiveProjectorOnXYZ;
+import com.viewer4d.projector.intersector.Simple3DSpaceIntersectorAtZeroW;
+import com.viewer4d.projector.selector.EntireFigureSelector;
+import com.viewer4d.projector.selector.SelectorCuttingNegativeW;
 
 public class ViewContainer {
 
-    public static final int W_4D_DISTANCE_DEFAULT = -10;
+    public static final int W_4D_POSITION_DEFAULT = -10;
     
     public static final double CAMERA_DISTANCE_DEFAULT = 16;
     public static final double CAMERA_EYES_DIST_DEFAULT = 1.0;
@@ -44,9 +42,19 @@ public class ViewContainer {
     private Figure projection3d;
     
     private CombinedAuxAndMainProjectors projectorMain;
-    private CombiningProjector<AbstractProjectingProjector> combining4DProjector;
+    private CombiningProjector<PerspectiveProjectorOnXYZ> combining4DProjector;
+    
+    private PerspectiveProjectorOnXYZ perspectiveProjectorOnXYZ;
+    private PerspectiveMovableProjector perspectiveProjectorOnOrts;
+    private PerspectiveMovableProjector perspectiveMovingProjector;
+    
     private AbstractEnablingProjector ortsProjector;
     private AbstractEnablingProjector cubeOrtsProjector;
+    
+    
+    private CombiningProjector<AbstractEnablingProjector> combiningSelector;
+    private EntireFigureSelector entireFigureSelector;
+    private SelectorCuttingNegativeW selectorCuttingNegW;
     private Simple3DSpaceIntersectorAtZeroW spaceIntersector;
     
     private Viewer viewer;
@@ -63,22 +71,34 @@ public class ViewContainer {
     public ViewContainer(FigureMovable figure) {
         this.figure = figure;
         
-        combining4DProjector = new CombiningProjector<AbstractProjectingProjector>(
-                new PerspectiveProjectorOnXYZAlongW(W_4D_DISTANCE_DEFAULT),
-                new ParallelProjectorOnXYZAlongW(),
-                new FrontIsometricProjectorOnXYZAlongW(),
-                new PerspectiveMovingProjector(W_4D_DISTANCE_DEFAULT),
-                new PerspectiveMovableProjector(W_4D_DISTANCE_DEFAULT),
-                new PerspectiveProjectorOnXYZCuttingW(W_4D_DISTANCE_DEFAULT)
+        entireFigureSelector = new EntireFigureSelector();
+        selectorCuttingNegW = new SelectorCuttingNegativeW();
+        spaceIntersector = new Simple3DSpaceIntersectorAtZeroW();
+        entireFigureSelector.enable(true);
+        selectorCuttingNegW.enable(false);
+        
+        combiningSelector = new CombiningProjector<AbstractEnablingProjector>(
+                entireFigureSelector,
+                selectorCuttingNegW,
+                spaceIntersector
+        );
+        
+        perspectiveProjectorOnXYZ = new PerspectiveProjectorOnXYZ(W_4D_POSITION_DEFAULT, true);
+        perspectiveProjectorOnOrts = new PerspectiveMovableProjector(W_4D_POSITION_DEFAULT, true);
+        perspectiveMovingProjector = new PerspectiveMovableProjector(W_4D_POSITION_DEFAULT, true);
+        
+        combining4DProjector = new CombiningProjector<PerspectiveProjectorOnXYZ>(
+                perspectiveProjectorOnXYZ,
+                perspectiveProjectorOnOrts,
+                perspectiveMovingProjector
         );
         
         ortsProjector = new XYZWOrtsProjector(true);
         cubeOrtsProjector = new CubeXYZOrtsProjector(false);
-        spaceIntersector = new Simple3DSpaceIntersectorAtZeroW();
         
         projectorMain = new CombinedAuxAndMainProjectors(
                 combining4DProjector,
-                spaceIntersector,
+//                spaceIntersector,
                 ortsProjector,
                 cubeOrtsProjector
         );
@@ -160,8 +180,11 @@ public class ViewContainer {
     }
     
     public void setMovableProjector(UNIT_VECTORS vector, boolean forward) {
-        ((PerspectiveMovableProjector) get4DProjector(4)).setProjector(vector, forward);
-        doFullProjection();
+        // TODO Add perspectiveMovingProjector here?
+        if (perspectiveProjectorOnOrts.isEnabled()) {
+            perspectiveProjectorOnOrts.setProjector(vector, forward);
+            doFullProjection();
+        }
     }
     
     public void toggle4DProjector(int projectorNumber) {
@@ -169,8 +192,16 @@ public class ViewContainer {
         doFullProjection();
     }
 
+    public void set4DProjectorsPerspective(boolean perspective) {
+        List<PerspectiveProjectorOnXYZ> projectors = combining4DProjector.getProjectors();
+        for (PerspectiveProjectorOnXYZ projector : projectors) {
+            projector.setPerspective(perspective);
+        }
+        doFullProjection();
+    }
+    
     protected void enable4DProjector(int projectorNumber) {
-        List<AbstractProjectingProjector> projectors = combining4DProjector.getProjectors();
+        List<PerspectiveProjectorOnXYZ> projectors = combining4DProjector.getProjectors();
         for (int i = 0; i < projectors.size(); i++) {
             projectors.get(i).enable(i == projectorNumber);
         }
@@ -180,13 +211,13 @@ public class ViewContainer {
     public void moveFigure(UNIT_VECTORS direction, double amount) {
         Vector vector = getVectorFrom(direction, amount);
         figure.move(vector);
-        combining4DProjector.move(vector);
+        perspectiveMovingProjector.move(vector);
         doFullProjection();
     }
 
     public void rotateFigure(RotationPlane4DEnum rotationPlane, double amount) {
         figure.rotate(rotationPlane, amount);
-        combining4DProjector.rotate(rotationPlane, amount, figure.getCentrum());
+        perspectiveMovingProjector.rotate(rotationPlane, amount);
         doFullProjection();
     }
 
@@ -327,7 +358,8 @@ public class ViewContainer {
     
     // Projection method
     public synchronized void doFullProjection() {
-        projection3d = projectorMain.project(getFigure());
+        Figure selected = combiningSelector.project(getFigure());
+        projection3d = projectorMain.project(selected);
         doCameraProjection();
         needRepaint = true;
     }

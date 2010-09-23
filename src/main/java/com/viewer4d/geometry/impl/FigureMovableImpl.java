@@ -172,11 +172,6 @@ public class FigureMovableImpl extends FigureBaseImpl implements FigureMovable {
 
     @Override
     public synchronized void rotate(RotationPlane4DEnum rotationPlane, double radians) {
-        rotate(rotationPlane, radians, centrum);
-    }
-
-    @Override
-    public synchronized void rotate(RotationPlane4DEnum rotationPlane, double radians, Pointable centrum) {
         double[][] rotationMatrix = rotationPlane.getRotationMatrix(radians);
 
         for (MovablePoint vertex : getVertices()) {

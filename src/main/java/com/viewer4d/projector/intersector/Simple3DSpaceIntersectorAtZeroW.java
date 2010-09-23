@@ -1,4 +1,4 @@
-package com.viewer4d.projector.selector;
+package com.viewer4d.projector.intersector;
 
 import static com.viewer4d.geometry.simple.Pointable.PRECISION;
 

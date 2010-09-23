@@ -3,115 +3,79 @@ package com.viewer4d.projector.from4dto3d;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.viewer4d.geometry.Movable;
 import com.viewer4d.geometry.RotationPlane4DEnum;
-import com.viewer4d.geometry.Vertex;
-import com.viewer4d.geometry.simple.Dimensional;
 import com.viewer4d.geometry.simple.MovablePoint;
 import com.viewer4d.geometry.simple.Point;
+import com.viewer4d.geometry.simple.Vector;
 import com.viewer4d.geometry.simple.Dimensional.UNIT_VECTORS;
-import com.viewer4d.projector.AbstractProjectingProjector;
-import com.viewer4d.projector.Changeable;
 
-public class PerspectiveMovableProjector extends AbstractProjectingProjector implements Changeable {
+public class PerspectiveMovableProjector extends PerspectiveProjectorOnXYZ 
+implements Movable {
 
     protected static final double MIN_4D_DISTANCE = 3.3333333;
     
-    protected static final Point XT = new Point(1, 0, 0, 0);
-    protected static final Point YT = new Point(0, 1, 0, 0);
-    protected static final Point ZT = new Point(0, 0, 1, 0);
-    protected static final Point WT = new Point(0, 0, 0, 1);
+    protected static final Map<UNIT_VECTORS, Point[][]> ORT_VECTORS_TRANS_ORTS;
     
+    static {
+        ORT_VECTORS_TRANS_ORTS = new HashMap<UNIT_VECTORS, Point[][]>();
+
+        ORT_VECTORS_TRANS_ORTS.put(UNIT_VECTORS.X, new Point[][] {
+                { new Point(0, 0, 0, -1), new Point(0, 1, 0, 0), new Point(0, 0, 1, 0),
+                        new Point(1, 0, 0, 0) },
+                { new Point(0, 0, 0, 1), new Point(0, 1, 0, 0), new Point(0, 0, 1, 0),
+                        new Point(-1, 0, 0, 0) } });
+        ORT_VECTORS_TRANS_ORTS.put(UNIT_VECTORS.Y, new Point[][] {
+                { new Point(1, 0, 0, 0), new Point(0, 0, 0, -1), new Point(0, 0, 1, 0),
+                        new Point(0, 1, 0, 0) },
+                { new Point(1, 0, 0, 0), new Point(0, 0, 0, 1), new Point(0, 0, 1, 0),
+                        new Point(0, -1, 0, 0) } });
+        ORT_VECTORS_TRANS_ORTS.put(UNIT_VECTORS.Z, new Point[][] {
+                { new Point(1, 0, 0, 0), new Point(0, 1, 0, 0), new Point(0, 0, 0, -1),
+                        new Point(0, 0, 1, 0) },
+                { new Point(1, 0, 0, 0), new Point(0, 1, 0, 0), new Point(0, 0, 0, 1),
+                        new Point(0, 0, -1, 0) } });
+        ORT_VECTORS_TRANS_ORTS.put(UNIT_VECTORS.W, new Point[][] {
+                { new Point(1, 0, 0, 0), new Point(0, 1, 0, 0), new Point(0, 0, 1, 0),
+                        new Point(0, 0, 0, 1) },
+                { new Point(-1, 0, 0, 0), new Point(0, 1, 0, 0), new Point(0, 0, 1, 0),
+                        new Point(0, 0, 0, -1) } });
+    }
+    
+    private final MovablePoint focus;
     private final MovablePoint c;
     private final MovablePoint xt;
     private final MovablePoint yt;
     private final MovablePoint zt;
     private final MovablePoint wt;
     
+    private double distance;
+    
     private Map<MovablePoint, double[]> initialCoords;
     private double[][] m;
 
 
-    public PerspectiveMovableProjector(double distance) {
-        this.c = new MovablePoint(0, 0, 0, distance);
-        this.xt = new MovablePoint(XT);
-        this.yt = new MovablePoint(YT);
-        this.zt = new MovablePoint(ZT);
-        this.wt = new MovablePoint(WT);
+    public PerspectiveMovableProjector(double wPos, boolean perspective) {
+        super(wPos, perspective);
         
-        precalculateTransMatrix();
+        this.focus = new MovablePoint(Point.ZERO);
+        this.c = new MovablePoint(0, 0, 0, wPos);
+        
+        Point[] transOrts = retrieveTransOrts(UNIT_VECTORS.W, (wPos < 0 ? true : false));
+        
+        this.xt = new MovablePoint(transOrts[0]);
+        this.yt = new MovablePoint(transOrts[1]);
+        this.zt = new MovablePoint(transOrts[2]);
+        this.wt = new MovablePoint(transOrts[3]);
+        
+        this.distance = Math.abs(wPos);
+        
         storeCoords();
-    }
-    
-    protected MovablePoint getC() {
-        return c;
-    }
-    
-    protected MovablePoint getXt() {
-        return xt;
-    }
-    
-    protected MovablePoint getYt() {
-        return yt;
-    }
-
-    protected MovablePoint getZt() {
-        return zt;
-    }
-
-    protected MovablePoint getWt() {
-        return wt;
-    }
-    
-    public void setProjector(UNIT_VECTORS vector, boolean forward) {
-        reset();
-        
-        double[][] rotationMatrix = getRotationMatrix(vector, forward);
-        
-        getC().rotate(rotationMatrix, Point.ZERO);
-        getXt().rotate(rotationMatrix, Point.ZERO);
-        getYt().rotate(rotationMatrix, Point.ZERO);
-        getZt().rotate(rotationMatrix, Point.ZERO);
-        getWt().rotate(rotationMatrix, Point.ZERO);
-        
         precalculateTransMatrix();
     }
     
-    private double[][] getRotationMatrix(UNIT_VECTORS vector, boolean forward) {
-        RotationPlane4DEnum rotationPlane = null;
-        double radians = forward ? -Math.PI/2 : Math.PI/2;
-        
-        switch (vector) {
-        case X:
-            rotationPlane = RotationPlane4DEnum.XW;
-            break;
-        case Y:
-            rotationPlane = RotationPlane4DEnum.YW;
-            break;
-        case Z:
-            rotationPlane = RotationPlane4DEnum.ZW;
-            break;
-        case W:
-            rotationPlane = RotationPlane4DEnum.XW;
-            if (forward) {
-                radians = 0;
-            } else {
-                radians = Math.PI;
-            }
-            break;
-        }
-        return rotationPlane.getRotationMatrix(radians);
-    }
-
     @Override
-    protected Vertex projectVertex(Vertex vertex) {
-        double[] ppCoords = projectPerspective(
-                transform(vertex)).getCoords();
-    
-        return new Vertex(ppCoords[0], ppCoords[1], ppCoords[2], vertex.getCoords()[3]);
-    }
-
-    public Point transform(Dimensional p) {
-        double[] coords = p.getCoords();
+    public double[] transform(double[] coords) {
         double px = coords[0];
         double py = coords[1];
         double pz = coords[2];
@@ -122,54 +86,79 @@ public class PerspectiveMovableProjector extends AbstractProjectingProjector imp
         double nz = px*m[0][2] + py*m[1][2] + pz*m[2][2] + pw*m[3][2] + m[4][2];
         double nw = px*m[0][3] + py*m[1][3] + pz*m[2][3] + pw*m[3][3] + m[4][3];
         
-        return new Point(nx, ny, nz, nw);
+        return new double[] {nx, ny, nz, nw};
     }
 
-    public void reset() {
-        restoreCoords();
+    public void setProjector(UNIT_VECTORS unitVector, boolean forward) {
+        Vector ortCamVector = retrieveCamVector(unitVector, 
+                (forward ? -distance : distance));
+        
+        Point newCamPoint = focus.add(ortCamVector);
+        c.set(newCamPoint);
+        
+        Point[] transOrts = retrieveTransOrts(unitVector, forward);
+        xt.set(transOrts[0]);
+        yt.set(transOrts[1]);
+        zt.set(transOrts[2]);
+        wt.set(transOrts[3]);
         
         precalculateTransMatrix();
     }
 
+    private static Point[] retrieveTransOrts(UNIT_VECTORS unitVector, boolean forward) {
+        return ORT_VECTORS_TRANS_ORTS.get(unitVector)[forward ? 0 : 1];
+    }
+
+    private Vector retrieveCamVector(UNIT_VECTORS unitVector, double distance) {
+        return Vector.createFrom(unitVector, distance);
+    }
+
     @Override
-    public void change(int delta) {
-        double koef = delta < 0 ? 1.02 : 0.98;
-        double[] cCoords = c.getCoords();
-        double[] storeCoords = cCoords.clone();
-        
-        cCoords[0] *= koef;
-        cCoords[1] *= koef;
-        cCoords[2] *= koef;
-        cCoords[3] *= koef;
-        
-        if (getProjectorDistance() < MIN_4D_DISTANCE) {
-            c.setCoords(storeCoords);
-        } else {
-            precalculateTransMatrix();
-        }
+    public double getProjectorDistance() {
+        return distance;
     }
-
-    protected double getProjectorDistance() {
-        double[] cCoords = c.getCoords();
-        double x = cCoords[0];
-        double y = cCoords[1];
-        double z = cCoords[2];
-        double w = cCoords[3];
-        return Math.sqrt(x*x + y*y + z*z + w*w);
+    
+    @Override
+    protected final void setProjectorDistance(double distance) {
+        this.distance = distance;
+        super.setProjectorDistance(distance);
+        
+        Vector camVector = c.sub(focus);
+        camVector.setLength(distance);
+        c.set(focus.add(camVector));
+        
+        precalculateTransMatrix();
     }
+    
+    @Override
+    public void move(Vector vector) {
+        c.move(vector);
+        focus.move(vector);
+        precalculateTransMatrix();
+    }
+    
+    @Override
+    public void rotate(RotationPlane4DEnum rotationPlane, double radians) {
+        double[][] rotationMatrix = rotationPlane.getRotationMatrix(radians);
 
-    private Point projectPerspective(Dimensional dimensional) {
-        double camDist = getProjectorDistance();
-        double[] coords = dimensional.getCoords();
+        c.rotate(rotationMatrix, focus);
         
-        double koef = Math.abs(camDist / coords[3]);
+        xt.rotate(rotationMatrix, Point.ZERO);
+        yt.rotate(rotationMatrix, Point.ZERO);
+        zt.rotate(rotationMatrix, Point.ZERO);
+        wt.rotate(rotationMatrix, Point.ZERO);
         
-        double nx = coords[0] * koef;
-        double ny = coords[1] * koef;
-        double nz = coords[2] * koef;
-        double nw = coords[3];
+        precalculateTransMatrix();
+    }
+    
+    @Override
+    public void reset() {
+        restoreCoords();
         
-        return new Point(nx, ny, nz, nw);
+        distance = c.sub(focus).getLength();
+        super.setProjectorDistance(distance);
+        
+        precalculateTransMatrix();
     }
 
     private void storeCoords() {
@@ -182,6 +171,7 @@ public class PerspectiveMovableProjector extends AbstractProjectingProjector imp
     }
 
     private void restoreCoords() {
+        focus.set(Point.ZERO);
         c.setCoords(initialCoords.get(c).clone());
         xt.setCoords(initialCoords.get(xt).clone());
         yt.setCoords(initialCoords.get(yt).clone());

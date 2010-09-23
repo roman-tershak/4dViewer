@@ -4,7 +4,7 @@
   <groupId>4dViewer</groupId>
   <artifactId>4dViewer</artifactId>
   <packaging>jar</packaging>
-  <version>1.4</version>
+  <version>1.5</version>
   <name>4dViewer</name>
   <dependencies>
     <dependency>

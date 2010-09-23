@@ -1,14 +1,10 @@
-package com.viewer4d.projector.from4dto3d;
+package com.viewer4d.projector.selector;
 
 import com.viewer4d.geometry.Edge;
 import com.viewer4d.geometry.Vertex;
 
-public class PerspectiveProjectorOnXYZCuttingW extends PerspectiveProjectorOnXYZAlongW {
+public class SelectorCuttingNegativeW extends AbstractEnablingSelector {
 
-    public PerspectiveProjectorOnXYZCuttingW(double w) {
-        super(w);
-    }
-    
     @Override
     protected Edge projectEdge(Edge edge) {
         Vertex a = edge.getA();
@@ -18,17 +14,17 @@ public class PerspectiveProjectorOnXYZCuttingW extends PerspectiveProjectorOnXYZ
         double[] bCoords = b.getCoords();
         
         if (aCoords[3] >= 0 && bCoords[3] >= 0) {
-            return super.projectEdge(edge);
+            return edge;
             
         } else if (aCoords[3] < 0 && bCoords[3] >= 0) {
-            return super.projectEdge(new Edge(
+            return new Edge(
                     new Vertex(clipCoordsByW(aCoords, bCoords)), 
-                    b));
+                    b);
             
         } else if (aCoords[3] >= 0 && bCoords[3] < 0) {
-            return super.projectEdge(new Edge(
+            return new Edge(
                     a, 
-                    new Vertex(clipCoordsByW(bCoords, aCoords))));
+                    new Vertex(clipCoordsByW(bCoords, aCoords)));
             
         } else {
             return null;

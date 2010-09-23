@@ -37,11 +37,21 @@ public class MovablePoint extends Pointable {
         coords[3] = w;
     }
 
+    public void set(Pointable point) {
+        double[] pCoords = point.getCoords();
+        double[] thisCoords = getCoords();
+        System.arraycopy(pCoords, 0, thisCoords, 0, thisCoords.length);
+    }
+
     public void move(double... vector) {
         double[] coords = getCoords();
         for (int i = 0; i < vector.length; i++) {
             coords[i] += vector[i];
         }
+    }
+
+    public void move(Vector vector) {
+        move(vector.getCoords());
     }
 
     public void rotate(double[][] rotationMatrix, Pointable centrum) {

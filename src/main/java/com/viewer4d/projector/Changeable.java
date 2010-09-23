@@ -4,4 +4,5 @@ public interface Changeable {
 
     public void change(int delta);
     
+    public void reset();
 }

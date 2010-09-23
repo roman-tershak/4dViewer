@@ -8,17 +8,14 @@ import java.util.List;
 import com.viewer4d.geometry.Edge;
 import com.viewer4d.geometry.Figure;
 import com.viewer4d.geometry.Movable;
-import com.viewer4d.geometry.RotationPlane4DEnum;
 import com.viewer4d.geometry.impl.FigureBaseImpl;
-import com.viewer4d.geometry.simple.Pointable;
-import com.viewer4d.geometry.simple.Vector;
 import com.viewer4d.projector.AbstractEnablingProjector;
 import com.viewer4d.projector.Changeable;
 import com.viewer4d.projector.Enabling;
 import com.viewer4d.projector.Projector;
 
 public class CombiningProjector<P extends Projector> extends AbstractEnablingProjector 
-implements Movable, Changeable {
+implements Changeable {
 
     private List<P> projectors = new ArrayList<P>();
     
@@ -42,31 +39,12 @@ implements Movable, Changeable {
         return new FigureBaseImpl(null, newEdges);
     }
     
-    @Override
-    public void move(Vector vector) {
-        for (Movable movable : getMovableProjectors()) {
-            movable.move(vector);
-        }
-    }
-    
-    @Override
-    public void rotate(RotationPlane4DEnum rotationPlane, double radians) {
-        for (Movable movable : getMovableProjectors()) {
-            movable.rotate(rotationPlane, radians);
-        }
-    }
-
-    @Override
-    public void rotate(RotationPlane4DEnum rotationPlane, double radians, Pointable centrum) {
-        for (Movable movable : getMovableProjectors()) {
-            movable.rotate(rotationPlane, radians, centrum);
-        }
-    }
-    
-    @Override
     public void reset() {
         for (Movable movable : getMovableProjectors()) {
             movable.reset();
+        }
+        for (Changeable changeable : getChangeableProjectors()) {
+            changeable.reset();
         }
     }
     

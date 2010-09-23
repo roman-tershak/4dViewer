@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
@@ -15,22 +16,19 @@ import com.viewer4d.view.ViewContainer;
 @SuppressWarnings("serial")
 public class ControlPanel4DProjectors extends JPanel implements ActionListener {
 
+    private static final String ACTION_COMMAND_PERSPECTIVE = "perspective";
+
     String[] TITLES = new String[] {
             "Perspective projector on XYZ along W",
-            "Parallel projector on XYZ along W",
-            "Front isometric projector on XYZ along W",
-            "Perspective moving projector",
             "Perspective movable projector",
-            "Perspective projector on XYZ cutting W",
+            "Perspective moving projector",
     };
 
     String[] TIPS = new String[] {
             "This projector is fixed and located below XYZ along W ort. It makes perspective projection.\n The projector distance on W ort can be changed by mouse wheel with the right button pressed.",
-            "This projector is fixed and located below XYZ along W ort. It makes parallel projection.\n The projector distance on W ort cannot be changed.",
-            "This projector is fixed and located below XYZ along W ort. It makes isometric projection.\n The projector's coefficient can be changed by mouse wheel with the right button pressed.",
-            "This projector is fixed on the figure and makes perspective projection.\n The projector distance from the figure can be changed by mouse wheel with the right button pressed.",
             "This projector is initially located below XYZ along W ort. It makes perspective projection.\n The projector can be re-located on either ort positive or negative side.\n The projector distance from the figure can be changed by mouse wheel with the right button pressed.",
-            "This projector is fixed and located below XYZ along W ort. It makes perspective projection,\n but only those points that are in or above XYZ space (not negative w). The projector distance on W ort can be changed by mouse wheel with the right button pressed.",
+            "This projector is fixed on the figure and makes perspective projection.\n The projector distance from the figure can be changed by mouse wheel with the right button pressed.",
+//            "This projector is fixed and located below XYZ along W ort. It makes perspective projection,\n but only those points that are in or above XYZ space (not negative w). The projector distance on W ort can be changed by mouse wheel with the right button pressed.",
     };
     
     private ViewContainer viewContainer;
@@ -59,12 +57,25 @@ public class ControlPanel4DProjectors extends JPanel implements ActionListener {
             buttonGroup4DProjectors.add(jb4dP);
             add(jb4dP);
         }
+        
+        JCheckBox checkBox = new JCheckBox("Perspective", true);
+        checkBox.setBackground(Color.LIGHT_GRAY);
+        checkBox.setFocusable(false);
+        checkBox.setActionCommand(ACTION_COMMAND_PERSPECTIVE);
+        checkBox.addActionListener(this);
+        add(checkBox);
     }
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        int number4dP = Integer.parseInt(e.getActionCommand());
-        viewContainer.toggle4DProjector(number4dP);
+        String actionCommand = e.getActionCommand();
+        if (ACTION_COMMAND_PERSPECTIVE.equals(actionCommand)) {
+            boolean pespective = ((JCheckBox) e.getSource()).isSelected();
+            viewContainer.set4DProjectorsPerspective(pespective);
+        } else {
+            int number4dP = Integer.parseInt(actionCommand);
+            viewContainer.toggle4DProjector(number4dP);
+        }
         paintingArea.repaint();
     }
 
