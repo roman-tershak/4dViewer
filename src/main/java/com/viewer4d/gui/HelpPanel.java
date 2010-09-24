@@ -24,20 +24,24 @@ public class HelpPanel extends JPanel {
                     "   'E' - rotate by ZW, Shift+'E' - rotate by ZW in opposite direction\n" +
                     "\n" +
                     "Projection control:\n" +
-                    "   Wheel rotation + the right button down - change 4D projector distance/coefficient\n" +
+                    "   Wheel rotation + the right button down - change 4D projector distance\n" +
                     "\n" +
                     "Camera control:\n" +
                     "   Wheel rotation - change the camera distance\n" +
-                    "   Wheel rotation + the left button down - change the camera eyes distance (stereo only)\n" +
+                    "   Wheel rotation + shift button down - change the camera eyes distance (stereo only)\n" +
                     "   Dragging mouse - move the camera\n" +
                     "\n" +
                     "Other control keys:\n" +
                     "   'Z' - reset the figure\n" +
-                    "   'A' - show or hide 3D space intersection with the figure\n" +
+                    "   'X' - show or hide 3D space intersection with the figure\n" +
                     "   'D' - show or hide the coordinate orts\n" +
-                    "   'S' - switch the type of coordinate orts\n" +
+                    "   'S' - switch the type of the coordinate orts\n" +
                     "   'F' - show or hide the figure\n" +
-                    "   'F1' - show or hide this help, 'G' - start or stop rotation of the figute in random way, Escape - hide the help or quit";
+                    "   'C' - switch on or off the figure cell selection mode\n" +
+                    "   Shift+('<' or '>') - select next figure cell (when the figure cell selection mode is on)\n" +
+                    "   Shift+('1', '2'... '8') - change projector position (movable projector only)\n" +
+                    "   'G' - start or stop rotation of the figute in a random way\n" +
+                    "   'F1' - show or hide this help, Escape - hide the help or quit";
     
     private final JPanel glassPane;
     private boolean hidden = true;

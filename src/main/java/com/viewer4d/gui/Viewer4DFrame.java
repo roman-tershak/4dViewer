@@ -26,6 +26,11 @@ import com.viewer4d.view.ViewContainer;
 @SuppressWarnings("serial")
 public class Viewer4DFrame extends JFrame {
 
+    public static final boolean CUTTING_FIGURE_PROJECTION_DEFAULT = false;
+    public static final boolean SHOW_FIGURE_PROJECTION_DEFAULT = true;
+    public static final boolean SHOW_COORDINATE_ORTS_DEFAULT = true;
+    public static final boolean SHOW_3D_SPACE_INTERSECTION_DEFAULT = true;
+
     class PaintingArea extends JPanel {
         @Override
         protected void paintChildren(Graphics g) {
@@ -69,6 +74,7 @@ public class Viewer4DFrame extends JFrame {
     private ViewContainer viewContainer;
 
     private Map<String, FigureMovable> figuresInPackage = new HashMap<String, FigureMovable>();
+    public static final boolean VIEWER_COLORED_DEFAULT = true;
 
 
     public Viewer4DFrame() throws Exception {

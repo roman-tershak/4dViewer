@@ -10,6 +10,7 @@ import com.viewer4d.geometry.FigureMovable;
 import com.viewer4d.geometry.RotationPlane4DEnum;
 import com.viewer4d.geometry.simple.Vector;
 import com.viewer4d.geometry.simple.Dimensional.UNIT_VECTORS;
+import com.viewer4d.gui.Viewer4DFrame;
 import com.viewer4d.projector.AbstractEnablingProjector;
 import com.viewer4d.projector.AbstractProjectingProjector;
 import com.viewer4d.projector.auxiliary.CubeXYZOrtsProjector;
@@ -37,8 +38,6 @@ public class ViewContainer {
     public static final double ONE_ROTATE_STEP = Math.PI/400;
     public static final double ONE_MOVE_STEP = 0.02;
 
-    public static final boolean VIEWER_COLORED_DEFAULT = true;
-    
     
     private FigureMovable figure;
     private Figure projection3d;
@@ -76,8 +75,8 @@ public class ViewContainer {
         entireFigureSelector = new EntireFigureSelector();
         selectorCuttingNegW = new SelectorCuttingNegativeW();
         spaceIntersector = new Simple3DSpaceIntersectorAtZeroW();
-        entireFigureSelector.enable(true);
-        selectorCuttingNegW.enable(false);
+        entireFigureSelector.enable(!Viewer4DFrame.CUTTING_FIGURE_PROJECTION_DEFAULT);
+        selectorCuttingNegW.enable(Viewer4DFrame.CUTTING_FIGURE_PROJECTION_DEFAULT);
         
         combiningSelector = new CombiningProjector<AbstractEnablingProjector>(
                 entireFigureSelector,
@@ -111,7 +110,7 @@ public class ViewContainer {
         
         cellSelector = new FigureCellSelector(figure, false);
         
-        setViewer(new MonoscopicViewer(VIEWER_COLORED_DEFAULT));
+        setViewer(new MonoscopicViewer(Viewer4DFrame.VIEWER_COLORED_DEFAULT));
         enable4DProjector(0);
     }
 
@@ -166,7 +165,7 @@ public class ViewContainer {
             currentAzimuth = CAMERA_AZIMUTH_DEFAULT;
             currentAltitude = CAMERA_ALTITUDE_DEFAULT;
             currentFov = CAMERA_FOV_DEFAULT;
-            colored = VIEWER_COLORED_DEFAULT;
+            colored = Viewer4DFrame.VIEWER_COLORED_DEFAULT;
         }
         
         viewer.setPosition(currentDistance, currentAzimuth, currentAltitude);
@@ -355,6 +354,12 @@ public class ViewContainer {
     
     public void toggle3dIntersector(boolean on) {
         spaceIntersector.enable(on);
+        doFullProjection();
+    }
+    
+    public void setCuttingFigureSelector(boolean cutting) {
+        entireFigureSelector.enable(!cutting);
+        selectorCuttingNegW.enable(cutting);
         doFullProjection();
     }
     

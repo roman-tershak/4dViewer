@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
@@ -28,7 +29,6 @@ public class ControlPanel4DProjectors extends JPanel implements ActionListener {
             "This projector is fixed and located below XYZ along W ort. It makes perspective projection.\n The projector distance on W ort can be changed by mouse wheel with the right button pressed.",
             "This projector is initially located below XYZ along W ort. It makes perspective projection.\n The projector can be re-located on either ort positive or negative side.\n The projector distance from the figure can be changed by mouse wheel with the right button pressed.",
             "This projector is fixed on the figure and makes perspective projection.\n The projector distance from the figure can be changed by mouse wheel with the right button pressed.",
-//            "This projector is fixed and located below XYZ along W ort. It makes perspective projection,\n but only those points that are in or above XYZ space (not negative w). The projector distance on W ort can be changed by mouse wheel with the right button pressed.",
     };
     
     private ViewContainer viewContainer;
@@ -64,6 +64,8 @@ public class ControlPanel4DProjectors extends JPanel implements ActionListener {
         checkBox.setActionCommand(ACTION_COMMAND_PERSPECTIVE);
         checkBox.addActionListener(this);
         add(checkBox);
+        
+        add(Box.createVerticalStrut(0));
     }
     
     @Override

@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
@@ -47,12 +48,14 @@ public class ControlPanelViewers extends JPanel implements ActionListener {
             add(jb4dP);
         }
         
-        JCheckBox checkBox = new JCheckBox("Colored", ViewContainer.VIEWER_COLORED_DEFAULT);
+        JCheckBox checkBox = new JCheckBox("Colored", Viewer4DFrame.VIEWER_COLORED_DEFAULT);
         checkBox.setBackground(Color.LIGHT_GRAY);
         checkBox.setFocusable(false);
         checkBox.setActionCommand(ACTION_COMMAND_COLORED);
         checkBox.addActionListener(this);
         add(checkBox);
+        
+        add(Box.createVerticalStrut(0));
     }
 
     @Override

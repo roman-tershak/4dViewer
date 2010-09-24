@@ -128,12 +128,18 @@ KeyListener, MouseListener, MouseMotionListener, MouseWheelListener, WindowState
     public void mouseWheelMoved(MouseWheelEvent e) {
         int wheelRotation = e.getWheelRotation();
         int modifiersEx = e.getModifiersEx();
-        if ((modifiersEx & InputEvent.BUTTON1_DOWN_MASK) == InputEvent.BUTTON1_DOWN_MASK) {
-            viewContainer.changeCameraEyesDistance((double)wheelRotation / 100);
-        } else if ((modifiersEx & InputEvent.BUTTON3_DOWN_MASK) == InputEvent.BUTTON3_DOWN_MASK) {
+        
+        if ((modifiersEx & InputEvent.BUTTON3_DOWN_MASK) == InputEvent.BUTTON3_DOWN_MASK) {
             viewContainer.change4dProjection(wheelRotation);
+            
         } else {
-            viewContainer.changeCameraDistance(-(double)wheelRotation / 8);
+            if ((modifiersEx & InputEvent.SHIFT_DOWN_MASK) == InputEvent.SHIFT_DOWN_MASK) {
+                viewContainer.changeCameraEyesDistance((double)wheelRotation / 100);
+            } else if ((modifiersEx & InputEvent.CTRL_DOWN_MASK) == InputEvent.CTRL_DOWN_MASK) {
+                // TODO Rotating viewer (preserving location point)? viewContainer.changeCameraFov(-(double)wheelRotation / 8);
+            } else {
+                viewContainer.changeCameraDistance(-(double)wheelRotation / 8);
+            }
         }
         if (viewContainer.needProjection()) {
             paintingArea.repaint();
