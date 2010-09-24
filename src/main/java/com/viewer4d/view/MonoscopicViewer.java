@@ -1,6 +1,5 @@
 package com.viewer4d.view;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
@@ -8,7 +7,6 @@ import javax.swing.JPanel;
 
 import com.viewer4d.geometry.Figure;
 import com.viewer4d.geometry.RotationPlane4DEnum;
-import com.viewer4d.geometry.Vertex;
 import com.viewer4d.geometry.simple.MovablePoint;
 import com.viewer4d.projector.from3dto2d.Perspective2DMonoProjector;
 
@@ -19,8 +17,13 @@ public class MonoscopicViewer extends AbstractViewer {
     private Perspective2DMonoProjector<MovablePoint> perspective2dMonoProjector;
     private Figure projectedFigure;
 
-    public MonoscopicViewer() {
+    public MonoscopicViewer(boolean colored) {
+        super(colored);
         initProjector(ViewContainer.CAMERA_DISTANCE_DEFAULT, ViewContainer.CAMERA_FOV_DEFAULT);
+    }
+    
+    public MonoscopicViewer() {
+        this(true);
     }
     
     private void initProjector(double distance, double fov) {
@@ -139,16 +142,5 @@ public class MonoscopicViewer extends AbstractViewer {
         double ratio = width > height ? height : width;
         
         paintFigure(projectedFigure, cx, cy, ratio, g2d);
-    }
-
-    @Override
-    protected Color getColor(Vertex vertex) {
-        return PAINT_COLOR;
-    }
-
-
-    @Override
-    protected Color getColorSelected(Vertex vertex) {
-        return SELECTED_BW_COLOR;
     }
 }

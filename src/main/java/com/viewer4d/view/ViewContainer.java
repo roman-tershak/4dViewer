@@ -34,8 +34,10 @@ public class ViewContainer {
     
     public static final double CAMERA_DISTANCE_LIMIT = 4;
 
-    private static final double ONE_ROTATE_STEP = Math.PI/400;
-    private static final double ONE_MOVE_STEP = 0.02;
+    public static final double ONE_ROTATE_STEP = Math.PI/400;
+    public static final double ONE_MOVE_STEP = 0.02;
+
+    public static final boolean VIEWER_COLORED_DEFAULT = true;
     
     
     private FigureMovable figure;
@@ -109,7 +111,7 @@ public class ViewContainer {
         
         cellSelector = new FigureCellSelector(figure, false);
         
-        setViewer(new ColoredMonoscopicViewer());
+        setViewer(new MonoscopicViewer(VIEWER_COLORED_DEFAULT));
         enable4DProjector(0);
     }
 
@@ -131,22 +133,18 @@ public class ViewContainer {
     }
     
     // Viewer manipulating methods
-    public void setStereoscopicViewer(boolean colored) {
-        if (colored) {
-            setViewer(new ColoredStereoscopicViewer());
-        } else {
-            setViewer(new StereoscopicViewer());
-        }
+    public void setStereoscopicViewer() {
+        setViewer(new StereoscopicViewer());
         doCameraProjection();
     }
     
-    public void setMonoscopicViewer(boolean colored) {
-        if (colored) {
-            setViewer(new ColoredMonoscopicViewer());
-        } else {
-            setViewer(new MonoscopicViewer());
-        }
+    public void setMonoscopicViewer() {
+        setViewer(new MonoscopicViewer());
         doCameraProjection();
+    }
+    
+    public void setViewerColored(boolean colored) {
+        viewer.setColored(colored);
     }
     
     protected void setViewer(Viewer viewer) {
@@ -154,6 +152,7 @@ public class ViewContainer {
         double currentAzimuth;
         double currentAltitude;
         double currentFov;
+        boolean colored;
         
         Viewer currentViewer = this.viewer;
         if (currentViewer != null) {
@@ -161,15 +160,18 @@ public class ViewContainer {
             currentAzimuth = currentViewer.getCurrentAzimuth();
             currentAltitude = currentViewer.getCurrentAltitude();
             currentFov = currentViewer.getFov();
+            colored = currentViewer.isColored();
         } else {
             currentDistance = CAMERA_DISTANCE_DEFAULT;
             currentAzimuth = CAMERA_AZIMUTH_DEFAULT;
             currentAltitude = CAMERA_ALTITUDE_DEFAULT;
             currentFov = CAMERA_FOV_DEFAULT;
+            colored = VIEWER_COLORED_DEFAULT;
         }
         
         viewer.setPosition(currentDistance, currentAzimuth, currentAltitude);
         viewer.setFov(currentFov);
+        viewer.setColored(colored);
         
         this.viewer = viewer;
     }

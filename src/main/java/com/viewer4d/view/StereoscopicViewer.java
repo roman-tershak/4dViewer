@@ -4,7 +4,6 @@ import static com.viewer4d.view.ViewContainer.CAMERA_DISTANCE_DEFAULT;
 import static com.viewer4d.view.ViewContainer.CAMERA_EYES_DIST_DEFAULT;
 import static com.viewer4d.view.ViewContainer.CAMERA_FOV_DEFAULT;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
@@ -12,7 +11,6 @@ import javax.swing.JPanel;
 
 import com.viewer4d.geometry.Figure;
 import com.viewer4d.geometry.RotationPlane4DEnum;
-import com.viewer4d.geometry.Vertex;
 import com.viewer4d.geometry.simple.MovablePoint;
 import com.viewer4d.projector.from3dto2d.Perspective2DMonoProjector;
 
@@ -35,8 +33,13 @@ public class StereoscopicViewer extends AbstractViewer {
     private Figure projectedFigureRight;
     private Figure projectedFigureLeft;
     
-    public StereoscopicViewer() {
+    public StereoscopicViewer(boolean colored) {
+        super(colored);
         initProjectors(CAMERA_DISTANCE_DEFAULT, CAMERA_EYES_DIST_DEFAULT, CAMERA_FOV_DEFAULT);
+    }
+
+    public StereoscopicViewer() {
+        this(true);
     }
 
     private void initProjectors(double distance, double eyeDist, double fov) {
@@ -223,15 +226,5 @@ public class StereoscopicViewer extends AbstractViewer {
         
         paintFigure(projectedFigureRight, cxl, cy, ratio, g2d);
         paintFigure(projectedFigureLeft, cxr, cy, ratio, g2d);
-    }
-
-    @Override
-    protected Color getColor(Vertex vertex) {
-        return PAINT_COLOR;
-    }
-
-    @Override
-    protected Color getColorSelected(Vertex vertex) {
-        return SELECTED_BW_COLOR;
     }
 }

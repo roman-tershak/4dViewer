@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
@@ -15,6 +16,8 @@ import com.viewer4d.view.ViewContainer;
 @SuppressWarnings("serial")
 public class ControlPanelViewers extends JPanel implements ActionListener {
 
+    private static final String ACTION_COMMAND_COLORED = "colored";
+    
     private ViewContainer viewContainer;
     private JPanel paintingArea;
 
@@ -30,9 +33,7 @@ public class ControlPanelViewers extends JPanel implements ActionListener {
         ButtonGroup buttonGroupViewers = new ButtonGroup();
         
         String[] jbTitles = new String[] {
-                "Colored monoscopic viewer",
                 "Monoscopic viewer",
-                "Colored stereoscopic viewer",
                 "Stereoscopic viewer",
         };
         for (int i = 0; i < jbTitles.length; i++) {
@@ -45,23 +46,33 @@ public class ControlPanelViewers extends JPanel implements ActionListener {
             buttonGroupViewers.add(jb4dP);
             add(jb4dP);
         }
+        
+        JCheckBox checkBox = new JCheckBox("Colored", ViewContainer.VIEWER_COLORED_DEFAULT);
+        checkBox.setBackground(Color.LIGHT_GRAY);
+        checkBox.setFocusable(false);
+        checkBox.setActionCommand(ACTION_COMMAND_COLORED);
+        checkBox.addActionListener(this);
+        add(checkBox);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        switch (Integer.parseInt(e.getActionCommand())) {
-        case 0:
-            viewContainer.setMonoscopicViewer(true);
-            break;
-        case 1:
-            viewContainer.setMonoscopicViewer(false);
-            break;
-        case 2:
-            viewContainer.setStereoscopicViewer(true);
-            break;
-        case 3:
-            viewContainer.setStereoscopicViewer(false);
-            break;
+        String actionCommand = e.getActionCommand();
+        
+        if (ACTION_COMMAND_COLORED.equals(actionCommand)) {
+            
+            boolean colored = ((JCheckBox) e.getSource()).isSelected();
+            viewContainer.setViewerColored(colored);
+            
+        } else {
+            switch (Integer.parseInt(e.getActionCommand())) {
+            case 0:
+                viewContainer.setMonoscopicViewer();
+                break;
+            case 1:
+                viewContainer.setStereoscopicViewer();
+                break;
+            }
         }
         paintingArea.repaint();
     }

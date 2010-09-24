@@ -12,13 +12,30 @@ import com.viewer4d.geometry.Edge;
 import com.viewer4d.geometry.Figure;
 import com.viewer4d.geometry.Vertex;
 import com.viewer4d.geometry.simple.Point;
+import com.viewer4d.geometry.simple.Pointable;
 
 public abstract class AbstractViewer implements Viewer {
 
-    static final Point XT = new Point(0, 1, 0);
-    static final Point YT = new Point(0, 0, 1);
-    static final Point ZT = new Point(-1, 0, 0);
-    static final Point CENTRUM = new Point(0, 0, 0);
+    protected static final Point XT = new Point(0, 1, 0);
+    protected static final Point YT = new Point(0, 0, 1);
+    protected static final Point ZT = new Point(-1, 0, 0);
+    protected static final Point CENTRUM = new Point(0, 0, 0);
+    
+    protected static final int DISTANCE_BASE = 4;
+    protected static final int OPP_COLOR_BASE = 4;
+    
+    private boolean colored;
+    
+    public AbstractViewer(boolean colored) {
+        this.colored = colored;
+    }
+    
+    public boolean isColored() {
+        return colored;
+    }
+    public void setColored(boolean colored) {
+        this.colored = colored;
+    }
     
     protected void paintFigure(Figure figure, int cx, int cy, double ratio, Graphics2D g2d) {
         Collection<Edge> edges = figure.getEdges();
@@ -74,7 +91,6 @@ public abstract class AbstractViewer implements Viewer {
         } else {
             c1 = getColor(a);
             c2 = getColor(b);
-
         }
         
         GradientPaint gradientPaint = new GradientPaint(
@@ -84,16 +100,48 @@ public abstract class AbstractViewer implements Viewer {
         g2d.drawLine(x1, y1, x2, y2);
     }
 
-    protected abstract Color getColor(Vertex vertex);
+    protected Color getColor(Vertex vertex) {
+        if (isColored()) {
+            return getColorProportionally(vertex.getCoords()[3]);
+        } else {
+            return PAINT_BW_COLOR;
+        }
+    }
     
-    protected abstract Color getColorSelected(Vertex vertex);
+    protected Color getColorSelected(Vertex vertex) {
+        if (isColored()) {
+            return SELECTED_COLORED_COLOR;
+        } else {
+            return SELECTED_BW_COLOR;
+        }
+    }
 
-    public double checkAltitudeLimit(double deltaAltitude, double currAltitude) {
+    protected static double checkAltitudeLimit(double deltaAltitude, double currAltitude) {
         if (currAltitude + deltaAltitude > ALTITUDE_LIMIT) {
             deltaAltitude = ALTITUDE_LIMIT - currAltitude;
         } else if (currAltitude + deltaAltitude < -ALTITUDE_LIMIT) {
             deltaAltitude = -ALTITUDE_LIMIT - currAltitude;
         }
         return deltaAltitude;
+    }
+
+    protected static Color getColorProportionally(double w1) {
+        Color color;
+        if (Math.abs(w1 - 0) > Pointable.PRECISION) {
+            double colorOppCoef = OPP_COLOR_BASE / (Math.abs(w1) + OPP_COLOR_BASE);
+            double colorMainCoef = 2 - colorOppCoef;
+            double distCoef = DISTANCE_BASE / (Math.abs(w1) + DISTANCE_BASE);
+            int mainC = (int) (MAIN_COLOR_COEF * colorMainCoef * distCoef);
+            int oppC1 = (int) (OPP1_COLOR_COEF * colorOppCoef * distCoef);
+            int oppC2 = (int) (OPP2_COLOR_COEF * colorOppCoef * distCoef);
+            if (w1 < 0) {
+                color = new Color(mainC, oppC1, oppC2);
+            } else {
+                color = new Color(oppC2, oppC1, mainC);
+            }
+        } else {
+            color = ZERO_W_COLOR;
+        }
+        return color;
     }
 }
