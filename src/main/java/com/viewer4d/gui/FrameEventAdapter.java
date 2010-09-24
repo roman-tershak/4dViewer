@@ -1,6 +1,6 @@
 package com.viewer4d.gui;
 
-import static java.awt.event.InputEvent.SHIFT_MASK;
+import static java.awt.event.InputEvent.SHIFT_DOWN_MASK;
 
 import java.awt.Point;
 import java.awt.event.InputEvent;
@@ -39,11 +39,43 @@ KeyListener, MouseListener, MouseMotionListener, MouseWheelListener, WindowState
     @Override
     public void keyPressed(KeyEvent e) {
         String keyText = KeyEvent.getKeyText(e.getKeyCode());
+//        boolean ctrlPressed = (e.getModifiersEx() & CTRL_DOWN_MASK) == CTRL_DOWN_MASK;
         if (keyText.equals("F1")) {
             mainFrame.toggleHelp();
             
         } else if (keyText.equals("Escape")) {
             mainFrame.handleEscape();
+            
+        /* TODO Do we need this? } else if (ctrlPressed) {
+            switch (keyText.charAt(0)) {
+            case '1':
+                viewContainer.setCuttingFigureSelector(UNIT_VECTORS.X, true);
+                break;
+            case '2':
+                viewContainer.setCuttingFigureSelector(UNIT_VECTORS.X, false);
+                break;
+            case '3':
+                viewContainer.setCuttingFigureSelector(UNIT_VECTORS.Y, true);
+                break;
+            case '4':
+                viewContainer.setCuttingFigureSelector(UNIT_VECTORS.Y, false);
+                break;
+            case '5':
+                viewContainer.setCuttingFigureSelector(UNIT_VECTORS.Z, true);
+                break;
+            case '6':
+                viewContainer.setCuttingFigureSelector(UNIT_VECTORS.Z, false);
+                break;
+            case '7':
+                viewContainer.setCuttingFigureSelector(UNIT_VECTORS.W, true);
+                break;
+            case '8':
+                viewContainer.setCuttingFigureSelector(UNIT_VECTORS.W, false);
+                break;
+            }
+            if (viewContainer.needProjection()) {
+                paintingArea.repaint();
+            }*/
         }
     }
 
@@ -53,7 +85,7 @@ KeyListener, MouseListener, MouseMotionListener, MouseWheelListener, WindowState
 
     @Override
     public void keyTyped(KeyEvent e) {
-        boolean shiftPressed = (e.getModifiers() & SHIFT_MASK) == SHIFT_MASK;
+        boolean shiftPressed = (e.getModifiersEx() & SHIFT_DOWN_MASK) == SHIFT_DOWN_MASK;
         String typedChar = String.valueOf(e.getKeyChar()).toLowerCase();
         
         UNIT_VECTORS vector = null;
@@ -206,7 +238,7 @@ KeyListener, MouseListener, MouseMotionListener, MouseWheelListener, WindowState
                 break;
             case 'z':
                 mainFrame.stopFigureMovement();
-                viewContainer.resetFigure();
+                viewContainer.reset();
                 break;
             case 'g':
                 mainFrame.toggleFigureMover();
@@ -215,7 +247,7 @@ KeyListener, MouseListener, MouseMotionListener, MouseWheelListener, WindowState
                 viewContainer.toggleSelectMode();
                 break;
             }
-        } else {
+        } else if (shiftPressed) {
             switch (firstTypedChar) {
             case '<':
                 mainFrame.stopFigureMovement();

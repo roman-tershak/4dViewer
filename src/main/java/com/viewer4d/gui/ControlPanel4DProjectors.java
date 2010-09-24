@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
@@ -18,6 +17,7 @@ import com.viewer4d.view.ViewContainer;
 public class ControlPanel4DProjectors extends JPanel implements ActionListener {
 
     private static final String ACTION_COMMAND_PERSPECTIVE = "perspective";
+    private static final String ACTION_COMMAND_REL_TO_W_ORT = "reltowort";
 
     String[] TITLES = new String[] {
             "Perspective projector on XYZ along W",
@@ -58,14 +58,19 @@ public class ControlPanel4DProjectors extends JPanel implements ActionListener {
             add(jb4dP);
         }
         
-        JCheckBox checkBox = new JCheckBox("Perspective", true);
-        checkBox.setBackground(Color.LIGHT_GRAY);
-        checkBox.setFocusable(false);
-        checkBox.setActionCommand(ACTION_COMMAND_PERSPECTIVE);
-        checkBox.addActionListener(this);
-        add(checkBox);
+        JCheckBox perspCheckBox = new JCheckBox("Perspective", true);
+        perspCheckBox.setBackground(Color.LIGHT_GRAY);
+        perspCheckBox.setFocusable(false);
+        perspCheckBox.setActionCommand(ACTION_COMMAND_PERSPECTIVE);
+        perspCheckBox.addActionListener(this);
+        add(perspCheckBox);
         
-        add(Box.createVerticalStrut(0));
+        JCheckBox colorRelToCheckBox = new JCheckBox("Color relative to W ort", true);
+        colorRelToCheckBox.setBackground(Color.LIGHT_GRAY);
+        colorRelToCheckBox.setFocusable(false);
+        colorRelToCheckBox.setActionCommand(ACTION_COMMAND_REL_TO_W_ORT);
+        colorRelToCheckBox.addActionListener(this);
+        add(colorRelToCheckBox);
     }
     
     @Override
@@ -74,6 +79,9 @@ public class ControlPanel4DProjectors extends JPanel implements ActionListener {
         if (ACTION_COMMAND_PERSPECTIVE.equals(actionCommand)) {
             boolean pespective = ((JCheckBox) e.getSource()).isSelected();
             viewContainer.set4DProjectorsPerspective(pespective);
+        } else if (ACTION_COMMAND_REL_TO_W_ORT.equals(actionCommand)) {
+            boolean relToWOrt = ((JCheckBox) e.getSource()).isSelected();
+            viewContainer.set4DProjectorsColorRelativeTo(relToWOrt);
         } else {
             int number4dP = Integer.parseInt(actionCommand);
             viewContainer.toggle4DProjector(number4dP);

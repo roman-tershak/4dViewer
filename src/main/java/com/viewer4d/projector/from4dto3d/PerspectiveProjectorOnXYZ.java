@@ -11,12 +11,18 @@ public class PerspectiveProjectorOnXYZ extends AbstractProjectingProjector imple
     private double wPos;
     private double storeWPos;
     private boolean perspective;
-
+    private boolean colorRelToWOrt;
     
-    public PerspectiveProjectorOnXYZ(double wPos, boolean perspective) {
+
+    public PerspectiveProjectorOnXYZ(double wPos, boolean perspective, boolean colorRelToW) {
         this.wPos = wPos;
         this.storeWPos = wPos;
         this.perspective = perspective;
+        this.colorRelToWOrt = colorRelToW;
+    }
+
+    public PerspectiveProjectorOnXYZ(double wPos, boolean perspective) {
+        this(wPos, perspective, true);
     }
 
     public double getProjectorDistance() {
@@ -33,6 +39,13 @@ public class PerspectiveProjectorOnXYZ extends AbstractProjectingProjector imple
         this.perspective = perspective;
     }
     
+    public boolean isColorRelToWOrt() {
+        return colorRelToWOrt;
+    }
+    public void setColorRelToWOrt(boolean colorRelToWOrt) {
+        this.colorRelToWOrt = colorRelToWOrt;
+    }
+    
     @Override
     protected Vertex projectVertex(Vertex vertex) {
         double nx, ny, nz, nw;
@@ -41,8 +54,8 @@ public class PerspectiveProjectorOnXYZ extends AbstractProjectingProjector imple
         double[] tCoords = transform(vCoords);
         
         double perspKoef;
+        double distance = getProjectorDistance();
         if (isPerspective()) {
-            double distance = getProjectorDistance();
             perspKoef = distance / tCoords[3];
         } else {
             perspKoef = wPos < 0 ? 1 : -1;
@@ -51,7 +64,7 @@ public class PerspectiveProjectorOnXYZ extends AbstractProjectingProjector imple
         nx = tCoords[0] * perspKoef;
         ny = tCoords[1] * perspKoef;
         nz = tCoords[2] * perspKoef;
-        nw = vCoords[3];
+        nw = isColorRelToWOrt() ? vCoords[3] : (tCoords[3] - distance);
         
         return new Vertex(nx, ny, nz, nw);
     }

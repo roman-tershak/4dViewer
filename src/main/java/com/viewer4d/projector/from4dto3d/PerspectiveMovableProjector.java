@@ -55,8 +55,8 @@ implements Movable {
     private double[][] m;
 
 
-    public PerspectiveMovableProjector(double wPos, boolean perspective) {
-        super(wPos, perspective);
+    public PerspectiveMovableProjector(double wPos, boolean perspective, boolean colorRelToWOrt) {
+        super(wPos, perspective, colorRelToWOrt);
         
         this.focus = new MovablePoint(Point.ZERO);
         this.c = new MovablePoint(0, 0, 0, wPos);
@@ -72,6 +72,10 @@ implements Movable {
         
         storeCoords();
         precalculateTransMatrix();
+    }
+    
+    public PerspectiveMovableProjector(double wPos, boolean perspective) {
+        this(wPos, perspective, true);
     }
     
     @Override
