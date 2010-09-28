@@ -30,10 +30,10 @@ public class ViewContainer {
 
     public static final int W_4D_POSITION_DEFAULT = -10;
     
-    public static final double CAMERA_DISTANCE_DEFAULT = 16;
+    public static final double CAMERA_DISTANCE_DEFAULT = 18;
     public static final double CAMERA_EYES_DIST_DEFAULT = 1.0;
     public static final double CAMERA_FOV_DEFAULT = Math.tan(Math.PI/12);
-    public static final double CAMERA_AZIMUTH_DEFAULT = -Math.PI/6;
+    public static final double CAMERA_AZIMUTH_DEFAULT = -Math.PI/5;
     public static final double CAMERA_ALTITUDE_DEFAULT = Math.PI/8;
     
     public static final double CAMERA_DISTANCE_LIMIT = 4;
@@ -276,6 +276,20 @@ public class ViewContainer {
 
     public void selectPrevCell() {
         cellSelector.selectPrevCell();
+        if (cellSelector.isRepaintNeeded()) {
+            doFullProjection();
+        }
+    }
+    
+    public void selectNextSiblingCell() {
+        cellSelector.selectNextSiblingCell();
+        if (cellSelector.isRepaintNeeded()) {
+            doFullProjection();
+        }
+    }
+
+    public void selectPrevSiblingCell() {
+        cellSelector.selectPrevSiblingCell();
         if (cellSelector.isRepaintNeeded()) {
             doFullProjection();
         }

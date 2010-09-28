@@ -26,6 +26,9 @@ import com.viewer4d.view.ViewContainer;
 @SuppressWarnings("serial")
 public class Viewer4DFrame extends JFrame {
 
+    public static final int FRAME_WIDTH = 900;
+    public static final int FRAME_HEIGHT = 720;
+    
     public static final boolean CUTTING_FIGURE_PROJECTION_DEFAULT = false;
     public static final boolean SHOW_FIGURE_PROJECTION_DEFAULT = true;
     public static final boolean SHOW_COORDINATE_ORTS_DEFAULT = true;
@@ -39,26 +42,26 @@ public class Viewer4DFrame extends JFrame {
     }
     
     static final List<String> FIGURE_NAMES = new ArrayList<String>(Arrays.asList(
-            "hypercube.xml",
-            "hypercubepyramid.xml",
-            "octahedronpyramid.xml",
-            "pentachoron.xml",
-            "hexadecachoron.xml",
-            "icositetrachoron.xml",
-            "hecatonicosachoron.xml",
-            "hexacosichoron.xml",
-            "orts4d.xml",
-            "cube.xml",
-            "dodecahedron.xml",
-            "icosahedron.xml",
-            "octahedron.xml",
-            "tetrahedron.xml",
-            "square.xml",
-            "segment.xml",
-            "righthand.xml"
+            "hypercube",
+            "hypercubepyramid",
+            "octahedronpyramid",
+            "pentachoron",
+            "hexadecachoron",
+            "icositetrachoron",
+            "hecatonicosachoron",
+            "hexacosichoron",
+            "orts4d",
+            "cube",
+            "dodecahedron",
+            "icosahedron",
+            "octahedron",
+            "tetrahedron",
+            "square",
+            "segment",
+            "righthand"
     ));
 
-    protected static final Dimension FRAME_SIZE = new Dimension(800, 640);
+    protected static final Dimension FRAME_SIZE = new Dimension(FRAME_WIDTH, FRAME_HEIGHT);
     
     private PaintingArea paintingArea;
     private JPanel controlPanel;
@@ -168,7 +171,7 @@ public class Viewer4DFrame extends JFrame {
         FigureMovable figure = figuresInPackage.get(figureName);
         if (figure == null) {
             figure = FigureFactory.getInstance().loadFromResources(
-                    "/" + figureName);
+                    "/" + figureName + ".xml");
             
             figure.getCells();
             

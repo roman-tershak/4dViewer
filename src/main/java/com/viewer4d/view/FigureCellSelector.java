@@ -19,6 +19,8 @@ public class FigureCellSelector {
     private int listSizeLimit;
     private ListIterator<Cell> cellIterator;
     private Cell selectedCell;
+    private ListIterator<Cell> cellSiblingIterator;
+    private Cell selectedSiblingCell;
     
     private boolean needRepaint;
 
@@ -42,12 +44,18 @@ public class FigureCellSelector {
         cellIterator = cellsList.listIterator();
         if (cellIterator.hasNext()) {
             selectedCell = cellIterator.next();
+            cellSiblingIterator = getSiblingCellIterator();
         } else {
             selectedCell = null;
+            cellSiblingIterator = null;
         }
         if (selectModeOn) {
-            selectCell();
+            selectCell(true);
         }
+    }
+
+    private ListIterator<Cell> getSiblingCellIterator() {
+        return new LinkedList<Cell>(selectedCell.getSiblings()).listIterator();
     }
 
     public boolean isSelectModeOn() {
@@ -65,34 +73,58 @@ public class FigureCellSelector {
     private void setSelectModeOn() {
         if (!selectModeOn) {
             selectModeOn = true;
-            selectCell();
+            selectCell(true);
+            selectSiblingCell(true);
         }
     }
     
     private void setSelectModeOff() {
         if (selectModeOn) {
             selectModeOn = false;
-            deselectCell();
+            selectCell(false);
+            selectSiblingCell(false);
         }
     }
     
     public void selectNextCell() {
         if (selectModeOn) {
-            deselectCell();
+            selectCell(false);
+            selectSiblingCell(false);
             selectedCell = getNextCell();
-            selectCell();
+            cellSiblingIterator = getSiblingCellIterator();
+            selectCell(true);
         }
     }
 
     public void selectPrevCell() {
         if (selectModeOn) {
-            deselectCell();
+            selectCell(false);
+            selectSiblingCell(false);
             Cell prevCell = getPrevCell();
             if (selectedCell == prevCell) {
                 prevCell = getPrevCell();
             }
             selectedCell = prevCell;
-            selectCell();
+            cellSiblingIterator = getSiblingCellIterator();
+            selectCell(true);
+        }
+    }
+    
+    public void selectNextSiblingCell() {
+        if (selectModeOn) {
+            selectSiblingCell(false);
+            selectedSiblingCell = getNextSiblingCell();
+            selectCell(true);
+            selectSiblingCell(true);
+        }
+    }
+
+    public void selectPrevSiblingCell() {
+        if (selectModeOn) {
+            selectSiblingCell(false);
+            selectedSiblingCell = getPrevSiblingCell();
+            selectCell(true);
+            selectSiblingCell(true);
         }
     }
     
@@ -101,26 +133,26 @@ public class FigureCellSelector {
     }
 
     public void resetSelectedCell() {
-        deselectCell();
+        selectCell(false);
+        selectSiblingCell(false);
         init(figure);
     }
     
-    private void deselectCell() {
+    private void selectCell(boolean select) {
         needRepaint = false;
         if (selectedCell != null) {
-            selectedCell.setSelected(false);
+            selectedCell.setSelected(select);
             needRepaint = true;
         }
     }
     
-    private void selectCell() {
-        needRepaint = false;
-        if (selectedCell != null) {
-            selectedCell.setSelected(true);
+    private void selectSiblingCell(boolean select) {
+        if (selectedSiblingCell != null) {
+            selectedSiblingCell.setSelected(select);
             needRepaint = true;
         }
     }
-    
+
     private Cell getNextCell() {
         Cell cell = selectedCell;
         for (int i = 0; cell != null && cell == selectedCell && i < 2; i++) {
@@ -167,6 +199,24 @@ public class FigureCellSelector {
             }
         }
         return cell;
+    }
+    
+    private Cell getNextSiblingCell() {
+        if (cellSiblingIterator != null) {
+            if (cellSiblingIterator.hasNext()) {
+                return cellSiblingIterator.next();
+            }
+        }
+        return null;
+    }
+
+    private Cell getPrevSiblingCell() {
+        if (cellSiblingIterator != null) {
+            if (cellSiblingIterator.hasPrevious()) {
+                return cellSiblingIterator.previous();
+            }
+        }
+        return null;
     }
     
     private static Cell getNextSiblingCell(Cell cell, Collection<Cell> alreadyInListCells) {

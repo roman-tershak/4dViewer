@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <figure xmlns="tests:4DViewer:PlainFigureConfig">
+<!-- The coordinates of vertices, edges and faces are taken from here
+http://local.wasp.uwa.edu.au/~pbourke/geometry/platonic4d/ -->
 
 	<precision>5e-5</precision>
 
