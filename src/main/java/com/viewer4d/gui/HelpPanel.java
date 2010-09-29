@@ -37,10 +37,13 @@ public class HelpPanel extends JPanel {
                     "   'D' - show or hide the coordinate orts\n" +
                     "   'S' - switch the type of the coordinate orts\n" +
                     "   'F' - show or hide the figure\n" +
-                    "   'C' - switch on or off the figure cell selection mode\n" +
+                    "   'C' - switch on or off cutting figure projection\n" +
+                    "   'M' - switch on or off the figure cell selection mode\n" +
                     "   Shift+('<' or '>') - select next figure cell (when the figure cell selection mode is on)\n" +
+                    "   Ctrl+('<' or '>') - select next sibling cell for the selected cell (when the figure cell selection mode is on)\n" +
                     "   Shift+('1', '2'... '8') - change projector position (movable projector only)\n" +
                     "   'G' - start or stop rotation of the figute in a random way\n" +
+                    "   'H' - toggle random figure rotation in XYZ space only\n" +
                     "   'F1' - show or hide this help, Escape - hide the help or quit";
     
     private final JPanel glassPane;

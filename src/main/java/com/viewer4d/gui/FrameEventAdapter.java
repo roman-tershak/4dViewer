@@ -1,7 +1,7 @@
 package com.viewer4d.gui;
 
-import static java.awt.event.InputEvent.SHIFT_DOWN_MASK;
 import static java.awt.event.InputEvent.CTRL_DOWN_MASK;
+import static java.awt.event.InputEvent.SHIFT_DOWN_MASK;
 
 import java.awt.Point;
 import java.awt.event.InputEvent;
@@ -225,7 +225,13 @@ KeyListener, MouseListener, MouseMotionListener, MouseWheelListener, WindowState
             case 'g':
                 mainFrame.toggleFigureMover();
                 break;
+            case 'h':
+                mainFrame.toggleFigureMoverIn3d();
+                break;
             case 'c':
+                viewContainer.toggleCuttingNWSelector();
+                break;
+            case 'm':
                 viewContainer.toggleSelectMode();
                 break;
             }

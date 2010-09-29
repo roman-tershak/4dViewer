@@ -86,7 +86,7 @@ public class ControlPanelAuxProjectors extends JPanel implements ActionListener,
                 mainFrame.getViewContainer().toggle4dFigureProjection();
                 break;
             case 3:
-                mainFrame.getViewContainer().setCuttingFigureSelector(checkBox.isSelected());
+                mainFrame.getViewContainer().setCuttingNWSelector(checkBox.isSelected());
                 break;
             }
             mainFrame.getPaintingArea().repaint();
@@ -111,6 +111,9 @@ public class ControlPanelAuxProjectors extends JPanel implements ActionListener,
             break;
         case 'f':
             auxCheckBoxs[2].setSelected(!auxCheckBoxs[2].isSelected());
+            break;
+        case 'c':
+            auxCheckBoxs[3].setSelected(!auxCheckBoxs[3].isSelected());
             break;
         }
     }

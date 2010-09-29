@@ -198,22 +198,28 @@ public class Viewer4DFrame extends JFrame {
         }
     }
     
+    // Figure mover control methods
     protected RandomFigureMover getFigureMover() {
         return figureMover;
     }
     
     protected void toggleFigureMover() {
-        if (figureMover == null) {
-            figureMover = new RandomFigureMover(this);
-            figureMover.start();
-        }
+        initFigureMover();
         if (figureMover.isMoving()) {
             figureMover.stopMove();
         } else {
             figureMover.startMove();
         }
     }
-    
+
+    protected void toggleFigureMoverIn3d() {
+        initFigureMover();
+        figureMover.setIn3dOnly(!figureMover.isIn3dOnly());
+        if (figureMover.isIn3dOnly()) {
+            viewContainer.getFigure().reset();
+        }
+    }
+
     protected void startFigureMovement() {
         if (figureMover != null) {
             figureMover.startMove();
@@ -223,6 +229,13 @@ public class Viewer4DFrame extends JFrame {
     protected void stopFigureMovement() {
         if (figureMover != null) {
             figureMover.stopMove();
+        }
+    }
+    
+    private void initFigureMover() {
+        if (figureMover == null) {
+            figureMover = new RandomFigureMover(this);
+            figureMover.start();
         }
     }
     

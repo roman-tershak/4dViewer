@@ -5,18 +5,20 @@ import com.viewer4d.view.ViewContainer;
 
 public class RandomFigureMover extends Thread {
 
-    protected static final double ONE_ROTATE_STEP = Math.PI/4096;
+    protected static final double ONE_ROTATE_STEP = Math.PI/1600;
     
     protected static final int CHANGE_PERIOD_1 = 1000;
     protected static final int CHANGE_PERIOD_2 = 250;
-    protected static final int CHANGE_PERIOD_3 = 50;
+    protected static final int CHANGE_PERIOD_3 = 70;
     protected static final int WAIT_INTERVAL = 30;
-    
+
     private final Viewer4DFrame viewer4dFrame;
     private final ViewContainer viewContainer;
     
     private volatile boolean move = false;
     private volatile boolean stop = false;
+    
+    private volatile boolean in3dOnly = false;
     
     private final Object signaller = new Object();
 
@@ -77,8 +79,7 @@ public class RandomFigureMover extends Thread {
         countMoves++;
         
         double amount = currForward ? ONE_ROTATE_STEP : -ONE_ROTATE_STEP;
-        viewContainer.rotateFigure(currRotationPlane1, amount);
-        viewContainer.rotateFigure(currRotationPlane2, amount);
+        viewContainer.rotateFigureDouble(currRotationPlane1, amount, currRotationPlane2, amount);
         
         viewer4dFrame.getPaintingArea().repaint();
     }
@@ -87,10 +88,22 @@ public class RandomFigureMover extends Thread {
         RotationPlane4DEnum rotationPlane = other;
         int iter = 0;
         while (rotationPlane == other && iter < 20) {
-            rotationPlane = RotationPlane4DEnum.values()[(int) Math.floor(Math.random() * 6)];
+            rotationPlane = RotationPlane4DEnum.values()[(int) Math.floor(Math.random() * 
+                    (in3dOnly ? 3 : 6))];
             iter++;
         }
         return rotationPlane;
+    }
+    
+    public boolean isIn3dOnly() {
+        return in3dOnly;
+    }
+    public void setIn3dOnly(boolean in3dOnly) {
+        this.in3dOnly = in3dOnly;
+        if (in3dOnly) {
+            currRotationPlane1 = getRandomRotationPlane(currRotationPlane2);
+            currRotationPlane2 = getRandomRotationPlane(currRotationPlane1);
+        }
     }
     
     public void startMove() {

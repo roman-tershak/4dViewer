@@ -46,6 +46,7 @@ public class ViewContainer {
     private Figure projection3d;
     
     private CombinedAuxAndMainProjectors projectorMain;
+    private CombinedAuxAndMainProjectors selectorMain;
     private CombiningProjector<PerspectiveProjectorOnXYZ> combining4DProjector;
     
     private PerspectiveProjectorOnXYZ perspectiveProjectorOnXYZ;
@@ -56,7 +57,6 @@ public class ViewContainer {
     private AbstractEnablingProjector cubeOrtsProjector;
     
     
-    private CombiningProjector<AbstractEnablingProjector> combiningSelector;
     private EntireFigureSelector entireFigureSelector;
     private SelectorCuttingHalfOfOrt halfOrtCuttingSelector;
     private Simple3DSpaceIntersectorAtZeroW spaceIntersector;
@@ -82,11 +82,10 @@ public class ViewContainer {
         entireFigureSelector.enable(!Viewer4DFrame.CUTTING_FIGURE_PROJECTION_DEFAULT);
         halfOrtCuttingSelector.enable(Viewer4DFrame.CUTTING_FIGURE_PROJECTION_DEFAULT);
         
-        combiningSelector = new CombiningProjector<AbstractEnablingProjector>(
-                entireFigureSelector,
-                halfOrtCuttingSelector,
-                spaceIntersector
-        );
+        selectorMain = new CombinedAuxAndMainProjectors(
+                new CombiningProjector<AbstractEnablingProjector>(
+                        entireFigureSelector, halfOrtCuttingSelector), 
+                spaceIntersector);
         
         perspectiveProjectorOnXYZ = new PerspectiveProjectorOnXYZ(W_4D_POSITION_DEFAULT, true);
         perspectiveProjectorOnOrts = new PerspectiveMovableProjector(W_4D_POSITION_DEFAULT, true);
@@ -103,7 +102,6 @@ public class ViewContainer {
         
         projectorMain = new CombinedAuxAndMainProjectors(
                 combining4DProjector,
-//                spaceIntersector,
                 ortsProjector,
                 cubeOrtsProjector
         );
@@ -234,6 +232,16 @@ public class ViewContainer {
         doFullProjection();
     }
 
+    public void rotateFigureDouble(RotationPlane4DEnum rotationPlane1, double amount1, 
+            RotationPlane4DEnum rotationPlane2, double amount2) {
+        figure.rotate(rotationPlane1, amount1);
+        perspectiveMovingProjector.rotate(rotationPlane1, amount1);
+        figure.rotate(rotationPlane2, amount2);
+        perspectiveMovingProjector.rotate(rotationPlane2, amount2);
+        
+        doFullProjection();
+    }
+
     public void rotateFigureOneStep(RotationPlane4DEnum rotationPlane, boolean forward) {
         double amount = forward ? ONE_ROTATE_STEP : -ONE_ROTATE_STEP;
         rotateFigure(rotationPlane, amount);
@@ -337,10 +345,10 @@ public class ViewContainer {
     
     // Toggle methods
     public void toggle4dFigureProjection() {
-        if (projectorMain.isEnabled()) {
-            projectorMain.enable(false);
+        if (selectorMain.isEnabled()) {
+            selectorMain.enable(false);
         } else {
-            projectorMain.enable(true);
+            selectorMain.enable(true);
         }
         doFullProjection();
     }
@@ -386,13 +394,17 @@ public class ViewContainer {
     }
     
     // Selectors handling methods
-    public void setCuttingFigureSelector(boolean cutting) {
+    public void toggleCuttingNWSelector() {
+        setCuttingNWSelector(!halfOrtCuttingSelector.isEnabled());
+    }
+
+    public void setCuttingNWSelector(boolean cutting) {
         entireFigureSelector.enable(!cutting);
         halfOrtCuttingSelector.enable(cutting);
         doFullProjection();
     }
     
-    public void setCuttingFigureSelector(UNIT_VECTORS unitVector, boolean negative) {
+    public void setCuttingNWSelector(UNIT_VECTORS unitVector, boolean negative) {
         if (halfOrtCuttingSelector.isEnabled()) {
             halfOrtCuttingSelector.setUnitVector(unitVector);
             halfOrtCuttingSelector.setNegative(negative);
@@ -402,7 +414,7 @@ public class ViewContainer {
     
     // Projection method
     public synchronized void doFullProjection() {
-        Figure selected = combiningSelector.project(getFigure());
+        Figure selected = selectorMain.project(getFigure());
         projection3d = projectorMain.project(selected);
         doCameraProjection();
         needRepaint = true;
