@@ -12,12 +12,14 @@ public interface Viewer {
     public static final double ALTITUDE_LIMIT = Math.PI * 0.49;
     
     public static final Color PAINT_BW_COLOR = new Color(72, 72, 72);
-    public static final Color SELECTED_BW_COLOR = new Color(128, 128, 128);
+    public static final Color SELECTED_BW_COLOR_1 = new Color(128, 128, 128);
+    public static final Color SELECTED_BW_COLOR_2 = new Color(160, 160, 160);
 
     public static final int MAIN_COLOR_COEF = 108;
     public static final int OPP1_COLOR_COEF = 92;
     public static final int OPP2_COLOR_COEF = 80;
-    public static final Color SELECTED_COLORED_COLOR = new Color(32, 128, 32);
+    public static final Color SELECTED_COLORED_COLOR_1 = new Color(32, 128, 32);
+    public static final Color SELECTED_COLORED_COLOR_2 = new Color(32, 128, 112);
 
     public static final Color ZERO_W_COLOR = new Color(72, 72, 72);
     

@@ -40,7 +40,7 @@ public abstract class AbstractProjectingProjector extends AbstractEnablingProjec
             
             Edge projectEdge = projectEdge(edge);
             if (projectEdge != null) {
-                projectEdge.setSelected(edge.isSelected());
+                projectEdge.setSelection(edge.getSelection());
                 newEdges.add(projectEdge);
             }
         }

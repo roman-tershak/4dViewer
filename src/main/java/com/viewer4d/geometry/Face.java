@@ -65,9 +65,9 @@ public class Face {
         return edgeFacesSiblings;
     }
 
-    public void setSelected(boolean selected) {
+    public void setSelection(Selection selection) {
         for (Edge edge : getEdges()) {
-            edge.setSelected(selected);
+            edge.setSelection(selection);
         }
     }
 

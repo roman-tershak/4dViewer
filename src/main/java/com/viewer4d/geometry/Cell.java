@@ -37,9 +37,9 @@ public class Cell {
         return siblings;
     }
 
-    public void setSelected(boolean selected) {
+    public void setSelection(Selection selection) {
         for (Face face : getFaces()) {
-            face.setSelected(selected);
+            face.setSelection(selection);
         }
     }
     

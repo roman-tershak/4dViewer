@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.viewer4d.geometry.simple.MovablePoint;
+import static com.viewer4d.geometry.Selection.*;
 
 public class Edge {
 
@@ -12,7 +13,7 @@ public class Edge {
     private final Vertex b;
     
     private Set<Face> faces = null;
-    private boolean selected;
+    private Selection selection;
 
     public Edge(Vertex a, Vertex b) {
         this.a = a;
@@ -45,12 +46,12 @@ public class Edge {
         return faces;
     }
 
-    public boolean isSelected() {
-        return selected;
+    public Selection getSelection() {
+        return selection == null ? NOTSELECTED : selection;
     }
     
-    public void setSelected(boolean selected) {
-        this.selected = selected;
+    public void setSelection(Selection selection) {
+        this.selection = selection;
     }
     
     @Override

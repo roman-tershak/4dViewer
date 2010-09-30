@@ -10,6 +10,7 @@ import java.util.Comparator;
 
 import com.viewer4d.geometry.Edge;
 import com.viewer4d.geometry.Figure;
+import com.viewer4d.geometry.Selection;
 import com.viewer4d.geometry.Vertex;
 import com.viewer4d.geometry.simple.Point;
 import com.viewer4d.geometry.simple.Pointable;
@@ -83,15 +84,9 @@ public abstract class AbstractViewer implements Viewer {
         int x2 = centerX + (int) (bCoords[0] * ratio);
         int y2 = centerY - (int) (bCoords[1] * ratio);
         
-        Color c1;
-        Color c2;
-        if (edge.isSelected()) {
-            c1 = getColorSelected(a);
-            c2 = getColorSelected(b);
-        } else {
-            c1 = getColor(a);
-            c2 = getColor(b);
-        }
+        Selection edgeSelection = edge.getSelection();
+        Color c1 = getColor(a, edgeSelection);
+        Color c2 = getColor(b, edgeSelection);
         
         GradientPaint gradientPaint = new GradientPaint(
                 x1, y1, c1, x2, y2, c2);
@@ -100,22 +95,32 @@ public abstract class AbstractViewer implements Viewer {
         g2d.drawLine(x1, y1, x2, y2);
     }
 
-    protected Color getColor(Vertex vertex) {
+    protected Color getColor(Vertex vertex, Selection selection) {
         if (isColored()) {
-            return getColorProportionally(vertex.getCoords()[3]);
+            switch (selection) {
+            case NOTSELECTED:
+                return getColorProportionally(vertex.getCoords()[3]);
+            case SELECTED1:
+                return SELECTED_COLORED_COLOR_1;
+            case SELECTED2:
+                return SELECTED_COLORED_COLOR_2;
+            default:
+                throw new IllegalArgumentException(" - " + selection);
+            }
         } else {
-            return PAINT_BW_COLOR;
+            switch (selection) {
+            case NOTSELECTED:
+                return PAINT_BW_COLOR;
+            case SELECTED1:
+                return SELECTED_BW_COLOR_1;
+            case SELECTED2:
+                return SELECTED_BW_COLOR_2;
+            default:
+                throw new IllegalArgumentException(" - " + selection);
+            }
         }
     }
     
-    protected Color getColorSelected(Vertex vertex) {
-        if (isColored()) {
-            return SELECTED_COLORED_COLOR;
-        } else {
-            return SELECTED_BW_COLOR;
-        }
-    }
-
     protected static double checkAltitudeLimit(double deltaAltitude, double currAltitude) {
         if (currAltitude + deltaAltitude > ALTITUDE_LIMIT) {
             deltaAltitude = ALTITUDE_LIMIT - currAltitude;

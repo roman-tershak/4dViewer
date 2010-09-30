@@ -1,30 +1,41 @@
 package com.viewer4d.view;
 
-import java.util.Collection;
-import java.util.Iterator;
+import static com.viewer4d.geometry.Selection.NOTSELECTED;
+import static com.viewer4d.geometry.Selection.SELECTED1;
+import static com.viewer4d.geometry.Selection.SELECTED2;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
+import java.util.Set;
 
 import com.viewer4d.geometry.Cell;
+import com.viewer4d.geometry.Edge;
+import com.viewer4d.geometry.Face;
 import com.viewer4d.geometry.Figure;
+import com.viewer4d.geometry.Vertex;
 
 public class FigureCellSelector {
 
-    private static final int LIST_SIZE_LIMIT_MAX = 1000;
-    
     private final Figure figure;
     private volatile boolean selectModeOn;
     
-    private final LinkedList<Cell> cellsList = new LinkedList<Cell>();
-    private int listSizeLimit;
-    private ListIterator<Cell> cellIterator;
+    private final List<Cell> cellsList = new ArrayList<Cell>();
+    private int cellsListSize;
+    
     private Cell selectedCell;
+    private int selectedCellNum;
+    
     private ListIterator<Cell> cellSiblingIterator;
     private Cell selectedSiblingCell;
     
     private boolean needRepaint;
-
-    private int figureCellsListSize;
 
     
     public FigureCellSelector(Figure figure, boolean selectModeOn) {
@@ -35,17 +46,62 @@ public class FigureCellSelector {
     }
 
     private void init(Figure figure) {
-        Collection<Cell> figureCells = figure.getCells();
-        if (!figureCells.isEmpty()) {
-            cellsList.add(figureCells.iterator().next());
-        }
-        figureCellsListSize = figureCells.size();
-        listSizeLimit = figureCellsListSize > LIST_SIZE_LIMIT_MAX ? LIST_SIZE_LIMIT_MAX : figureCellsListSize;
-        cellIterator = cellsList.listIterator();
-        if (cellIterator.hasNext()) {
-            selectedCell = cellIterator.next();
+        List<Cell> figureCells = new ArrayList<Cell>(figure.getCells());
+        
+        Collections.sort(figureCells, new Comparator<Cell>() {
+
+            private Map<Cell, Double> avgWByCells = new HashMap<Cell, Double>();
+            
+            @Override
+            public int compare(Cell c1, Cell c2) {
+                double w1 = getAvgWFor(c1);
+                double w2 = getAvgWFor(c2);
+                
+                if (w1 < w2) {
+                    return -1;
+                } else if (w1 > w2) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+
+            private double getAvgWFor(Cell cell) {
+                Double avgW = avgWByCells.get(cell);
+                if (avgW == null) {
+                    
+                    Set<Vertex> cellVertices = new HashSet<Vertex>();
+                    for (Face face : cell.getFaces()) {
+                        for (Edge edge : face.getEdges()) {
+                            cellVertices.add(edge.getA());
+                            cellVertices.add(edge.getB());
+                        }
+                    }
+                    
+                    double res = 0;
+                    int count = 0;
+                    for (Vertex vertex : cellVertices) {
+                        res += vertex.getCoords()[3];
+                        count++;
+                    }
+                    
+                    avgW = new Double(res / count);
+                    avgWByCells.put(cell, avgW);
+                }
+                return avgW.doubleValue();
+            }
+            
+        });
+        
+        cellsList.addAll(figureCells);
+        cellsListSize = figureCells.size();
+        
+        if (cellsListSize > 0) {
+            selectedCellNum = 0;
+            selectedCell = cellsList.get(selectedCellNum);
             cellSiblingIterator = getSiblingCellIterator();
         } else {
+            selectedCellNum = -1;
             selectedCell = null;
             cellSiblingIterator = null;
         }
@@ -100,11 +156,7 @@ public class FigureCellSelector {
         if (selectModeOn) {
             selectCell(false);
             selectSiblingCell(false);
-            Cell prevCell = getPrevCell();
-            if (selectedCell == prevCell) {
-                prevCell = getPrevCell();
-            }
-            selectedCell = prevCell;
+            selectedCell = getPrevCell();
             cellSiblingIterator = getSiblingCellIterator();
             selectCell(true);
         }
@@ -141,64 +193,40 @@ public class FigureCellSelector {
     private void selectCell(boolean select) {
         needRepaint = false;
         if (selectedCell != null) {
-            selectedCell.setSelected(select);
+            selectedCell.setSelection(select ? SELECTED1 : NOTSELECTED);
             needRepaint = true;
         }
     }
     
     private void selectSiblingCell(boolean select) {
         if (selectedSiblingCell != null) {
-            selectedSiblingCell.setSelected(select);
+            selectedSiblingCell.setSelection(select ? SELECTED2 : NOTSELECTED);
             needRepaint = true;
         }
     }
 
     private Cell getNextCell() {
-        Cell cell = selectedCell;
-        for (int i = 0; cell != null && cell == selectedCell && i < 2; i++) {
-            if (cellIterator.hasNext()) {
-                cell = cellIterator.next();
-            } else {
-                if (cellsList.size() == figureCellsListSize) {
-                    cellIterator = cellsList.listIterator();
-                    cell = cellIterator.next();
-                } else {
-                    cell = getNextSiblingCell(selectedCell, cellsList);
-                    if (cell != null) {
-                        cellsList.addLast(cell);
-                        if (cellsList.size() > listSizeLimit) {
-                            cellsList.removeFirst();
-                        }
-                        cellIterator = cellsList.listIterator(cellsList.size());
-                    }
-                }
+        if (selectedCellNum != -1) {
+            selectedCellNum++;
+            if (selectedCellNum >= cellsListSize) {
+                selectedCellNum = 0;
             }
+            return cellsList.get(selectedCellNum);
+        } else {
+            return null;
         }
-        return cell;
     }
 
     private Cell getPrevCell() {
-        Cell cell = selectedCell;
-        for (int i = 0; cell != null && cell == selectedCell && i < 2; i++) {
-            if (cellIterator.hasPrevious()) {
-                cell = cellIterator.previous();
-            } else {
-                if (cellsList.size() == figureCellsListSize) {
-                    cellIterator = cellsList.listIterator(cellsList.size());
-                    cell = cellIterator.previous();
-                } else {
-                    cell = getNextSiblingCell(selectedCell, cellsList);
-                    if (cell != null) {
-                        cellsList.addFirst(cell);
-                        if (cellsList.size() > listSizeLimit) {
-                            cellsList.removeLast();
-                        }
-                        cellIterator = cellsList.listIterator();
-                    }
-                }
+        if (selectedCellNum != -1) {
+            selectedCellNum--;
+            if (selectedCellNum < 0) {
+                selectedCellNum = cellsListSize - 1;
             }
+            return cellsList.get(selectedCellNum);
+        } else {
+            return null;
         }
-        return cell;
     }
     
     private Cell getNextSiblingCell() {
@@ -219,16 +247,4 @@ public class FigureCellSelector {
         return null;
     }
     
-    private static Cell getNextSiblingCell(Cell cell, Collection<Cell> alreadyInListCells) {
-        Cell result = null;
-        Iterator<Cell> it = cell.getSiblings().iterator();
-        while (result == null || alreadyInListCells.contains(result)) {
-            if (it.hasNext()) {
-                result = it.next();
-            } else {
-                break;
-            }
-        }
-        return result;
-    }
 }
