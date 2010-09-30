@@ -1,5 +1,5 @@
 package com.viewer4d.geometry;
 
 public enum Selection {
-    NOTSELECTED, SELECTED1, SELECTED2
+    NOTSELECTED, SELECTED1, SELECTED2, SELECTED3
 }

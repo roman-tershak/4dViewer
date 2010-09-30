@@ -104,6 +104,8 @@ public abstract class AbstractViewer implements Viewer {
                 return SELECTED_COLORED_COLOR_1;
             case SELECTED2:
                 return SELECTED_COLORED_COLOR_2;
+            case SELECTED3:
+                return SELECTED_COLORED_COLOR_3;
             default:
                 throw new IllegalArgumentException(" - " + selection);
             }
@@ -115,6 +117,8 @@ public abstract class AbstractViewer implements Viewer {
                 return SELECTED_BW_COLOR_1;
             case SELECTED2:
                 return SELECTED_BW_COLOR_2;
+            case SELECTED3:
+                return SELECTED_BW_COLOR_3;
             default:
                 throw new IllegalArgumentException(" - " + selection);
             }

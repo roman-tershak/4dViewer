@@ -41,6 +41,9 @@ public class HelpPanel extends JPanel {
     "   'M' - switch on or off the figure cell selection mode\n" +
     "   Shift+('<' or '>') - select next figure cell (when the figure cell selection mode is on)\n" +
     "   Ctrl+('<' or '>') - select next sibling cell for the selected cell (when the figure cell selection mode is on)\n" +
+    "   'L' - lock/unlock the selected cell (when the figure cell selection mode is on)\n" +
+    "   'K' - clear all the locked selected cells (when the figure cell selection mode is on)\n" +
+    "   'N' - cut or not the selected cells (the selection mode and cutting projection are on)\n" +
     "   Shift+('1', '2'... '8') - change projector position (movable projector only)\n" +
     "   'G' - start or stop rotation of the figute in a random way\n" +
     "   'H' - toggle random figure rotation in XYZ space only\n" +

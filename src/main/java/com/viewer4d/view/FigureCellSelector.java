@@ -3,6 +3,7 @@ package com.viewer4d.view;
 import static com.viewer4d.geometry.Selection.NOTSELECTED;
 import static com.viewer4d.geometry.Selection.SELECTED1;
 import static com.viewer4d.geometry.Selection.SELECTED2;
+import static com.viewer4d.geometry.Selection.SELECTED3;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,10 +24,9 @@ import com.viewer4d.geometry.Vertex;
 
 public class FigureCellSelector {
 
-    private final Figure figure;
     private volatile boolean selectModeOn;
     
-    private final List<Cell> cellsList = new ArrayList<Cell>();
+    private List<Cell> cellsList;
     private int cellsListSize;
     
     private Cell selectedCell;
@@ -35,14 +35,16 @@ public class FigureCellSelector {
     private ListIterator<Cell> cellSiblingIterator;
     private Cell selectedSiblingCell;
     
+    private final Set<Cell> selectedCellSet = new HashSet<Cell>();
+    
     private boolean needRepaint;
 
     
     public FigureCellSelector(Figure figure, boolean selectModeOn) {
-        this.figure = figure;
         this.selectModeOn = selectModeOn;
         
         init(figure);
+        selectFirstCell();
     }
 
     private void init(Figure figure) {
@@ -58,9 +60,9 @@ public class FigureCellSelector {
                 double w2 = getAvgWFor(c2);
                 
                 if (w1 < w2) {
-                    return -1;
-                } else if (w1 > w2) {
                     return 1;
+                } else if (w1 > w2) {
+                    return -1;
                 } else {
                     return 0;
                 }
@@ -93,9 +95,21 @@ public class FigureCellSelector {
             
         });
         
-        cellsList.addAll(figureCells);
+        cellsList = figureCells;
         cellsListSize = figureCells.size();
+        selectedCellSet.clear();
+    }
+
+    public void setFigure(Figure figure) {
+        selectCell(false);
+        selectSiblingCell(false);
+        selectSelectedCells(false);
         
+        init(figure);
+        selectFirstCell();
+    }
+    
+    private void selectFirstCell() {
         if (cellsListSize > 0) {
             selectedCellNum = 0;
             selectedCell = cellsList.get(selectedCellNum);
@@ -129,6 +143,7 @@ public class FigureCellSelector {
     private void setSelectModeOn() {
         if (!selectModeOn) {
             selectModeOn = true;
+            selectSelectedCells(true);
             selectCell(true);
             selectSiblingCell(true);
         }
@@ -137,6 +152,7 @@ public class FigureCellSelector {
     private void setSelectModeOff() {
         if (selectModeOn) {
             selectModeOn = false;
+            selectSelectedCells(false);
             selectCell(false);
             selectSiblingCell(false);
         }
@@ -148,6 +164,8 @@ public class FigureCellSelector {
             selectSiblingCell(false);
             selectedCell = getNextCell();
             cellSiblingIterator = getSiblingCellIterator();
+            selectedSiblingCell = null;
+            selectSelectedCells(true);
             selectCell(true);
         }
     }
@@ -158,6 +176,8 @@ public class FigureCellSelector {
             selectSiblingCell(false);
             selectedCell = getPrevCell();
             cellSiblingIterator = getSiblingCellIterator();
+            selectedSiblingCell = null;
+            selectSelectedCells(true);
             selectCell(true);
         }
     }
@@ -166,6 +186,7 @@ public class FigureCellSelector {
         if (selectModeOn) {
             selectSiblingCell(false);
             selectedSiblingCell = getNextSiblingCell();
+            selectSelectedCells(true);
             selectCell(true);
             selectSiblingCell(true);
         }
@@ -175,6 +196,27 @@ public class FigureCellSelector {
         if (selectModeOn) {
             selectSiblingCell(false);
             selectedSiblingCell = getPrevSiblingCell();
+            selectSelectedCells(true);
+            selectCell(true);
+            selectSiblingCell(true);
+        }
+    }
+    
+    public void lockUnlockSelectedCell() {
+        if (selectedCell != null) {
+            if (selectedCellSet.contains(selectedCell)) {
+                selectedCellSet.remove(selectedCell);
+            } else {
+                selectedCellSet.add(selectedCell);
+            }
+        }
+    }
+    
+    public void clearLockedSelectedCells() {
+        selectSelectedCells(false);
+        selectedCellSet.clear();
+        
+        if (selectModeOn) {
             selectCell(true);
             selectSiblingCell(true);
         }
@@ -187,7 +229,11 @@ public class FigureCellSelector {
     public void resetSelectedCell() {
         selectCell(false);
         selectSiblingCell(false);
-        init(figure);
+        selectSelectedCells(false);
+        
+        selectedCellSet.clear();
+        
+        selectFirstCell();
     }
     
     private void selectCell(boolean select) {
@@ -205,6 +251,13 @@ public class FigureCellSelector {
         }
     }
 
+    private void selectSelectedCells(boolean select) {
+        for (Cell cell : selectedCellSet) {
+            cell.setSelection(select ? SELECTED3 : NOTSELECTED);
+            needRepaint = true;
+        }
+    }
+    
     private Cell getNextCell() {
         if (selectedCellNum != -1) {
             selectedCellNum++;
@@ -230,19 +283,15 @@ public class FigureCellSelector {
     }
     
     private Cell getNextSiblingCell() {
-        if (cellSiblingIterator != null) {
-            if (cellSiblingIterator.hasNext()) {
-                return cellSiblingIterator.next();
-            }
+        if (cellSiblingIterator != null && cellSiblingIterator.hasNext()) {
+            return cellSiblingIterator.next();
         }
         return null;
     }
 
     private Cell getPrevSiblingCell() {
-        if (cellSiblingIterator != null) {
-            if (cellSiblingIterator.hasPrevious()) {
-                return cellSiblingIterator.previous();
-            }
+        if (cellSiblingIterator != null && cellSiblingIterator.hasPrevious()) {
+            return cellSiblingIterator.previous();
         }
         return null;
     }

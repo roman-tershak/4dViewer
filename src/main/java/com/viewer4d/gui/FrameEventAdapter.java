@@ -234,6 +234,15 @@ KeyListener, MouseListener, MouseMotionListener, MouseWheelListener, WindowState
             case 'm':
                 viewContainer.toggleSelectMode();
                 break;
+            case 'l':
+                viewContainer.lockUnlockSelectedCell();
+                break;
+            case 'k':
+                viewContainer.clearLockedSelectedCells();
+                break;
+            case 'n':
+                viewContainer.toggleNotCuttingSelected();
+                break;
             }
         } else if (shiftPressed) {
             switch (firstTypedChar) {

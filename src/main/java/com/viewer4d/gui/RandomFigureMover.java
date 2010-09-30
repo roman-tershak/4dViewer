@@ -9,11 +9,9 @@ public class RandomFigureMover extends Thread {
     
     protected static final int CHANGE_PERIOD_1 = 1000;
     protected static final int CHANGE_PERIOD_2 = 250;
-    protected static final int CHANGE_PERIOD_3 = 70;
     protected static final int WAIT_INTERVAL = 30;
 
     private final Viewer4DFrame viewer4dFrame;
-    private final ViewContainer viewContainer;
     
     private volatile boolean move = false;
     private volatile boolean stop = false;
@@ -35,7 +33,6 @@ public class RandomFigureMover extends Thread {
     public RandomFigureMover(Viewer4DFrame viewer4dFrame) {
         super("Random Figure Mover");
         this.viewer4dFrame = viewer4dFrame;
-        viewContainer = viewer4dFrame.getViewContainer();
         
         currRotationPlane1 = getRandomRotationPlane(null);
         currRotationPlane2 = getRandomRotationPlane(null);
@@ -47,9 +44,6 @@ public class RandomFigureMover extends Thread {
             try {
                 if (move) {
                     
-                    if (viewContainer.isSelectModeOn() && countMoves % CHANGE_PERIOD_3 == 0) {
-                        viewContainer.selectNextCell();
-                    }
                     moveRandomly();
                     
                     Thread.sleep(WAIT_INTERVAL);

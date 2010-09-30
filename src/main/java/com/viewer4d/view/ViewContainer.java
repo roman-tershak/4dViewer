@@ -121,14 +121,11 @@ public class ViewContainer {
     }
     
     public void setFigure(FigureMovable figure) {
-        boolean selectModeOn = cellSelector.isSelectModeOn();
-        
         figure.reset();
         combining4DProjector.reset();
-        cellSelector.setSelectMode(false);
         
+        cellSelector.setFigure(figure);
         this.figure = figure;
-        cellSelector = new FigureCellSelector(figure, selectModeOn);
         
         doFullProjection();
     }
@@ -303,6 +300,20 @@ public class ViewContainer {
         }
     }
     
+    public void lockUnlockSelectedCell() {
+        cellSelector.lockUnlockSelectedCell();
+        if (cellSelector.isRepaintNeeded()) {
+            doFullProjection();
+        }
+    }
+    
+    public void clearLockedSelectedCells() {
+        cellSelector.clearLockedSelectedCells();
+        if (cellSelector.isRepaintNeeded()) {
+            doFullProjection();
+        }
+    }
+    
     private void resetSelectedCell() {
         cellSelector.resetSelectedCell();
     }
@@ -408,6 +419,14 @@ public class ViewContainer {
         if (halfOrtCuttingSelector.isEnabled()) {
             halfOrtCuttingSelector.setUnitVector(unitVector);
             halfOrtCuttingSelector.setNegative(negative);
+            doFullProjection();
+        }
+    }
+    
+    public void toggleNotCuttingSelected() {
+        if (halfOrtCuttingSelector.isEnabled()) {
+            halfOrtCuttingSelector.setNotCuttingSelected(
+                    !halfOrtCuttingSelector.isNotCuttingSelected());
             doFullProjection();
         }
     }
