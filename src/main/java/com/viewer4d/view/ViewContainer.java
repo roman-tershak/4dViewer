@@ -10,9 +10,11 @@ import com.viewer4d.geometry.FigureMovable;
 import com.viewer4d.geometry.RotationPlane4DEnum;
 import com.viewer4d.geometry.simple.Vector;
 import com.viewer4d.geometry.simple.Dimensional.UNIT_VECTORS;
+import com.viewer4d.gui.ControlPanelSelectors;
 import com.viewer4d.gui.Viewer4DFrame;
 import com.viewer4d.projector.AbstractEnablingProjector;
 import com.viewer4d.projector.AbstractProjectingProjector;
+import com.viewer4d.projector.Projector;
 import com.viewer4d.projector.auxiliary.CubeXYZOrtsProjector;
 import com.viewer4d.projector.auxiliary.XYZWOrtsProjector;
 import com.viewer4d.projector.combining.CombinedAuxAndMainProjectors;
@@ -20,7 +22,9 @@ import com.viewer4d.projector.combining.CombiningProjector;
 import com.viewer4d.projector.from4dto3d.PerspectiveMovableProjector;
 import com.viewer4d.projector.from4dto3d.PerspectiveProjectorOnXYZ;
 import com.viewer4d.projector.intersector.Simple3DSpaceIntersectorAtZeroW;
+import com.viewer4d.projector.selector.AbstractEnablingSelector;
 import com.viewer4d.projector.selector.EntireFigureSelector;
+import com.viewer4d.projector.selector.SelectedCellsSelector;
 import com.viewer4d.projector.selector.SelectorCuttingHalfOfOrt;
 
 public class ViewContainer {
@@ -45,21 +49,22 @@ public class ViewContainer {
     private FigureMovable figure;
     private Figure projection3d;
     
-    private CombinedAuxAndMainProjectors projectorMain;
-    private CombinedAuxAndMainProjectors selectorMain;
-    private CombiningProjector<PerspectiveProjectorOnXYZ> combining4DProjector;
+    private CombinedAuxAndMainProjectors<Projector> projectorMain;
+    private CombinedAuxAndMainProjectors<AbstractEnablingProjector> selectorMain;
     
+    private CombiningProjector<PerspectiveProjectorOnXYZ> combining4DProjector;
     private PerspectiveProjectorOnXYZ perspectiveProjectorOnXYZ;
     private PerspectiveMovableProjector perspectiveProjectorOnOrts;
     private PerspectiveMovableProjector perspectiveMovingProjector;
     
-    private AbstractEnablingProjector ortsProjector;
-    private AbstractEnablingProjector cubeOrtsProjector;
-    
-    
+    private CombiningProjector<AbstractEnablingSelector> combiningSelector;
     private EntireFigureSelector entireFigureSelector;
     private SelectorCuttingHalfOfOrt halfOrtCuttingSelector;
+    private SelectedCellsSelector selectedCellsSelector;
     private Simple3DSpaceIntersectorAtZeroW spaceIntersector;
+    
+    private AbstractEnablingProjector ortsProjector;
+    private AbstractEnablingProjector cubeOrtsProjector;
     
     private Viewer viewer;
 
@@ -75,18 +80,24 @@ public class ViewContainer {
     public ViewContainer(FigureMovable figure) {
         this.figure = figure;
         
+        // Selectors
         entireFigureSelector = new EntireFigureSelector();
         halfOrtCuttingSelector = new SelectorCuttingHalfOfOrt(
                 CUTTING_FIGURE_ORT_DEFAULT, CUTTING_FIGURE_NEG_DEFAULT);
         spaceIntersector = new Simple3DSpaceIntersectorAtZeroW();
+        selectedCellsSelector = new SelectedCellsSelector();
+        
         entireFigureSelector.enable(!Viewer4DFrame.CUTTING_FIGURE_PROJECTION_DEFAULT);
         halfOrtCuttingSelector.enable(Viewer4DFrame.CUTTING_FIGURE_PROJECTION_DEFAULT);
+        selectedCellsSelector.enable(Viewer4DFrame.CUTTING_NON_SELECTED_DEFAULT);
         
-        selectorMain = new CombinedAuxAndMainProjectors(
-                new CombiningProjector<AbstractEnablingProjector>(
-                        entireFigureSelector, halfOrtCuttingSelector), 
+        combiningSelector = new CombiningProjector<AbstractEnablingSelector>(
+                entireFigureSelector, halfOrtCuttingSelector, selectedCellsSelector);
+        selectorMain = new CombinedAuxAndMainProjectors<AbstractEnablingProjector>(
+                combiningSelector, 
                 spaceIntersector);
         
+        // PRojectors
         perspectiveProjectorOnXYZ = new PerspectiveProjectorOnXYZ(W_4D_POSITION_DEFAULT, true);
         perspectiveProjectorOnOrts = new PerspectiveMovableProjector(W_4D_POSITION_DEFAULT, true);
         perspectiveMovingProjector = new PerspectiveMovableProjector(W_4D_POSITION_DEFAULT, true);
@@ -97,19 +108,23 @@ public class ViewContainer {
                 perspectiveMovingProjector
         );
         
+        // Orts
         ortsProjector = new XYZWOrtsProjector(true);
         cubeOrtsProjector = new CubeXYZOrtsProjector(false);
         
-        projectorMain = new CombinedAuxAndMainProjectors(
+        // The main combining projector
+        projectorMain = new CombinedAuxAndMainProjectors<Projector>(
                 combining4DProjector,
                 ortsProjector,
                 cubeOrtsProjector
         );
         
+        // Variables
         ortsAreEnabled = ortsProjector.isEnabled();
         cubeOrtsAreEnabled = cubeOrtsProjector.isEnabled();
         xyzAreEnable = ortsAreEnabled || cubeOrtsAreEnabled;
         
+        // Figure cell selector
         cellSelector = new FigureCellSelector(figure, false);
         
         setViewer(new MonoscopicViewer(Viewer4DFrame.VIEWER_COLORED_DEFAULT));
@@ -300,6 +315,13 @@ public class ViewContainer {
         }
     }
     
+    public void toggleSiblingCells() {
+        cellSelector.toggleSiblingCells();
+        if (cellSelector.isRepaintNeeded()) {
+            doFullProjection();
+        }
+    }
+
     public void lockUnlockSelectedCell() {
         cellSelector.lockUnlockSelectedCell();
         if (cellSelector.isRepaintNeeded()) {
@@ -405,16 +427,33 @@ public class ViewContainer {
     }
     
     // Selectors handling methods
-    public void toggleCuttingNWSelector() {
-        setCuttingNWSelector(!halfOrtCuttingSelector.isEnabled());
+    public void toggleSelector(int selectorNumber) {
+        enableSelector(selectorNumber);
+        doFullProjection();
     }
 
-    public void setCuttingNWSelector(boolean cutting) {
-        entireFigureSelector.enable(!cutting);
-        halfOrtCuttingSelector.enable(cutting);
+    public void toggleCuttingNWSelector() {
+        enableSelector(ControlPanelSelectors.CUTTING_NEGATIVE_W_SELECTOR_NUMBER);
         doFullProjection();
     }
     
+    public void toggleCellSelector() {
+        enableSelector(ControlPanelSelectors.CUTTING_NONSELECTED_CELL_SELECTOR_NUMBER);
+        doFullProjection();
+    }
+    
+    public void toggleEntireFigureSelector() {
+        enableSelector(ControlPanelSelectors.ENTIRE_FIGURE_SELECTOR_NUMBER);
+        doFullProjection();
+    }
+
+    protected void enableSelector(int selectorNumber) {
+        List<AbstractEnablingSelector> selectors = combiningSelector.getProjectors();
+        for (int i = 0; i < selectors.size(); i++) {
+            selectors.get(i).enable(i == selectorNumber);
+        }
+    }
+
     public void setCuttingNWSelector(UNIT_VECTORS unitVector, boolean negative) {
         if (halfOrtCuttingSelector.isEnabled()) {
             halfOrtCuttingSelector.setUnitVector(unitVector);

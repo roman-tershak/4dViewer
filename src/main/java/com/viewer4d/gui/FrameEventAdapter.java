@@ -49,11 +49,11 @@ KeyListener, MouseListener, MouseMotionListener, MouseWheelListener, WindowState
             
         } else if (ctrlPressed) {
             if (keyText.equals("Comma")) {
-                mainFrame.stopFigureMovement();
                 viewContainer.selectPrevSiblingCell();
             } else if (keyText.equals("Period")) {
-                mainFrame.stopFigureMovement();
                 viewContainer.selectNextSiblingCell();
+            } else if (keyText.equals("Slash")) {
+                viewContainer.toggleSiblingCells();
             }
             if (viewContainer.needProjection()) {
                 paintingArea.repaint();
@@ -228,8 +228,14 @@ KeyListener, MouseListener, MouseMotionListener, MouseWheelListener, WindowState
             case 'h':
                 mainFrame.toggleFigureMoverIn3d();
                 break;
-            case 'c':
+            case 'v':
                 viewContainer.toggleCuttingNWSelector();
+                break;
+            case 'c':
+                viewContainer.toggleCellSelector();
+                break;
+            case 'b':
+                viewContainer.toggleEntireFigureSelector();
                 break;
             case 'm':
                 viewContainer.toggleSelectMode();

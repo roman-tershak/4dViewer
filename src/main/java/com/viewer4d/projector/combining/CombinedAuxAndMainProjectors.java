@@ -11,12 +11,12 @@ import com.viewer4d.geometry.impl.FigureBaseImpl;
 import com.viewer4d.projector.AbstractEnablingProjector;
 import com.viewer4d.projector.Projector;
 
-public class CombinedAuxAndMainProjectors extends AbstractEnablingProjector {
+public class CombinedAuxAndMainProjectors<P extends Projector> extends AbstractEnablingProjector {
 
     private Projector projector;
-    private List<Projector> auxProjectors = new ArrayList<Projector>();
+    private List<P> auxProjectors = new ArrayList<P>();
     
-    public CombinedAuxAndMainProjectors(Projector projector, Projector... projectors) {
+    public CombinedAuxAndMainProjectors(P projector, P... projectors) {
         this.projector = projector;
         this.auxProjectors.addAll(Arrays.asList(projectors));
     }
@@ -29,7 +29,7 @@ public class CombinedAuxAndMainProjectors extends AbstractEnablingProjector {
         this.projector = projector;
     }
     
-    public List<Projector> getAuxProjectors() {
+    public List<P> getAuxProjectors() {
         return auxProjectors;
     }
     

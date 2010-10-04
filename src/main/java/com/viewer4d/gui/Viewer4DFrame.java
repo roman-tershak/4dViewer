@@ -26,13 +26,14 @@ import com.viewer4d.view.ViewContainer;
 @SuppressWarnings("serial")
 public class Viewer4DFrame extends JFrame {
 
-    public static final int FRAME_WIDTH = 900;
+    public static final int FRAME_WIDTH = 1024;
     public static final int FRAME_HEIGHT = 720;
     
-    public static final boolean CUTTING_FIGURE_PROJECTION_DEFAULT = false;
-    public static final boolean SHOW_FIGURE_PROJECTION_DEFAULT = true;
-    public static final boolean SHOW_COORDINATE_ORTS_DEFAULT = true;
     public static final boolean SHOW_3D_SPACE_INTERSECTION_DEFAULT = true;
+    public static final boolean SHOW_COORDINATE_ORTS_DEFAULT = true;
+    public static final boolean SHOW_FIGURE_PROJECTION_DEFAULT = true;
+    public static final boolean CUTTING_FIGURE_PROJECTION_DEFAULT = false;
+    public static final boolean CUTTING_NON_SELECTED_DEFAULT = false;
 
     class PaintingArea extends JPanel {
         @Override
@@ -66,6 +67,7 @@ public class Viewer4DFrame extends JFrame {
     private PaintingArea paintingArea;
     private JPanel controlPanel;
     
+    private ControlPanelSelectors controlPanelSelectors;
     private ControlPanel4DProjectors controlPanel4DProjectors;
     private ControlPanelViewers controlPanelViewers;
     private ControlPanelAuxProjectors controlPanelAuxProjectors;
@@ -133,9 +135,12 @@ public class Viewer4DFrame extends JFrame {
         JPanel controlPanels = new JPanel(new GridLayout(1, 3));
         controlPanels.setBackground(Color.LIGHT_GRAY);
         
+        controlPanelSelectors = new ControlPanelSelectors(viewContainer, paintingArea);
         controlPanel4DProjectors = new ControlPanel4DProjectors(viewContainer, paintingArea);
         controlPanelViewers = new ControlPanelViewers(viewContainer, paintingArea);
         controlPanelAuxProjectors = new ControlPanelAuxProjectors(this);
+        
+        controlPanels.add(controlPanelSelectors);
         controlPanels.add(controlPanel4DProjectors);
         controlPanels.add(controlPanelViewers);
         controlPanels.add(controlPanelAuxProjectors);
@@ -160,6 +165,7 @@ public class Viewer4DFrame extends JFrame {
         
         contentPane.addKeyListener(eventAdapter);
         contentPane.addKeyListener(controlPanelAuxProjectors);
+        contentPane.addKeyListener(controlPanelSelectors);
         contentPane.addMouseListener(eventAdapter);
         contentPane.addMouseMotionListener(eventAdapter);
         contentPane.addMouseWheelListener(eventAdapter);

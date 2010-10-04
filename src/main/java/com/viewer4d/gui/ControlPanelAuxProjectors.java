@@ -39,13 +39,11 @@ public class ControlPanelAuxProjectors extends JPanel implements ActionListener,
                 "Show 3D space intersection",
                 "Show coordinate orts",
                 "Show figure projection",
-                "Cutting figure projection"
         };
         boolean[] selectedDefaults = new boolean[] {
                 Viewer4DFrame.SHOW_3D_SPACE_INTERSECTION_DEFAULT,
                 Viewer4DFrame.SHOW_COORDINATE_ORTS_DEFAULT,
                 Viewer4DFrame.SHOW_FIGURE_PROJECTION_DEFAULT,
-                Viewer4DFrame.CUTTING_FIGURE_PROJECTION_DEFAULT,
         };
         for (int i = 0; i < jbTitles.length; i++) {
             JCheckBox checkBox = new JCheckBox(jbTitles[i], selectedDefaults[i]);
@@ -74,7 +72,6 @@ public class ControlPanelAuxProjectors extends JPanel implements ActionListener,
                 throw new RuntimeException(ex);
             }
         } else if (source instanceof JCheckBox) {
-            JCheckBox checkBox = (JCheckBox) source;
             switch (Integer.parseInt(e.getActionCommand())) {
             case 0:
                 mainFrame.getViewContainer().toggle3dIntersector();
@@ -84,9 +81,6 @@ public class ControlPanelAuxProjectors extends JPanel implements ActionListener,
                 break;
             case 2:
                 mainFrame.getViewContainer().toggle4dFigureProjection();
-                break;
-            case 3:
-                mainFrame.getViewContainer().setCuttingNWSelector(checkBox.isSelected());
                 break;
             }
             mainFrame.getPaintingArea().repaint();
@@ -111,9 +105,6 @@ public class ControlPanelAuxProjectors extends JPanel implements ActionListener,
             break;
         case 'f':
             auxCheckBoxs[2].setSelected(!auxCheckBoxs[2].isSelected());
-            break;
-        case 'c':
-            auxCheckBoxs[3].setSelected(!auxCheckBoxs[3].isSelected());
             break;
         }
     }

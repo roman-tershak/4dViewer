@@ -36,6 +36,9 @@ public class FigureCellSelector {
     private Cell selectedSiblingCell;
     
     private final Set<Cell> selectedCellSet = new HashSet<Cell>();
+    private final Set<Cell> siblingsCellSet = new HashSet<Cell>();
+    
+    private boolean siblingCellsSelected;
     
     private boolean needRepaint;
 
@@ -114,6 +117,8 @@ public class FigureCellSelector {
             selectedCellNum = 0;
             selectedCell = cellsList.get(selectedCellNum);
             cellSiblingIterator = getSiblingCellIterator();
+            siblingsCellSet.clear();
+            siblingCellsSelected = false;
         } else {
             selectedCellNum = -1;
             selectedCell = null;
@@ -143,7 +148,9 @@ public class FigureCellSelector {
     private void setSelectModeOn() {
         if (!selectModeOn) {
             selectModeOn = true;
+            
             selectSelectedCells(true);
+            selectSiblingCells(true);
             selectCell(true);
             selectSiblingCell(true);
         }
@@ -152,7 +159,9 @@ public class FigureCellSelector {
     private void setSelectModeOff() {
         if (selectModeOn) {
             selectModeOn = false;
+            
             selectSelectedCells(false);
+            selectSiblingCells(false);
             selectCell(false);
             selectSiblingCell(false);
         }
@@ -162,9 +171,14 @@ public class FigureCellSelector {
         if (selectModeOn) {
             selectCell(false);
             selectSiblingCell(false);
+            selectSiblingCells(false);
+            
             selectedCell = getNextCell();
             cellSiblingIterator = getSiblingCellIterator();
             selectedSiblingCell = null;
+            siblingsCellSet.clear();
+            siblingCellsSelected = false;
+            
             selectSelectedCells(true);
             selectCell(true);
         }
@@ -174,9 +188,14 @@ public class FigureCellSelector {
         if (selectModeOn) {
             selectCell(false);
             selectSiblingCell(false);
+            selectSiblingCells(false);
+            
             selectedCell = getPrevCell();
             cellSiblingIterator = getSiblingCellIterator();
             selectedSiblingCell = null;
+            siblingsCellSet.clear();
+            siblingCellsSelected = false;
+            
             selectSelectedCells(true);
             selectCell(true);
         }
@@ -185,7 +204,12 @@ public class FigureCellSelector {
     public void selectNextSiblingCell() {
         if (selectModeOn) {
             selectSiblingCell(false);
+            selectSiblingCells(false);
+            
+            siblingsCellSet.clear();
+            siblingCellsSelected = false;
             selectedSiblingCell = getNextSiblingCell();
+            
             selectSelectedCells(true);
             selectCell(true);
             selectSiblingCell(true);
@@ -195,15 +219,28 @@ public class FigureCellSelector {
     public void selectPrevSiblingCell() {
         if (selectModeOn) {
             selectSiblingCell(false);
+            selectSiblingCells(false);
+            
+            siblingsCellSet.clear();
+            siblingCellsSelected = false;
             selectedSiblingCell = getPrevSiblingCell();
+            
             selectSelectedCells(true);
             selectCell(true);
             selectSiblingCell(true);
         }
     }
     
+    public void toggleSiblingCells() {
+        if (!siblingCellsSelected) {
+            selectSiblingCells();
+        } else {
+            unselectSiblingCells();
+        }
+    }
+    
     public void lockUnlockSelectedCell() {
-        if (selectedCell != null) {
+        if (selectModeOn && selectedCell != null) {
             if (selectedCellSet.contains(selectedCell)) {
                 selectedCellSet.remove(selectedCell);
             } else {
@@ -213,10 +250,14 @@ public class FigureCellSelector {
     }
     
     public void clearLockedSelectedCells() {
-        selectSelectedCells(false);
-        selectedCellSet.clear();
-        
         if (selectModeOn) {
+            selectSelectedCells(false);
+            selectedCellSet.clear();
+            
+            selectSiblingCells(false);
+            siblingsCellSet.clear();
+            siblingCellsSelected = false;
+        
             selectCell(true);
             selectSiblingCell(true);
         }
@@ -230,8 +271,11 @@ public class FigureCellSelector {
         selectCell(false);
         selectSiblingCell(false);
         selectSelectedCells(false);
+        selectSiblingCells(false);
         
         selectedCellSet.clear();
+        siblingsCellSet.clear();
+        siblingCellsSelected = false;
         
         selectFirstCell();
     }
@@ -247,6 +291,36 @@ public class FigureCellSelector {
     private void selectSiblingCell(boolean select) {
         if (selectedSiblingCell != null) {
             selectedSiblingCell.setSelection(select ? SELECTED2 : NOTSELECTED);
+            needRepaint = true;
+        }
+    }
+
+    private void selectSiblingCells() {
+        if (selectModeOn && selectedCell != null) {
+            siblingsCellSet.addAll(selectedCell.getSiblings());
+            siblingCellsSelected = true;
+            
+            selectSelectedCells(true);
+            selectSiblingCells(true);
+            selectCell(true);
+        }
+    }
+
+    private void unselectSiblingCells() {
+        if (selectModeOn) {
+            selectSiblingCells(false);
+            siblingsCellSet.clear();
+            siblingCellsSelected = false;
+            
+            selectSelectedCells(true);
+            selectCell(true);
+            selectSiblingCell(true);
+        }
+    }
+
+    private void selectSiblingCells(boolean select) {
+        for (Cell cell : siblingsCellSet) {
+            cell.setSelection(select ? SELECTED2 : NOTSELECTED);
             needRepaint = true;
         }
     }
@@ -295,5 +369,5 @@ public class FigureCellSelector {
         }
         return null;
     }
-    
+
 }
