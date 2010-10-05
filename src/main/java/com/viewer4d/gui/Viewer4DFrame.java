@@ -58,6 +58,7 @@ public class Viewer4DFrame extends JFrame {
             "octahedron",
             "tetrahedron",
             "square",
+            "triangle",
             "segment",
             "righthand"
     ));

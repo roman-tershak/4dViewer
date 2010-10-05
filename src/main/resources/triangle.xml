@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<figure xmlns="tests:4DViewer:PlainFigureConfig">
+
+	<vertex name="v1" coords="0.9, -1.4, 0, 0" />
+	<vertex name="v2" coords="-0.5, -1.0, 0, 0" />
+	<vertex name="v3" coords="-0.5, 1.8, 0, 0" />
+	
+	<edge name="a12" v1="v1" v2="v2"/>
+	<edge name="a23" v1="v2" v2="v3"/>
+	<edge name="a31" v1="v3" v2="v1"/>
+	
+	<face name="aaaa" edges="a12, a23, a31"/>
+	
+</figure>
