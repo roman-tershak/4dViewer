@@ -45,7 +45,10 @@ public abstract class AbstractEnablingSelector extends AbstractEnablingProjector
             } else {
                 Edge projectEdge = projectEdge(edge);
                 if (projectEdge != null) {
-                    projectEdge.setSelection(edgeSelection);
+                    if (projectEdge != edge) {
+                        projectEdge.getFaces().addAll(edge.getFaces());
+                        projectEdge.setSelection(edgeSelection);
+                    }
                     newEdges.add(projectEdge);
                 }
             }

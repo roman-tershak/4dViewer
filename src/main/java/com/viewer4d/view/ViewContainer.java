@@ -50,14 +50,13 @@ public class ViewContainer {
     private Figure projection3d;
     
     private CombinedAuxAndMainProjectors<Projector> projectorMain;
-    private CombinedAuxAndMainProjectors<AbstractEnablingProjector> selectorMain;
+    private CombiningProjector<AbstractEnablingSelector> selectorMain;
     
     private CombiningProjector<PerspectiveProjectorOnXYZ> combining4DProjector;
     private PerspectiveProjectorOnXYZ perspectiveProjectorOnXYZ;
     private PerspectiveMovableProjector perspectiveProjectorOnOrts;
     private PerspectiveMovableProjector perspectiveMovingProjector;
     
-    private CombiningProjector<AbstractEnablingSelector> combiningSelector;
     private EntireFigureSelector entireFigureSelector;
     private SelectorCuttingHalfOfOrt halfOrtCuttingSelector;
     private SelectedCellsSelector selectedCellsSelector;
@@ -91,13 +90,10 @@ public class ViewContainer {
         halfOrtCuttingSelector.enable(Viewer4DFrame.CUTTING_FIGURE_PROJECTION_DEFAULT);
         selectedCellsSelector.enable(Viewer4DFrame.CUTTING_NON_SELECTED_DEFAULT);
         
-        combiningSelector = new CombiningProjector<AbstractEnablingSelector>(
+        selectorMain = new CombiningProjector<AbstractEnablingSelector>(
                 entireFigureSelector, halfOrtCuttingSelector, selectedCellsSelector);
-        selectorMain = new CombinedAuxAndMainProjectors<AbstractEnablingProjector>(
-                combiningSelector, 
-                spaceIntersector);
         
-        // PRojectors
+        // Projectors
         perspectiveProjectorOnXYZ = new PerspectiveProjectorOnXYZ(W_4D_POSITION_DEFAULT, true);
         perspectiveProjectorOnOrts = new PerspectiveMovableProjector(W_4D_POSITION_DEFAULT, true);
         perspectiveMovingProjector = new PerspectiveMovableProjector(W_4D_POSITION_DEFAULT, true);
@@ -115,6 +111,7 @@ public class ViewContainer {
         // The main combining projector
         projectorMain = new CombinedAuxAndMainProjectors<Projector>(
                 combining4DProjector,
+                spaceIntersector,
                 ortsProjector,
                 cubeOrtsProjector
         );
@@ -378,11 +375,7 @@ public class ViewContainer {
     
     // Toggle methods
     public void toggle4dFigureProjection() {
-        if (selectorMain.isEnabled()) {
-            selectorMain.enable(false);
-        } else {
-            selectorMain.enable(true);
-        }
+        projectorMain.enable(!projectorMain.isEnabled());
         doFullProjection();
     }
     
@@ -413,11 +406,7 @@ public class ViewContainer {
     }
 
     public void toggle3dIntersector() {
-        if (spaceIntersector.isEnabled()) {
-            spaceIntersector.enable(false);
-        } else {
-            spaceIntersector.enable(true);
-        }
+        spaceIntersector.enable(!spaceIntersector.isEnabled());
         doFullProjection();
     }
     
@@ -448,7 +437,7 @@ public class ViewContainer {
     }
 
     protected void enableSelector(int selectorNumber) {
-        List<AbstractEnablingSelector> selectors = combiningSelector.getProjectors();
+        List<AbstractEnablingSelector> selectors = selectorMain.getProjectors();
         for (int i = 0; i < selectors.size(); i++) {
             selectors.get(i).enable(i == selectorNumber);
         }
