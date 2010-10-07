@@ -47,9 +47,11 @@ public class HelpPanel extends JPanel {
     "   'L' - lock/unlock the selected cell (when the figure cell selection mode is on)\n" +
     "   'K' - clear all the locked selected cells (when the figure cell selection mode is on)\n" +
     "   'N' - cut or not the selected cells (the selection mode and cutting by W ort projection are on)\n" +
-    "   Shift+('1', '2'... '8') - change projector position (movable projector only)\n" +
-    "   'G' - start or stop rotation of the figute in a random way\n" +
+    "   '1', '2'... '8' - change the projector position (movable projector only)\n" +
+    "   Shift+('1', '2'... '8') - change the alternative projector position (two channel viewer only)\n" +
+    "   'G' - toggle rotation of the figute in a random way\n" +
     "   'H' - toggle random figure rotation in XYZ space only\n" +
+    "   'H' - toggle camera precession for better filling of 3D\n" +
     "   'F1' - show or hide this help, Escape - hide the help or quit";
     
     private final JPanel glassPane;

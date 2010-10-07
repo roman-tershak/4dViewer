@@ -75,9 +75,11 @@ KeyListener, MouseListener, MouseMotionListener, MouseWheelListener, WindowState
         
         if ((vector = getMotionVector(typedChar)) != null) {
             mainFrame.stopFigureMovement();
+            mainFrame.stopCameraMovement();
             viewContainer.moveFigureOneStep(vector, !shiftPressed);
         } else if ((rotationPlane = getRotationPlane(typedChar)) != null) {
             mainFrame.stopFigureMovement();
+            mainFrame.stopCameraMovement();
             viewContainer.rotateFigureOneStep(rotationPlane, !shiftPressed);
         } else {
             doControlAction(typedChar, shiftPressed);
@@ -105,6 +107,7 @@ KeyListener, MouseListener, MouseMotionListener, MouseWheelListener, WindowState
             RandomFigureMover figureMover = mainFrame.getFigureMover();
             if (figureMover != null) {
                 figureMover.pauseMove();
+                figureMover.pauseCameraMove();
             }
         }
     }
@@ -115,6 +118,7 @@ KeyListener, MouseListener, MouseMotionListener, MouseWheelListener, WindowState
             RandomFigureMover figureMover = mainFrame.getFigureMover();
             if (figureMover != null) {
                 figureMover.resumeMove();
+                figureMover.resumeCameraMove();
             }
         }
     }
@@ -220,6 +224,7 @@ KeyListener, MouseListener, MouseMotionListener, MouseWheelListener, WindowState
                 break;
             case 'z':
                 mainFrame.stopFigureMovement();
+                mainFrame.stopCameraMovement();
                 viewContainer.reset();
                 break;
             case 'g':
@@ -227,6 +232,9 @@ KeyListener, MouseListener, MouseMotionListener, MouseWheelListener, WindowState
                 break;
             case 'h':
                 mainFrame.toggleFigureMoverIn3d();
+                break;
+            case 'j':
+                mainFrame.toggleCameraMover();
                 break;
             case 'v':
                 viewContainer.toggleCuttingNWSelector();
@@ -249,6 +257,30 @@ KeyListener, MouseListener, MouseMotionListener, MouseWheelListener, WindowState
             case 'n':
                 viewContainer.toggleNotCuttingSelected();
                 break;
+            case '1':
+                viewContainer.setMovableProjector(UNIT_VECTORS.X, true);
+                break;
+            case '2':
+                viewContainer.setMovableProjector(UNIT_VECTORS.X, false);
+                break;
+            case '3':
+                viewContainer.setMovableProjector(UNIT_VECTORS.Y, true);
+                break;
+            case '4':
+                viewContainer.setMovableProjector(UNIT_VECTORS.Y, false);
+                break;
+            case '5':
+                viewContainer.setMovableProjector(UNIT_VECTORS.Z, true);
+                break;
+            case '6':
+                viewContainer.setMovableProjector(UNIT_VECTORS.Z, false);
+                break;
+            case '7':
+                viewContainer.setMovableProjector(UNIT_VECTORS.W, true);
+                break;
+            case '8':
+                viewContainer.setMovableProjector(UNIT_VECTORS.W, false);
+                break;
             }
         } else if (shiftPressed) {
             switch (firstTypedChar) {
@@ -261,28 +293,28 @@ KeyListener, MouseListener, MouseMotionListener, MouseWheelListener, WindowState
                 viewContainer.selectNextCell();
                 break;
             case '!':
-                viewContainer.setMovableProjector(UNIT_VECTORS.X, true);
+                viewContainer.setAltMovableProjector(UNIT_VECTORS.X, true);
                 break;
             case '@':
-                viewContainer.setMovableProjector(UNIT_VECTORS.X, false);
+                viewContainer.setAltMovableProjector(UNIT_VECTORS.X, false);
                 break;
             case '#':
-                viewContainer.setMovableProjector(UNIT_VECTORS.Y, true);
+                viewContainer.setAltMovableProjector(UNIT_VECTORS.Y, true);
                 break;
             case '$':
-                viewContainer.setMovableProjector(UNIT_VECTORS.Y, false);
+                viewContainer.setAltMovableProjector(UNIT_VECTORS.Y, false);
                 break;
             case '%':
-                viewContainer.setMovableProjector(UNIT_VECTORS.Z, true);
+                viewContainer.setAltMovableProjector(UNIT_VECTORS.Z, true);
                 break;
             case '^':
-                viewContainer.setMovableProjector(UNIT_VECTORS.Z, false);
+                viewContainer.setAltMovableProjector(UNIT_VECTORS.Z, false);
                 break;
             case '&':
-                viewContainer.setMovableProjector(UNIT_VECTORS.W, true);
+                viewContainer.setAltMovableProjector(UNIT_VECTORS.W, true);
                 break;
             case '*':
-                viewContainer.setMovableProjector(UNIT_VECTORS.W, false);
+                viewContainer.setAltMovableProjector(UNIT_VECTORS.W, false);
                 break;
             }
         }

@@ -11,24 +11,14 @@ import com.viewer4d.geometry.impl.FigureBaseImpl;
 import com.viewer4d.projector.AbstractEnablingProjector;
 import com.viewer4d.projector.Projector;
 
-public class CombinedAuxAndMainProjectors<P extends Projector> extends AbstractEnablingProjector {
+public class AuxProjectorsMerger<P extends Projector> extends AbstractEnablingProjector {
 
-    private Projector projector;
     private List<P> auxProjectors = new ArrayList<P>();
     
-    public CombinedAuxAndMainProjectors(P projector, P... projectors) {
-        this.projector = projector;
+    public AuxProjectorsMerger(P... projectors) {
         this.auxProjectors.addAll(Arrays.asList(projectors));
     }
 
-    public Projector getProjector() {
-        return projector;
-    }
-    
-    public void setProjector(Projector projector) {
-        this.projector = projector;
-    }
-    
     public List<P> getAuxProjectors() {
         return auxProjectors;
     }
@@ -38,8 +28,7 @@ public class CombinedAuxAndMainProjectors<P extends Projector> extends AbstractE
         List<Edge> newEdges = new LinkedList<Edge>();
         
         if (isEnabled()) {
-            newEdges.addAll(
-                    projectFigure(figure).getEdges());
+            newEdges.addAll(figure.getEdges());
         }
         
         for (Projector auxProjector : auxProjectors) {
@@ -47,8 +36,7 @@ public class CombinedAuxAndMainProjectors<P extends Projector> extends AbstractE
             newEdges.addAll(auxProjection.getEdges());
         }
         
-        Figure combined = new FigureBaseImpl(null, newEdges);
-        return projector.project(combined);
+        return projectFigure(new FigureBaseImpl(null, newEdges));
     }
 
     @Override

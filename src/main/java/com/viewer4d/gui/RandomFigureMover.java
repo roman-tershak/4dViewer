@@ -6,15 +6,23 @@ import com.viewer4d.view.ViewContainer;
 public class RandomFigureMover extends Thread {
 
     protected static final double ONE_ROTATE_STEP = Math.PI/1600;
+    protected static final double FULL_CIRCLE_RADIANS = Math.PI * 2;
+    protected static final double CAMERA_PRECESSION_AMPLITUDE = 3.2;
+    protected static final double CAMERA_PRECESSION_STEP = Math.PI / 6;
     
     protected static final int CHANGE_PERIOD_1 = 1000;
     protected static final int CHANGE_PERIOD_2 = 250;
+    protected static final int CHANGE_PERIOD_CAMERA_ROTATION = 4;
     protected static final int WAIT_INTERVAL = 30;
 
     private final Viewer4DFrame viewer4dFrame;
+    private ViewContainer viewContainer;
     
     private volatile boolean move = false;
+    private volatile boolean moveCamera = false;
     private volatile boolean stop = false;
+    private boolean paused;
+    private boolean pausedCamera;
     
     private volatile boolean in3dOnly = false;
     
@@ -24,15 +32,17 @@ public class RandomFigureMover extends Thread {
     private RotationPlane4DEnum currRotationPlane1;
     private RotationPlane4DEnum currRotationPlane2;
     
+    private double cameraPrecessionRadians = 0;
+    
     private int countMoves = 0;
-
-    private boolean paused;
+    private int countCameraMoves = 0;
 
 
     
     public RandomFigureMover(Viewer4DFrame viewer4dFrame) {
         super("Random Figure Mover");
         this.viewer4dFrame = viewer4dFrame;
+        viewContainer = viewer4dFrame.getViewContainer();
         
         currRotationPlane1 = getRandomRotationPlane(null);
         currRotationPlane2 = getRandomRotationPlane(null);
@@ -43,14 +53,14 @@ public class RandomFigureMover extends Thread {
         while (!stop) {
             try {
                 if (move) {
-                    
                     moveRandomly();
-                    
-                    Thread.sleep(WAIT_INTERVAL);
-                } else {
-                    synchronized (signaller) {
-                        signaller.wait(WAIT_INTERVAL);
-                    }
+                }
+                
+                if (moveCamera) {
+                    moveCamera();
+                }
+                synchronized (signaller) {
+                    signaller.wait(WAIT_INTERVAL);
                 }
             } catch (InterruptedException e) {
             }
@@ -58,8 +68,6 @@ public class RandomFigureMover extends Thread {
     }
 
     private void moveRandomly() {
-        ViewContainer viewContainer = viewer4dFrame.getViewContainer();
-
         if (countMoves % CHANGE_PERIOD_1 == 0) {
             currForward = Math.random() < 0.5;
         }
@@ -100,6 +108,23 @@ public class RandomFigureMover extends Thread {
         }
     }
     
+    private void moveCamera() {
+        if (countCameraMoves++ % CHANGE_PERIOD_CAMERA_ROTATION != 0) {
+            return;
+        }
+        
+        int xDelta = (int) (CAMERA_PRECESSION_AMPLITUDE * Math.cos(cameraPrecessionRadians));
+        int yDelta = (int) (CAMERA_PRECESSION_AMPLITUDE * Math.sin(cameraPrecessionRadians));
+        viewContainer.rotateCamera(xDelta, yDelta);
+        
+        cameraPrecessionRadians -= CAMERA_PRECESSION_STEP;
+        if (cameraPrecessionRadians < FULL_CIRCLE_RADIANS) {
+            cameraPrecessionRadians -= FULL_CIRCLE_RADIANS;
+        }
+        
+        viewer4dFrame.getPaintingArea().repaint();
+    }
+    
     public void startMove() {
         move = true;
         paused = false;
@@ -133,7 +158,39 @@ public class RandomFigureMover extends Thread {
             }
         }
     }
+
+    public boolean isCameraMoving() {
+        return moveCamera;
+    }
     
+    public void startCameraMove() {
+        moveCamera = true;
+        notifyMoverThread();
+    }
+    
+    public void stopCameraMove() {
+        moveCamera = false;
+        notifyMoverThread();
+    }
+    
+    public void pauseCameraMove() {
+        if (moveCamera) {
+            pausedCamera = true;
+            moveCamera = false;
+            notifyMoverThread();
+        }
+    }
+
+    public void resumeCameraMove() {
+        if (pausedCamera) {
+            pausedCamera = false;
+            if (!moveCamera) {
+                moveCamera = true;
+                notifyMoverThread();
+            }
+        }
+    }
+
     public void stopThread() {
         stop = true;
         notifyMoverThread();

@@ -32,8 +32,12 @@ public class Viewer4DFrame extends JFrame {
     public static final boolean SHOW_3D_SPACE_INTERSECTION_DEFAULT = true;
     public static final boolean SHOW_COORDINATE_ORTS_DEFAULT = true;
     public static final boolean SHOW_FIGURE_PROJECTION_DEFAULT = true;
+
     public static final boolean CUTTING_FIGURE_PROJECTION_DEFAULT = false;
     public static final boolean CUTTING_NON_SELECTED_DEFAULT = false;
+    
+    public static final int ACTIVE_VIEWER_NUMBER_DEFAULT = 0;
+    
 
     class PaintingArea extends JPanel {
         @Override
@@ -236,6 +240,21 @@ public class Viewer4DFrame extends JFrame {
     protected void stopFigureMovement() {
         if (figureMover != null) {
             figureMover.stopMove();
+        }
+    }
+    
+    protected void toggleCameraMover() {
+        initFigureMover();
+        if (figureMover.isCameraMoving()) {
+            figureMover.stopCameraMove();
+        } else {
+            figureMover.startCameraMove();
+        }
+    }
+
+    protected void stopCameraMovement() {
+        if (figureMover != null) {
+            figureMover.stopCameraMove();
         }
     }
     

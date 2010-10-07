@@ -36,9 +36,11 @@ public class ControlPanelViewers extends JPanel implements ActionListener {
         String[] jbTitles = new String[] {
                 "Monoscopic viewer",
                 "Stereoscopic viewer",
+                "Two channel viewer",
         };
         for (int i = 0; i < jbTitles.length; i++) {
-            JRadioButton jb4dP = new JRadioButton(jbTitles[i], (i == 0 ? true : false));
+            JRadioButton jb4dP = new JRadioButton(jbTitles[i], 
+                    (i == Viewer4DFrame.ACTIVE_VIEWER_NUMBER_DEFAULT ? true : false));
             jb4dP.setBackground(Color.LIGHT_GRAY);
             jb4dP.setFocusable(false);
             jb4dP.setActionCommand(String.valueOf(i));
@@ -74,6 +76,9 @@ public class ControlPanelViewers extends JPanel implements ActionListener {
                 break;
             case 1:
                 viewContainer.setStereoscopicViewer();
+                break;
+            case 2:
+                viewContainer.setTwoChannelViewer();
                 break;
             }
         }

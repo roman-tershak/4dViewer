@@ -17,7 +17,7 @@ import com.viewer4d.projector.AbstractProjectingProjector;
 import com.viewer4d.projector.Projector;
 import com.viewer4d.projector.auxiliary.CubeXYZOrtsProjector;
 import com.viewer4d.projector.auxiliary.XYZWOrtsProjector;
-import com.viewer4d.projector.combining.CombinedAuxAndMainProjectors;
+import com.viewer4d.projector.combining.AuxProjectorsMerger;
 import com.viewer4d.projector.combining.CombiningProjector;
 import com.viewer4d.projector.from4dto3d.PerspectiveMovableProjector;
 import com.viewer4d.projector.from4dto3d.PerspectiveProjectorOnXYZ;
@@ -31,7 +31,7 @@ public class ViewContainer {
 
     public static final UNIT_VECTORS CUTTING_FIGURE_ORT_DEFAULT = UNIT_VECTORS.W;
     public static final boolean CUTTING_FIGURE_NEG_DEFAULT = true;
-
+    
     public static final int W_4D_POSITION_DEFAULT = -10;
     
     public static final double CAMERA_DISTANCE_DEFAULT = 18;
@@ -47,27 +47,39 @@ public class ViewContainer {
 
     
     private FigureMovable figure;
+    
+    private Figure merged4dFigure;
     private Figure projection3d;
+    private Figure altProjection3d;
     
-    private CombinedAuxAndMainProjectors<Projector> projectorMain;
+    
     private CombiningProjector<AbstractEnablingSelector> selectorMain;
-    
-    private CombiningProjector<PerspectiveProjectorOnXYZ> combining4DProjector;
-    private PerspectiveProjectorOnXYZ perspectiveProjectorOnXYZ;
-    private PerspectiveMovableProjector perspectiveProjectorOnOrts;
-    private PerspectiveMovableProjector perspectiveMovingProjector;
     
     private EntireFigureSelector entireFigureSelector;
     private SelectorCuttingHalfOfOrt halfOrtCuttingSelector;
     private SelectedCellsSelector selectedCellsSelector;
-    private Simple3DSpaceIntersectorAtZeroW spaceIntersector;
     
+    
+    private CombiningProjector<PerspectiveProjectorOnXYZ> main4DProjector;
+    
+    private PerspectiveProjectorOnXYZ projector4DOnXYZ;
+    private PerspectiveMovableProjector projector4DOnOrts;
+    private PerspectiveMovableProjector moving4DProjector;
+    
+    private PerspectiveMovableProjector altProjector4DOnOrts;
+    
+    private AuxProjectorsMerger<Projector> mainAuxProjectorsMerger;
+    
+    private Simple3DSpaceIntersectorAtZeroW spaceIntersector;
     private AbstractEnablingProjector ortsProjector;
     private AbstractEnablingProjector cubeOrtsProjector;
     
+    
     private Viewer viewer;
 
+    
     private FigureCellSelector cellSelector;
+    
     
     private boolean needRepaint;
     
@@ -83,7 +95,6 @@ public class ViewContainer {
         entireFigureSelector = new EntireFigureSelector();
         halfOrtCuttingSelector = new SelectorCuttingHalfOfOrt(
                 CUTTING_FIGURE_ORT_DEFAULT, CUTTING_FIGURE_NEG_DEFAULT);
-        spaceIntersector = new Simple3DSpaceIntersectorAtZeroW();
         selectedCellsSelector = new SelectedCellsSelector();
         
         entireFigureSelector.enable(!Viewer4DFrame.CUTTING_FIGURE_PROJECTION_DEFAULT);
@@ -93,24 +104,29 @@ public class ViewContainer {
         selectorMain = new CombiningProjector<AbstractEnablingSelector>(
                 entireFigureSelector, halfOrtCuttingSelector, selectedCellsSelector);
         
-        // Projectors
-        perspectiveProjectorOnXYZ = new PerspectiveProjectorOnXYZ(W_4D_POSITION_DEFAULT, true);
-        perspectiveProjectorOnOrts = new PerspectiveMovableProjector(W_4D_POSITION_DEFAULT, true);
-        perspectiveMovingProjector = new PerspectiveMovableProjector(W_4D_POSITION_DEFAULT, true);
+        // 4D Projectors
+        projector4DOnXYZ = new PerspectiveProjectorOnXYZ(W_4D_POSITION_DEFAULT, true);
+        projector4DOnOrts = new PerspectiveMovableProjector(W_4D_POSITION_DEFAULT, true);
+        moving4DProjector = new PerspectiveMovableProjector(W_4D_POSITION_DEFAULT, true);
         
-        combining4DProjector = new CombiningProjector<PerspectiveProjectorOnXYZ>(
-                perspectiveProjectorOnXYZ,
-                perspectiveProjectorOnOrts,
-                perspectiveMovingProjector
+        main4DProjector = new CombiningProjector<PerspectiveProjectorOnXYZ>(
+                projector4DOnXYZ,
+                projector4DOnOrts,
+                moving4DProjector
         );
         
+        altProjector4DOnOrts = new PerspectiveMovableProjector(W_4D_POSITION_DEFAULT, true);
+        altProjector4DOnOrts.enable(true);
+        altProjector4DOnOrts.setProjector(UNIT_VECTORS.X, true);
+        
+        // 3D space intersector
+        spaceIntersector = new Simple3DSpaceIntersectorAtZeroW();
         // Orts
         ortsProjector = new XYZWOrtsProjector(true);
         cubeOrtsProjector = new CubeXYZOrtsProjector(false);
         
-        // The main combining projector
-        projectorMain = new CombinedAuxAndMainProjectors<Projector>(
-                combining4DProjector,
+        // The auxiliary projectors merger
+        mainAuxProjectorsMerger = new AuxProjectorsMerger<Projector>(
                 spaceIntersector,
                 ortsProjector,
                 cubeOrtsProjector
@@ -134,7 +150,7 @@ public class ViewContainer {
     
     public void setFigure(FigureMovable figure) {
         figure.reset();
-        combining4DProjector.reset();
+        main4DProjector.reset();
         
         cellSelector.setFigure(figure);
         this.figure = figure;
@@ -150,6 +166,12 @@ public class ViewContainer {
     
     public void setMonoscopicViewer() {
         setViewer(new MonoscopicViewer());
+        doCameraProjection();
+    }
+    
+    public void setTwoChannelViewer() {
+        setViewer(new TwoChannelMonoViewer());
+        doAlternative4DProjection(merged4dFigure);
         doCameraProjection();
     }
     
@@ -188,40 +210,53 @@ public class ViewContainer {
     
     // 4D projectors manipulating methods
     public AbstractProjectingProjector get4DProjector(int projectorNumber) {
-        return combining4DProjector.getProjectors().get(projectorNumber);
+        return main4DProjector.getProjectors().get(projectorNumber);
     }
     
     public void setMovableProjector(UNIT_VECTORS vector, boolean forward) {
         // TODO Add perspectiveMovingProjector here?
-        if (perspectiveProjectorOnOrts.isEnabled()) {
-            perspectiveProjectorOnOrts.setProjector(vector, forward);
+        if (projector4DOnOrts.isEnabled()) {
+            projector4DOnOrts.setProjector(vector, forward);
             doFullProjection();
         }
     }
     
+    public void setAltMovableProjector(UNIT_VECTORS vector, boolean forward) {
+        if (isAlternativeProjectionActive()) {
+            altProjector4DOnOrts.setProjector(vector, forward);
+            doFullProjection();
+        }
+    }
+
     public void toggle4DProjector(int projectorNumber) {
         enable4DProjector(projectorNumber);
         doFullProjection();
     }
 
     public void set4DProjectorsPerspective(boolean perspective) {
-        List<PerspectiveProjectorOnXYZ> projectors = combining4DProjector.getProjectors();
+        List<PerspectiveProjectorOnXYZ> projectors = main4DProjector.getProjectors();
         for (PerspectiveProjectorOnXYZ projector : projectors) {
             projector.setPerspective(perspective);
+        }
+        if (isAlternativeProjectionActive()) {
+            altProjector4DOnOrts.setPerspective(perspective);
         }
         doFullProjection();
     }
     
     public void set4DProjectorsColorRelativeTo(boolean relativeToWOrt) {
-        List<PerspectiveProjectorOnXYZ> projectors = combining4DProjector.getProjectors();
+        List<PerspectiveProjectorOnXYZ> projectors = main4DProjector.getProjectors();
         for (PerspectiveProjectorOnXYZ projector : projectors) {
             projector.setColorRelToWOrt(relativeToWOrt);
+        }
+        if (isAlternativeProjectionActive()) {
+            altProjector4DOnOrts.setColorRelToWOrt(relativeToWOrt);
         }
         doFullProjection();
     }
     
     protected void enable4DProjector(int projectorNumber) {
-        List<PerspectiveProjectorOnXYZ> projectors = combining4DProjector.getProjectors();
+        List<PerspectiveProjectorOnXYZ> projectors = main4DProjector.getProjectors();
         for (int i = 0; i < projectors.size(); i++) {
             projectors.get(i).enable(i == projectorNumber);
         }
@@ -231,22 +266,22 @@ public class ViewContainer {
     public void moveFigure(UNIT_VECTORS direction, double amount) {
         Vector vector = getVectorFrom(direction, amount);
         figure.move(vector);
-        perspectiveMovingProjector.move(vector);
+        moving4DProjector.move(vector);
         doFullProjection();
     }
 
     public void rotateFigure(RotationPlane4DEnum rotationPlane, double amount) {
         figure.rotate(rotationPlane, amount);
-        perspectiveMovingProjector.rotate(rotationPlane, amount);
+        moving4DProjector.rotate(rotationPlane, amount);
         doFullProjection();
     }
 
     public void rotateFigureDouble(RotationPlane4DEnum rotationPlane1, double amount1, 
             RotationPlane4DEnum rotationPlane2, double amount2) {
         figure.rotate(rotationPlane1, amount1);
-        perspectiveMovingProjector.rotate(rotationPlane1, amount1);
+        moving4DProjector.rotate(rotationPlane1, amount1);
         figure.rotate(rotationPlane2, amount2);
-        perspectiveMovingProjector.rotate(rotationPlane2, amount2);
+        moving4DProjector.rotate(rotationPlane2, amount2);
         
         doFullProjection();
     }
@@ -265,7 +300,7 @@ public class ViewContainer {
         figure.reset();
         resetSelectedCell();
         
-        combining4DProjector.reset();
+        main4DProjector.reset();
         halfOrtCuttingSelector.setUnitVector(CUTTING_FIGURE_ORT_DEFAULT);
         halfOrtCuttingSelector.setNegative(CUTTING_FIGURE_NEG_DEFAULT);
         
@@ -369,13 +404,13 @@ public class ViewContainer {
     
     // Projection manipulation methods
     public void change4dProjection(int delta) {
-        combining4DProjector.change(delta);
+        main4DProjector.change(delta);
         doFullProjection();
     }
     
     // Toggle methods
     public void toggle4dFigureProjection() {
-        projectorMain.enable(!projectorMain.isEnabled());
+        mainAuxProjectorsMerger.enable(!mainAuxProjectorsMerger.isEnabled());
         doFullProjection();
     }
     
@@ -462,13 +497,36 @@ public class ViewContainer {
     // Projection method
     public synchronized void doFullProjection() {
         Figure selected = selectorMain.project(getFigure());
-        projection3d = projectorMain.project(selected);
+        merged4dFigure = mainAuxProjectorsMerger.project(selected);
+        
+        doMain4DProjection(merged4dFigure);
+        
+        if (isAlternativeProjectionActive()) {
+            doAlternative4DProjection(merged4dFigure);
+        }
+        
         doCameraProjection();
         needRepaint = true;
     }
     
+    protected void doMain4DProjection(Figure figure) {
+        projection3d = main4DProjector.project(figure);
+    }
+
+    protected void doAlternative4DProjection(Figure figure) {
+        altProjection3d = altProjector4DOnOrts.project(figure);
+    }
+    
+    protected boolean isAlternativeProjectionActive() {
+        return viewer instanceof TwoChannelViewer;
+    }
+
     public synchronized void doCameraProjection() {
-        viewer.doProjection(projection3d);
+        if (isAlternativeProjectionActive()) {
+            ((TwoChannelViewer) viewer).doProjection(projection3d, altProjection3d);
+        } else {
+            viewer.doProjection(projection3d);
+        }
         needRepaint = true;
     }
     

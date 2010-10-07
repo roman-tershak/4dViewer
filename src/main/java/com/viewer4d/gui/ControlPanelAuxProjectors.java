@@ -62,6 +62,7 @@ public class ControlPanelAuxProjectors extends JPanel implements ActionListener,
         if (source instanceof JComboBox) {
             try {
                 mainFrame.stopFigureMovement();
+                mainFrame.stopCameraMovement();
                 
                 FigureMovable newFigure = mainFrame.retrieveFigure(
                         ((JComboBox) source).getSelectedItem().toString());

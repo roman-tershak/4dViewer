@@ -26,7 +26,7 @@ public class MonoscopicViewer extends AbstractViewer {
         this(true);
     }
     
-    private void initProjector(double distance, double fov) {
+    protected void initProjector(double distance, double fov) {
         this.perspective2dMonoProjector = new Perspective2DMonoProjector<MovablePoint>(
                 new MovablePoint(distance, 0, 0), 
                 new MovablePoint(XT), 
@@ -42,7 +42,7 @@ public class MonoscopicViewer extends AbstractViewer {
         this.perspective2dMonoProjector.getZt().setCoords(ZT.getCoords()); 
         this.perspective2dMonoProjector.setFov(fov);
     }
-
+    
     @Override
     public double getCurrentDistance() {
         double[] cCoords = perspective2dMonoProjector.getC().getCoords();

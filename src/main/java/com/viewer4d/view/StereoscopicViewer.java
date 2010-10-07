@@ -42,7 +42,7 @@ public class StereoscopicViewer extends AbstractViewer {
         this(true);
     }
 
-    private void initProjectors(double distance, double eyeDist, double fov) {
+    protected void initProjectors(double distance, double eyeDist, double fov) {
         this.perspective2dMonoProjectorRight = new Perspective2DMonoProjector<MovablePoint>(
                 new MovablePoint(distance, 0, 0), 
                 new MovablePoint(XT), 
@@ -90,7 +90,7 @@ public class StereoscopicViewer extends AbstractViewer {
         azimuthChanged = true;
         altitudeChanged = true;
     }
-
+    
     @Override
     public double getCurrentDistance() {
         if (distanceChanged) {
@@ -160,7 +160,15 @@ public class StereoscopicViewer extends AbstractViewer {
     
     @Override
     public void doProjection(Figure figure) {
+        doProjectionRight(figure);
+        doProjectionLeft(figure);
+    }
+    
+    protected void doProjectionRight(Figure figure) {
         projectedFigureRight = perspective2dMonoProjectorRight.project(figure);
+    }
+    
+    protected void doProjectionLeft(Figure figure) {
         projectedFigureLeft = perspective2dMonoProjectorLeft.project(figure);
     }
     
