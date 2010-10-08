@@ -395,9 +395,7 @@ public class ViewContainer {
         doCameraProjection();
     }
     
-    public void rotateCamera(int xDelta, int yDelta) {
-        double azimuthDelta = (double)xDelta / 100;
-        double altitudeDelta = (double)yDelta / 100;
+    public void rotateCamera(double azimuthDelta, double altitudeDelta) {
         viewer.rotateCamera(azimuthDelta, altitudeDelta);
         doCameraProjection();
     }

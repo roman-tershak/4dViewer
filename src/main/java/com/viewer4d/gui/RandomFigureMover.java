@@ -7,12 +7,12 @@ public class RandomFigureMover extends Thread {
 
     protected static final double ONE_ROTATE_STEP = Math.PI/1600;
     protected static final double FULL_CIRCLE_RADIANS = Math.PI * 2;
-    protected static final double CAMERA_PRECESSION_AMPLITUDE = 3.2;
-    protected static final double CAMERA_PRECESSION_STEP = Math.PI / 6;
+    protected static final double CAMERA_PRECESSION_AMPLITUDE = 0.0064;
+    protected static final double CAMERA_PRECESSION_STEP = Math.PI / 64;
     
     protected static final int CHANGE_PERIOD_1 = 1000;
     protected static final int CHANGE_PERIOD_2 = 250;
-    protected static final int CHANGE_PERIOD_CAMERA_ROTATION = 4;
+    protected static final int CHANGE_PERIOD_CAMERA_ROTATION = 1;
     protected static final int WAIT_INTERVAL = 30;
 
     private final Viewer4DFrame viewer4dFrame;
@@ -113,9 +113,14 @@ public class RandomFigureMover extends Thread {
             return;
         }
         
-        int xDelta = (int) (CAMERA_PRECESSION_AMPLITUDE * Math.cos(cameraPrecessionRadians));
-        int yDelta = (int) (CAMERA_PRECESSION_AMPLITUDE * Math.sin(cameraPrecessionRadians));
-        viewContainer.rotateCamera(xDelta, yDelta);
+        double azimuthDelta = CAMERA_PRECESSION_AMPLITUDE * Math.cos(cameraPrecessionRadians);
+        double altitudeDelta;
+        if (!move) {
+            altitudeDelta = CAMERA_PRECESSION_AMPLITUDE * Math.sin(cameraPrecessionRadians);
+        } else {
+            altitudeDelta = 0;
+        }
+        viewContainer.rotateCamera(azimuthDelta, altitudeDelta);
         
         cameraPrecessionRadians -= CAMERA_PRECESSION_STEP;
         if (cameraPrecessionRadians < FULL_CIRCLE_RADIANS) {

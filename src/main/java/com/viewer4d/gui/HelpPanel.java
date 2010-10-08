@@ -32,26 +32,26 @@ public class HelpPanel extends JPanel {
     "   Dragging mouse - move the camera\n" +
     "\n" +
     "Other control keys:\n" +
-    "   'Z' - reset the figure\n" +
-    "   'X' - show or hide 3D space intersection with the figure\n" +
-    "   'D' - show or hide the coordinate orts\n" +
-    "   'S' - switch the type of the coordinate orts\n" +
-    "   'F' - show or hide the figure\n" +
-    "   'C' - switch on cutting non-selected cell projection mode\n" +
-    "   'V' - switch on cutting by W ort figure projection\n" +
-    "   'B' - switch on the entire figure projection (effectivelly switches off any cutting mode selected before)\n" +
-    "   'M' - switch on or off the figure cell selection mode\n" +
+    "   'z' - reset the figure\n" +
+    "   'x' - show or hide 3D space intersection with the figure\n" +
+    "   'd' - show or hide the coordinate orts\n" +
+    "   's' - switch the type of the coordinate orts\n" +
+    "   'f' - show or hide the figure\n" +
+    "   'c' - switch on cutting non-selected cell projection mode\n" +
+    "   'v' - switch on cutting by W ort figure projection\n" +
+    "   'b' - switch on the entire figure projection (effectivelly switches off any cutting mode selected before)\n" +
+    "   'm' - switch on or off the figure cell selection mode\n" +
     "   Shift+('<' or '>') - select next figure cell (when the figure cell selection mode is on)\n" +
     "   Ctrl+('<' or '>') - select next sibling cell for the selected cell (when the figure cell selection mode is on)\n" +
     "   Ctrl+'/' - select or unselect all sibling cells for the selected cell (when the figure cell selection mode is on)\n" +
-    "   'L' - lock/unlock the selected cell (when the figure cell selection mode is on)\n" +
-    "   'K' - clear all the locked selected cells (when the figure cell selection mode is on)\n" +
-    "   'N' - cut or not the selected cells (the selection mode and cutting by W ort projection are on)\n" +
+    "   'l' - lock/unlock the selected cell (when the figure cell selection mode is on)\n" +
+    "   'k' - clear all the locked selected cells (when the figure cell selection mode is on)\n" +
+    "   'n' - cut or not the selected cells (the selection mode and cutting by W ort projection are on)\n" +
     "   '1', '2'... '8' - change the projector position (movable projector only)\n" +
     "   Shift+('1', '2'... '8') - change the alternative projector position (two channel viewer only)\n" +
-    "   'G' - toggle rotation of the figute in a random way\n" +
-    "   'H' - toggle random figure rotation in XYZ space only\n" +
-    "   'H' - toggle camera precession for better filling of 3D\n" +
+    "   'g' - toggle rotation of the figute in a random way\n" +
+    "   'h' - toggle random figure rotation in XYZ space only\n" +
+    "   'j' - toggle camera precession for better filling of 3D space\n" +
     "   'F1' - show or hide this help, Escape - hide the help or quit";
     
     private final JPanel glassPane;

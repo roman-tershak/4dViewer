@@ -127,8 +127,8 @@ KeyListener, MouseListener, MouseMotionListener, MouseWheelListener, WindowState
     public void mouseDragged(MouseEvent e) {
         Point currPoint = e.getPoint();
         if (prevDragPoint != null) {
-            int xDelta = -(int)(currPoint.getX() - prevDragPoint.getX());
-            int yDelta = (int)(currPoint.getY() - prevDragPoint.getY());
+            double xDelta = -(currPoint.getX() - prevDragPoint.getX()) / 100;
+            double yDelta = (currPoint.getY() - prevDragPoint.getY()) / 100;
             viewContainer.rotateCamera(xDelta, yDelta);
             if (viewContainer.needProjection()) {
                 paintingArea.repaint();
