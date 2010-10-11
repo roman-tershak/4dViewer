@@ -5,13 +5,16 @@ import java.util.Map;
 
 import com.viewer4d.geometry.Movable;
 import com.viewer4d.geometry.RotationPlane4DEnum;
+import com.viewer4d.geometry.Transformer;
+import com.viewer4d.geometry.Transformer4D;
 import com.viewer4d.geometry.simple.MovablePoint;
 import com.viewer4d.geometry.simple.Point;
+import com.viewer4d.geometry.simple.Pointable;
 import com.viewer4d.geometry.simple.Vector;
 import com.viewer4d.geometry.simple.Dimensional.UNIT_VECTORS;
 
 public class PerspectiveMovableProjector extends PerspectiveProjectorOnXYZ 
-implements Movable {
+implements Transformer, Movable {
 
     protected static final double MIN_4D_DISTANCE = 3.3333333;
     
@@ -42,36 +45,22 @@ implements Movable {
                         new Point(0, 0, 0, -1) } });
     }
     
+    private Transformer4D transformer = new Transformer4D();
     private final MovablePoint focus;
-    private final MovablePoint c;
-    private final MovablePoint xt;
-    private final MovablePoint yt;
-    private final MovablePoint zt;
-    private final MovablePoint wt;
-    
     private double distance;
-    
-    private Map<MovablePoint, double[]> initialCoords;
-    private double[][] m;
 
 
     public PerspectiveMovableProjector(double wPos, boolean perspective, boolean colorRelToWOrt) {
         super(wPos, perspective, colorRelToWOrt);
         
         this.focus = new MovablePoint(Point.ZERO);
-        this.c = new MovablePoint(0, 0, 0, wPos);
         
         Point[] transOrts = retrieveTransOrts(UNIT_VECTORS.W, (wPos < 0 ? true : false));
-        
-        this.xt = new MovablePoint(transOrts[0]);
-        this.yt = new MovablePoint(transOrts[1]);
-        this.zt = new MovablePoint(transOrts[2]);
-        this.wt = new MovablePoint(transOrts[3]);
+
+        this.transformer = new Transformer4D(new Point(0, 0, 0, wPos),
+                transOrts[0], transOrts[1], transOrts[2], transOrts[3]);
         
         this.distance = Math.abs(wPos);
-        
-        storeCoords();
-        precalculateTransMatrix();
     }
     
     public PerspectiveMovableProjector(double wPos, boolean perspective) {
@@ -80,33 +69,17 @@ implements Movable {
     
     @Override
     public double[] transform(double[] coords) {
-        double px = coords[0];
-        double py = coords[1];
-        double pz = coords[2];
-        double pw = coords[3];
-        
-        double nx = px*m[0][0] + py*m[1][0] + pz*m[2][0] + pw*m[3][0] + m[4][0];
-        double ny = px*m[0][1] + py*m[1][1] + pz*m[2][1] + pw*m[3][1] + m[4][1];
-        double nz = px*m[0][2] + py*m[1][2] + pz*m[2][2] + pw*m[3][2] + m[4][2];
-        double nw = px*m[0][3] + py*m[1][3] + pz*m[2][3] + pw*m[3][3] + m[4][3];
-        
-        return new double[] {nx, ny, nz, nw};
+        return transformer.transform(coords);
     }
-
+    
     public void setProjector(UNIT_VECTORS unitVector, boolean forward) {
         Vector ortCamVector = retrieveCamVector(unitVector, 
                 (forward ? -distance : distance));
         
         Point newCamPoint = focus.add(ortCamVector);
-        c.set(newCamPoint);
-        
         Point[] transOrts = retrieveTransOrts(unitVector, forward);
-        xt.set(transOrts[0]);
-        yt.set(transOrts[1]);
-        zt.set(transOrts[2]);
-        wt.set(transOrts[3]);
         
-        precalculateTransMatrix();
+        transformer.setPosition(newCamPoint, transOrts[0], transOrts[1], transOrts[2], transOrts[3]);
     }
 
     private static Point[] retrieveTransOrts(UNIT_VECTORS unitVector, boolean forward) {
@@ -127,81 +100,34 @@ implements Movable {
         this.distance = distance;
         super.setProjectorDistance(distance);
         
-        Vector camVector = c.sub(focus);
+        Vector camVector = transformer.getC().sub(focus);
         camVector.setLength(distance);
-        c.set(focus.add(camVector));
-        
-        precalculateTransMatrix();
+        transformer.move(camVector);
     }
     
     @Override
     public void move(Vector vector) {
-        c.move(vector);
         focus.move(vector);
-        precalculateTransMatrix();
+        transformer.move(vector);
     }
     
     @Override
     public void rotate(RotationPlane4DEnum rotationPlane, double radians) {
-        double[][] rotationMatrix = rotationPlane.getRotationMatrix(radians);
-
-        c.rotate(rotationMatrix, focus);
-        
-        xt.rotate(rotationMatrix, Point.ZERO);
-        yt.rotate(rotationMatrix, Point.ZERO);
-        zt.rotate(rotationMatrix, Point.ZERO);
-        wt.rotate(rotationMatrix, Point.ZERO);
-        
-        precalculateTransMatrix();
+        transformer.rotate(rotationPlane, radians, focus);
     }
     
     @Override
+    public void rotate(RotationPlane4DEnum rotationPlane, double radians, Pointable center) {
+        throw new UnsupportedOperationException("This method is not supported.");
+    }
+
+    @Override
     public void reset() {
-        restoreCoords();
-        
-        distance = c.sub(focus).getLength();
-        super.setProjectorDistance(distance);
-        
-        precalculateTransMatrix();
-    }
-
-    private void storeCoords() {
-        initialCoords = new HashMap<MovablePoint, double[]>();
-        initialCoords.put(c, c.getCoords().clone());
-        initialCoords.put(xt, xt.getCoords().clone());
-        initialCoords.put(yt, yt.getCoords().clone());
-        initialCoords.put(zt, zt.getCoords().clone());
-        initialCoords.put(wt, wt.getCoords().clone());
-    }
-
-    private void restoreCoords() {
         focus.set(Point.ZERO);
-        c.setCoords(initialCoords.get(c).clone());
-        xt.setCoords(initialCoords.get(xt).clone());
-        yt.setCoords(initialCoords.get(yt).clone());
-        zt.setCoords(initialCoords.get(zt).clone());
-        wt.setCoords(initialCoords.get(wt).clone());
-    }
-
-    protected void precalculateTransMatrix() {
+        transformer.reset();
         
-        double[] xtCoords = xt.getCoords();
-        double[] ytCoords = yt.getCoords();
-        double[] ztCoords = zt.getCoords();
-        double[] wtCoords = wt.getCoords();
-        
-        double[] cCoords = c.getCoords();
-        
-        m = new double[][] {
-                {xtCoords[0], ytCoords[0], ztCoords[0], wtCoords[0]}, 
-                {xtCoords[1], ytCoords[1], ztCoords[1], wtCoords[1]}, 
-                {xtCoords[2], ytCoords[2], ztCoords[2], wtCoords[2]}, 
-                {xtCoords[3], ytCoords[3], ztCoords[3], wtCoords[3]}, 
-                {-(cCoords[0]*xtCoords[0] + cCoords[1]*xtCoords[1] + cCoords[2]*xtCoords[2] + cCoords[3]*xtCoords[3]),
-                 -(cCoords[0]*ytCoords[0] + cCoords[1]*ytCoords[1] + cCoords[2]*ytCoords[2] + cCoords[3]*ytCoords[3]),
-                 -(cCoords[0]*ztCoords[0] + cCoords[1]*ztCoords[1] + cCoords[2]*ztCoords[2] + cCoords[3]*ztCoords[3]),
-                 -(cCoords[0]*wtCoords[0] + cCoords[1]*wtCoords[1] + cCoords[2]*wtCoords[2] + cCoords[3]*wtCoords[3])}
-        };
+        distance = transformer.getC().sub(focus).getLength();
+        super.setProjectorDistance(distance);
     }
 
 }

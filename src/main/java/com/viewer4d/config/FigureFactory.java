@@ -21,11 +21,11 @@ import com.viewer4d.config.model.EdgeType;
 import com.viewer4d.config.model.FaceType;
 import com.viewer4d.config.model.FigureType;
 import com.viewer4d.config.model.VertexType;
-import com.viewer4d.geometry.Edge;
-import com.viewer4d.geometry.Face;
-import com.viewer4d.geometry.FigureMovable;
-import com.viewer4d.geometry.Vertex;
-import com.viewer4d.geometry.impl.FigureMovableImpl;
+import com.viewer4d.geometry.figure.Edge;
+import com.viewer4d.geometry.figure.Face;
+import com.viewer4d.geometry.figure.FigureMovable;
+import com.viewer4d.geometry.figure.Vertex;
+import com.viewer4d.geometry.figure.impl.FigureMovableImpl;
 import com.viewer4d.geometry.simple.Pointable;
 
 public final class FigureFactory {

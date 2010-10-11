@@ -1,13 +1,13 @@
-package com.viewer4d.geometry.impl;
+package com.viewer4d.geometry.figure.impl;
 
 import java.util.Collection;
 import java.util.HashSet;
 
-import com.viewer4d.geometry.Cell;
-import com.viewer4d.geometry.Edge;
-import com.viewer4d.geometry.Face;
-import com.viewer4d.geometry.Figure;
-import com.viewer4d.geometry.Vertex;
+import com.viewer4d.geometry.figure.Cell;
+import com.viewer4d.geometry.figure.Edge;
+import com.viewer4d.geometry.figure.Face;
+import com.viewer4d.geometry.figure.Figure;
+import com.viewer4d.geometry.figure.Vertex;
 
 public class FigureBaseImpl implements Figure {
 

@@ -5,9 +5,9 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
-import com.viewer4d.geometry.Figure;
-import com.viewer4d.geometry.FigureMovable;
 import com.viewer4d.geometry.RotationPlane4DEnum;
+import com.viewer4d.geometry.figure.Figure;
+import com.viewer4d.geometry.figure.FigureMovable;
 import com.viewer4d.geometry.simple.Vector;
 import com.viewer4d.geometry.simple.Dimensional.UNIT_VECTORS;
 import com.viewer4d.gui.ControlPanelSelectors;

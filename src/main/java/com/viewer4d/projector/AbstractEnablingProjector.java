@@ -2,9 +2,9 @@ package com.viewer4d.projector;
 
 import java.util.HashSet;
 
-import com.viewer4d.geometry.Edge;
-import com.viewer4d.geometry.Figure;
-import com.viewer4d.geometry.impl.FigureBaseImpl;
+import com.viewer4d.geometry.figure.Edge;
+import com.viewer4d.geometry.figure.Figure;
+import com.viewer4d.geometry.figure.impl.FigureBaseImpl;
 
 
 public abstract class AbstractEnablingProjector implements Projector, Enabling {

@@ -1,4 +1,4 @@
-package com.viewer4d.geometry.impl;
+package com.viewer4d.geometry.figure.impl;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -8,12 +8,12 @@ import java.util.Map;
 import java.util.Set;
 
 import com.viewer4d.config.FigureFactory;
-import com.viewer4d.geometry.Cell;
-import com.viewer4d.geometry.Edge;
-import com.viewer4d.geometry.Face;
-import com.viewer4d.geometry.FigureMovable;
 import com.viewer4d.geometry.RotationPlane4DEnum;
-import com.viewer4d.geometry.Vertex;
+import com.viewer4d.geometry.figure.Cell;
+import com.viewer4d.geometry.figure.Edge;
+import com.viewer4d.geometry.figure.Face;
+import com.viewer4d.geometry.figure.FigureMovable;
+import com.viewer4d.geometry.figure.Vertex;
 import com.viewer4d.geometry.simple.MovablePoint;
 import com.viewer4d.geometry.simple.Plane;
 import com.viewer4d.geometry.simple.Pointable;
@@ -177,6 +177,11 @@ public class FigureMovableImpl extends FigureBaseImpl implements FigureMovable {
         for (MovablePoint vertex : getVertices()) {
             vertex.rotate(rotationMatrix, centrum);
         }
+    }
+    
+    @Override
+    public void rotate(RotationPlane4DEnum rotationPlane, double radians, Pointable center) {
+        throw new UnsupportedOperationException("This method is not supported.");
     }
     
     @Override

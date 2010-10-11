@@ -13,7 +13,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
-import com.viewer4d.geometry.FigureMovable;
+import com.viewer4d.geometry.figure.FigureMovable;
 
 @SuppressWarnings("serial")
 public class ControlPanelAuxProjectors extends JPanel implements ActionListener, KeyListener {

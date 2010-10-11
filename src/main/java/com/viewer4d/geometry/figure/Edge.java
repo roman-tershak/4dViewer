@@ -1,9 +1,10 @@
-package com.viewer4d.geometry;
+package com.viewer4d.geometry.figure;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.viewer4d.geometry.Selection;
 import com.viewer4d.geometry.simple.MovablePoint;
 import static com.viewer4d.geometry.Selection.*;
 

@@ -8,10 +8,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 
-import com.viewer4d.geometry.Edge;
-import com.viewer4d.geometry.Figure;
 import com.viewer4d.geometry.Selection;
-import com.viewer4d.geometry.Vertex;
+import com.viewer4d.geometry.figure.Edge;
+import com.viewer4d.geometry.figure.Figure;
+import com.viewer4d.geometry.figure.Vertex;
 import com.viewer4d.geometry.simple.Point;
 import com.viewer4d.geometry.simple.Pointable;
 

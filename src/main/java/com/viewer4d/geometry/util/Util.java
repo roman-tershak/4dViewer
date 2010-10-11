@@ -4,9 +4,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import com.viewer4d.geometry.Edge;
-import com.viewer4d.geometry.Face;
-import com.viewer4d.geometry.Vertex;
+import com.viewer4d.geometry.figure.Edge;
+import com.viewer4d.geometry.figure.Face;
+import com.viewer4d.geometry.figure.Vertex;
 import com.viewer4d.geometry.simple.Plane;
 import com.viewer4d.geometry.simple.Pointable;
 import com.viewer4d.geometry.simple.Space;

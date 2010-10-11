@@ -1,8 +1,10 @@
-package com.viewer4d.geometry;
+package com.viewer4d.geometry.figure;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+
+import com.viewer4d.geometry.Selection;
 
 public class Cell {
 

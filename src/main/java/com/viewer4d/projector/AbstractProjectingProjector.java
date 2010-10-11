@@ -5,10 +5,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import com.viewer4d.geometry.Edge;
-import com.viewer4d.geometry.Figure;
-import com.viewer4d.geometry.Vertex;
-import com.viewer4d.geometry.impl.FigureBaseImpl;
+import com.viewer4d.geometry.figure.Edge;
+import com.viewer4d.geometry.figure.Figure;
+import com.viewer4d.geometry.figure.Vertex;
+import com.viewer4d.geometry.figure.impl.FigureBaseImpl;
 
 
 

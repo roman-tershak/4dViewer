@@ -20,7 +20,7 @@ import javax.swing.JPanel;
 import sun.awt.VerticalBagLayout;
 
 import com.viewer4d.config.FigureFactory;
-import com.viewer4d.geometry.FigureMovable;
+import com.viewer4d.geometry.figure.FigureMovable;
 import com.viewer4d.view.ViewContainer;
 
 @SuppressWarnings("serial")

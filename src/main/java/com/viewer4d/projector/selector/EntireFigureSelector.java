@@ -1,7 +1,7 @@
 package com.viewer4d.projector.selector;
 
-import com.viewer4d.geometry.Edge;
-import com.viewer4d.geometry.Figure;
+import com.viewer4d.geometry.figure.Edge;
+import com.viewer4d.geometry.figure.Figure;
 
 public class EntireFigureSelector extends AbstractEnablingSelector {
 

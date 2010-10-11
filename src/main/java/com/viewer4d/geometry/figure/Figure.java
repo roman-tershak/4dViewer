@@ -1,4 +1,4 @@
-package com.viewer4d.geometry;
+package com.viewer4d.geometry.figure;
 
 import java.util.Collection;
 

@@ -3,10 +3,10 @@ package com.viewer4d.projector.auxiliary;
 import java.util.Arrays;
 import java.util.HashSet;
 
-import com.viewer4d.geometry.Edge;
-import com.viewer4d.geometry.Figure;
-import com.viewer4d.geometry.Vertex;
-import com.viewer4d.geometry.impl.FigureBaseImpl;
+import com.viewer4d.geometry.figure.Edge;
+import com.viewer4d.geometry.figure.Figure;
+import com.viewer4d.geometry.figure.Vertex;
+import com.viewer4d.geometry.figure.impl.FigureBaseImpl;
 import com.viewer4d.projector.AbstractEnablingProjector;
 
 public class XYZOrtsProjector extends AbstractEnablingProjector {

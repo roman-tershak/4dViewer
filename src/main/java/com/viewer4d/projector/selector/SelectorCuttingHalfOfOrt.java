@@ -3,8 +3,8 @@ package com.viewer4d.projector.selector;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.viewer4d.geometry.Edge;
-import com.viewer4d.geometry.Vertex;
+import com.viewer4d.geometry.figure.Edge;
+import com.viewer4d.geometry.figure.Vertex;
 import com.viewer4d.geometry.simple.Dimensional.UNIT_VECTORS;
 
 public class SelectorCuttingHalfOfOrt extends AbstractEnablingSelector {

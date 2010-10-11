@@ -1,10 +1,11 @@
 package com.viewer4d.projector.from4dto3d;
 
-import com.viewer4d.geometry.Vertex;
+import com.viewer4d.geometry.Transformer;
+import com.viewer4d.geometry.figure.Vertex;
 import com.viewer4d.projector.AbstractProjectingProjector;
 import com.viewer4d.projector.Changeable;
 
-public class PerspectiveProjectorOnXYZ extends AbstractProjectingProjector implements Changeable {
+public class PerspectiveProjectorOnXYZ extends AbstractProjectingProjector implements Transformer, Changeable {
 
     protected static final double MIN_4D_DISTANCE = 3.3333333;
     
@@ -69,7 +70,7 @@ public class PerspectiveProjectorOnXYZ extends AbstractProjectingProjector imple
         return new Vertex(nx, ny, nz, nw);
     }
     
-    protected double[] transform(double[] coords) {
+    public double[] transform(double[] coords) {
         return new double[] {coords[0], coords[1], coords[2], coords[3] - wPos};
     }
     

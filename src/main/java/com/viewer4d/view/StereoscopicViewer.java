@@ -9,8 +9,8 @@ import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 
-import com.viewer4d.geometry.Figure;
 import com.viewer4d.geometry.RotationPlane4DEnum;
+import com.viewer4d.geometry.figure.Figure;
 import com.viewer4d.geometry.simple.MovablePoint;
 import com.viewer4d.projector.from3dto2d.Perspective2DMonoProjector;
 

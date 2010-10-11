@@ -5,7 +5,7 @@ import java.awt.Graphics;
 
 import javax.swing.JPanel;
 
-import com.viewer4d.geometry.Figure;
+import com.viewer4d.geometry.figure.Figure;
 
 public interface Viewer {
 

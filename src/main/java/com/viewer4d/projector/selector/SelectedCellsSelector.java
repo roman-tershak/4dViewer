@@ -2,8 +2,8 @@ package com.viewer4d.projector.selector;
 
 import static com.viewer4d.geometry.Selection.NOTSELECTED;
 
-import com.viewer4d.geometry.Edge;
 import com.viewer4d.geometry.Selection;
+import com.viewer4d.geometry.figure.Edge;
 
 public class SelectedCellsSelector extends AbstractEnablingSelector {
 

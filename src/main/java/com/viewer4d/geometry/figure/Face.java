@@ -1,4 +1,4 @@
-package com.viewer4d.geometry;
+package com.viewer4d.geometry.figure;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import com.viewer4d.geometry.Selection;
 
 public class Face {
 

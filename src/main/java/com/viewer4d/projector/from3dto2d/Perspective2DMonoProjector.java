@@ -1,7 +1,7 @@
 package com.viewer4d.projector.from3dto2d;
 
-import com.viewer4d.geometry.Edge;
-import com.viewer4d.geometry.Vertex;
+import com.viewer4d.geometry.figure.Edge;
+import com.viewer4d.geometry.figure.Vertex;
 import com.viewer4d.geometry.simple.Pointable;
 import com.viewer4d.projector.AbstractProjectingProjector;
 
