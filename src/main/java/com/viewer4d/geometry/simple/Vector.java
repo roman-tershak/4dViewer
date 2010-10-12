@@ -39,6 +39,10 @@ public class Vector implements Dimensional {
         multiply(distance / getLength());
     }
     
+    public Vector negate() {
+        return new Vector(-coords[0], -coords[1], -coords[2], -coords[3]);
+    }
+    
     public void multiply(double koef) {
         coords[0] *= koef;
         coords[1] *= koef;

@@ -26,7 +26,8 @@ public class SelectorCuttingHalfOfOrt extends AbstractEnablingSelector {
     private UNIT_VECTORS unitVector;
     private boolean negative;
 
-    public SelectorCuttingHalfOfOrt(UNIT_VECTORS unitVector, boolean negative) {
+    public SelectorCuttingHalfOfOrt(boolean enabled, UNIT_VECTORS unitVector, boolean negative) {
+        super(enabled);
         this.unitVector = unitVector;
         this.negative = negative;
     }

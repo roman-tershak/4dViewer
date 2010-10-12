@@ -17,26 +17,45 @@ import com.viewer4d.geometry.simple.MovablePoint;
 import com.viewer4d.geometry.simple.Point;
 import com.viewer4d.projector.AbstractEnablingProjector;
 
-public class Simple3DSpaceIntersectorAtZeroW extends AbstractEnablingProjector {
+public class Simple3DSpaceIntersectorWPoint extends AbstractEnablingProjector {
 
     public static final double ZERO_W_DEFAULT = 0.0;
     
-    private double w = ZERO_W_DEFAULT;
+    private double w;
     
     private Map<Face, Set<Point>> facesInterPoints = new HashMap<Face, Set<Point>>();
     private Map<Point, Vertex> pointVertices = new HashMap<Point, Vertex>();
+    
+    public Simple3DSpaceIntersectorWPoint(boolean enabled) {
+        this(enabled, ZERO_W_DEFAULT);
+    }
+    public Simple3DSpaceIntersectorWPoint(boolean enabled, double intersectPoint) {
+        super(enabled);
+        w = intersectPoint;
+    }
+    
+    public double getW() {
+        return w;
+    }
+    public void setW(double w) {
+        this.w = w;
+    }
     
     @Override
     protected Figure projectFigure(Figure figure) {
         facesInterPoints.clear();
 
         for (Edge edge : figure.getEdges()) {
-            addEdgeInterPoints(edge);
+            addEdgeInterPoints(projectEdge(edge));
         }
 
         return new FigureBaseImpl(null, formEdgeSet());
     }
 
+    protected Edge projectEdge(Edge edge) {
+        return edge;
+    }
+    
     private void addEdgeInterPoints(Edge edge) {
         Point[] interPoints = getEdgeInterPoints(edge);
         
@@ -109,7 +128,6 @@ public class Simple3DSpaceIntersectorAtZeroW extends AbstractEnablingProjector {
         pointVertices.clear();
         
         for (Map.Entry<Face, Set<Point>> faceEntry : facesInterPoints.entrySet()) {
-            Face face = faceEntry.getKey();
             Set<Point> interPoints = faceEntry.getValue();
             
             int size = interPoints.size();
@@ -119,23 +137,9 @@ public class Simple3DSpaceIntersectorAtZeroW extends AbstractEnablingProjector {
                 result.add(new Edge(
                         getVertexForPoint(it.next()),
                         getVertexForPoint(it.next())));
-            } else if (size > 2) {
-                addEntireFace(face, result);
             }
         }
         return result;
-    }
-
-    private void addEntireFace(
-            Face face, Set<Edge> edges) {
-        for (Edge edge : face.getEdges()) {
-            Point a = new Point(edge.getA().getCoords());
-            Point b = new Point(edge.getB().getCoords());
-            
-            edges.add(new Edge(
-                    getVertexForPoint(a),
-                    getVertexForPoint(b)));
-        }
     }
 
     private Vertex getVertexForPoint(Point point) {

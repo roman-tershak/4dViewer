@@ -70,8 +70,14 @@ public class PerspectiveProjectorOnXYZ extends AbstractProjectingProjector imple
         return new Vertex(nx, ny, nz, nw);
     }
     
+    @Override
     public double[] transform(double[] coords) {
         return new double[] {coords[0], coords[1], coords[2], coords[3] - wPos};
+    }
+    
+    @Override
+    public double[] backwardTransform(double[] coords) {
+        throw new UnsupportedOperationException("This operation is not supported.");
     }
     
     @Override

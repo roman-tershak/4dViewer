@@ -41,5 +41,4 @@ public abstract class AbstractEnablingProjector implements Projector, Enabling {
     }
 
     protected abstract Figure projectFigure(Figure figure);
-    
 }

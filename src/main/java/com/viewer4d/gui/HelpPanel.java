@@ -10,18 +10,18 @@ import javax.swing.JTextArea;
 public class HelpPanel extends JPanel {
 
     private static final String HELP_TEXT = "Figure movement:\n" +
-    "   'U' - move by X forward, Shift+'U' - move by X backward\n" +
-    "   'I' - move by Y forward, Shift+'I' - move by Y backward\n" +
-    "   'O' - move by Z forward, Shift+'O' - move by Z backward\n" +
-    "   'P' - move by W forward, Shift+'P' - move by W backward\n" +
+    "   'u' - move by X forward, Shift+'u' - move by X backward\n" +
+    "   'i' - move by Y forward, Shift+'i' - move by Y backward\n" +
+    "   'o' - move by Z forward, Shift+'o' - move by Z backward\n" +
+    "   'p' - move by W forward, Shift+'p' - move by W backward\n" +
     "\n" +
     "Figure rotation:\n" +
-    "   'R' - rotate by XY, Shift+'R' - rotate by XY in opposite direction\n" +
-    "   'T' - rotate by XZ, Shift+'T' - rotate by XZ in opposite direction\n" +
-    "   'Y' - rotate by YZ, Shift+'Y' - rotate by YZ in opposite direction\n" +
-    "   'Q' - rotate by XW, Shift+'Q' - rotate by XW in opposite direction\n" +
-    "   'W' - rotate by YW, Shift+'W' - rotate by YW in opposite direction\n" +
-    "   'E' - rotate by ZW, Shift+'E' - rotate by ZW in opposite direction\n" +
+    "   'r' - rotate by XY, Shift+'r' - rotate by XY in opposite direction\n" +
+    "   't' - rotate by XZ, Shift+'t' - rotate by XZ in opposite direction\n" +
+    "   'y' - rotate by YZ, Shift+'y' - rotate by YZ in opposite direction\n" +
+    "   'q' - rotate by XW, Shift+'q' - rotate by XW in opposite direction\n" +
+    "   'w' - rotate by YW, Shift+'w' - rotate by YW in opposite direction\n" +
+    "   'e' - rotate by ZW, Shift+'e' - rotate by ZW in opposite direction\n" +
     "\n" +
     "Projection control:\n" +
     "   Wheel rotation + the right button down - change 4D projector distance\n" +
@@ -40,6 +40,8 @@ public class HelpPanel extends JPanel {
     "   'c' - switch on cutting non-selected cell projection mode\n" +
     "   'v' - switch on cutting by W ort figure projection\n" +
     "   'b' - switch on the entire figure projection (effectivelly switches off any cutting mode selected before)\n" +
+    "   'a' - toggle an additional movable 3D space intersector\n" +
+    "   Ctrl+(the figure movement control combinations) - moving the additional 3D space intersector\n" +
     "   'm' - switch on or off the figure cell selection mode\n" +
     "   Shift+('<' or '>') - select next figure cell (when the figure cell selection mode is on)\n" +
     "   Ctrl+('<' or '>') - select next sibling cell for the selected cell (when the figure cell selection mode is on)\n" +

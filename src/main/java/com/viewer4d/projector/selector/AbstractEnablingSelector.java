@@ -17,13 +17,13 @@ public abstract class AbstractEnablingSelector extends AbstractEnablingProjector
 
     private boolean notCuttingSelected;
     
-    public AbstractEnablingSelector(boolean notCuttingSelected) {
+    public AbstractEnablingSelector(boolean enabled, boolean notCuttingSelected) {
         super();
         this.notCuttingSelected = notCuttingSelected;
     }
 
-    public AbstractEnablingSelector() {
-        this(false);
+    public AbstractEnablingSelector(boolean enabled) {
+        this(enabled, false);
     }
     
     public boolean isNotCuttingSelected() {

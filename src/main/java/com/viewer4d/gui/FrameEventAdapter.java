@@ -39,20 +39,33 @@ KeyListener, MouseListener, MouseMotionListener, MouseWheelListener, WindowState
 
     @Override
     public void keyPressed(KeyEvent e) {
-        String keyText = KeyEvent.getKeyText(e.getKeyCode());
+        String keyText = KeyEvent.getKeyText(e.getKeyCode()).toLowerCase();
         boolean ctrlPressed = (e.getModifiersEx() & CTRL_DOWN_MASK) == CTRL_DOWN_MASK;
-        if (keyText.equals("F1")) {
+        boolean shiftPressed = (e.getModifiersEx() & SHIFT_DOWN_MASK) == SHIFT_DOWN_MASK;
+        
+        if (keyText.equals("f1")) {
             mainFrame.toggleHelp();
             
-        } else if (keyText.equals("Escape")) {
+        } else if (keyText.equals("escape")) {
             mainFrame.handleEscape();
             
         } else if (ctrlPressed) {
-            if (keyText.equals("Comma")) {
+            UNIT_VECTORS vector = null;
+            RotationPlane4DEnum rotationPlane = null;
+            
+            if ((vector = getMotionVector(keyText)) != null) {
+                mainFrame.stopFigureMovement();
+                mainFrame.stopCameraMovement();
+                viewContainer.moveMovable3DIntersectorOneStep(vector, !shiftPressed);
+            } else if ((rotationPlane = getRotationPlane(keyText)) != null) {
+                mainFrame.stopFigureMovement();
+                mainFrame.stopCameraMovement();
+                viewContainer.rotateMovable3DIntersectorOneStep(rotationPlane, !shiftPressed);
+            } else if (keyText.equals("comma")) {
                 viewContainer.selectPrevSiblingCell();
-            } else if (keyText.equals("Period")) {
+            } else if (keyText.equals("period")) {
                 viewContainer.selectNextSiblingCell();
-            } else if (keyText.equals("Slash")) {
+            } else if (keyText.equals("slash")) {
                 viewContainer.toggleSiblingCells();
             }
             if (viewContainer.needProjection()) {
@@ -68,21 +81,21 @@ KeyListener, MouseListener, MouseMotionListener, MouseWheelListener, WindowState
     @Override
     public void keyTyped(KeyEvent e) {
         boolean shiftPressed = (e.getModifiersEx() & SHIFT_DOWN_MASK) == SHIFT_DOWN_MASK;
-        String typedChar = String.valueOf(e.getKeyChar()).toLowerCase();
+        String keyText = String.valueOf(e.getKeyChar()).toLowerCase();
         
         UNIT_VECTORS vector = null;
         RotationPlane4DEnum rotationPlane = null;
         
-        if ((vector = getMotionVector(typedChar)) != null) {
+        if ((vector = getMotionVector(keyText)) != null) {
             mainFrame.stopFigureMovement();
             mainFrame.stopCameraMovement();
             viewContainer.moveFigureOneStep(vector, !shiftPressed);
-        } else if ((rotationPlane = getRotationPlane(typedChar)) != null) {
+        } else if ((rotationPlane = getRotationPlane(keyText)) != null) {
             mainFrame.stopFigureMovement();
             mainFrame.stopCameraMovement();
             viewContainer.rotateFigureOneStep(rotationPlane, !shiftPressed);
         } else {
-            doControlAction(typedChar, shiftPressed);
+            doControlAction(keyText, shiftPressed);
         }
         if (viewContainer.needProjection()) {
             paintingArea.repaint();
@@ -215,6 +228,9 @@ KeyListener, MouseListener, MouseMotionListener, MouseWheelListener, WindowState
                 break;
             case 'x':
                 viewContainer.toggle3dIntersector();
+                break;
+            case 'a':
+                viewContainer.toggleMovable3DIntersector();
                 break;
             case 'd':
                 viewContainer.toggleXYZOrts();

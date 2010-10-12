@@ -12,6 +12,7 @@ import com.viewer4d.geometry.simple.Vector;
 import com.viewer4d.geometry.simple.Dimensional.UNIT_VECTORS;
 import com.viewer4d.gui.ControlPanelSelectors;
 import com.viewer4d.gui.Viewer4DFrame;
+import static com.viewer4d.gui.Viewer4DFrame.*;
 import com.viewer4d.projector.AbstractEnablingProjector;
 import com.viewer4d.projector.AbstractProjectingProjector;
 import com.viewer4d.projector.Projector;
@@ -21,7 +22,8 @@ import com.viewer4d.projector.combining.AuxProjectorsMerger;
 import com.viewer4d.projector.combining.CombiningProjector;
 import com.viewer4d.projector.from4dto3d.PerspectiveMovableProjector;
 import com.viewer4d.projector.from4dto3d.PerspectiveProjectorOnXYZ;
-import com.viewer4d.projector.intersector.Simple3DSpaceIntersectorAtZeroW;
+import com.viewer4d.projector.intersector.Movable3DSpaceIntersector;
+import com.viewer4d.projector.intersector.Simple3DSpaceIntersectorWPoint;
 import com.viewer4d.projector.selector.AbstractEnablingSelector;
 import com.viewer4d.projector.selector.EntireFigureSelector;
 import com.viewer4d.projector.selector.SelectedCellsSelector;
@@ -53,15 +55,18 @@ public class ViewContainer {
     private Figure altProjection3d;
     
     
-    private CombiningProjector<AbstractEnablingSelector> selectorMain;
-    
+    private CombiningProjector<AbstractEnablingSelector> selectorFirst;
     private EntireFigureSelector entireFigureSelector;
-    private SelectorCuttingHalfOfOrt halfOrtCuttingSelector;
     private SelectedCellsSelector selectedCellsSelector;
     
+    private AuxProjectorsMerger<Projector> intersectorsMerger;
+    private Simple3DSpaceIntersectorWPoint spaceIntersector;
+    private Movable3DSpaceIntersector movable3dSpaceIntersector;
+    
+    private AuxProjectorsMerger<Projector> halfOrtProjectorsMerger;
+    private SelectorCuttingHalfOfOrt halfOrtCuttingSelector;
     
     private CombiningProjector<PerspectiveProjectorOnXYZ> main4DProjector;
-    
     private PerspectiveProjectorOnXYZ projector4DOnXYZ;
     private PerspectiveMovableProjector projector4DOnOrts;
     private PerspectiveMovableProjector moving4DProjector;
@@ -69,8 +74,6 @@ public class ViewContainer {
     private PerspectiveMovableProjector altProjector4DOnOrts;
     
     private AuxProjectorsMerger<Projector> mainAuxProjectorsMerger;
-    
-    private Simple3DSpaceIntersectorAtZeroW spaceIntersector;
     private AbstractEnablingProjector ortsProjector;
     private AbstractEnablingProjector cubeOrtsProjector;
     
@@ -92,17 +95,30 @@ public class ViewContainer {
         this.figure = figure;
         
         // Selectors
-        entireFigureSelector = new EntireFigureSelector();
-        halfOrtCuttingSelector = new SelectorCuttingHalfOfOrt(
+        entireFigureSelector = new EntireFigureSelector(!CUTTING_NON_SELECTED_DEFAULT);
+        selectedCellsSelector = new SelectedCellsSelector(CUTTING_NON_SELECTED_DEFAULT);
+        
+        selectorFirst = new CombiningProjector<AbstractEnablingSelector>(
+                entireFigureSelector, selectedCellsSelector);
+        
+        // 3D space intersectors
+        spaceIntersector = new Simple3DSpaceIntersectorWPoint(true);
+        movable3dSpaceIntersector = new Movable3DSpaceIntersector(false);
+        
+        // The intersectors merger
+        intersectorsMerger = new AuxProjectorsMerger<Projector>(
+                spaceIntersector,
+                movable3dSpaceIntersector
+        );
+        
+        halfOrtCuttingSelector = new SelectorCuttingHalfOfOrt(CUTTING_FIGURE_PROJECTION_DEFAULT,
                 CUTTING_FIGURE_ORT_DEFAULT, CUTTING_FIGURE_NEG_DEFAULT);
-        selectedCellsSelector = new SelectedCellsSelector();
         
-        entireFigureSelector.enable(!Viewer4DFrame.CUTTING_FIGURE_PROJECTION_DEFAULT);
-        halfOrtCuttingSelector.enable(Viewer4DFrame.CUTTING_FIGURE_PROJECTION_DEFAULT);
-        selectedCellsSelector.enable(Viewer4DFrame.CUTTING_NON_SELECTED_DEFAULT);
-        
-        selectorMain = new CombiningProjector<AbstractEnablingSelector>(
-                entireFigureSelector, halfOrtCuttingSelector, selectedCellsSelector);
+        // The half ort cutting selector merger
+        halfOrtProjectorsMerger = new AuxProjectorsMerger<Projector>(
+                halfOrtCuttingSelector
+        );
+        halfOrtProjectorsMerger.enable(!CUTTING_FIGURE_PROJECTION_DEFAULT);
         
         // 4D Projectors
         projector4DOnXYZ = new PerspectiveProjectorOnXYZ(W_4D_POSITION_DEFAULT, true);
@@ -119,15 +135,12 @@ public class ViewContainer {
         altProjector4DOnOrts.enable(true);
         altProjector4DOnOrts.setProjector(UNIT_VECTORS.X, true);
         
-        // 3D space intersector
-        spaceIntersector = new Simple3DSpaceIntersectorAtZeroW();
         // Orts
         ortsProjector = new XYZWOrtsProjector(true);
         cubeOrtsProjector = new CubeXYZOrtsProjector(false);
         
         // The auxiliary projectors merger
         mainAuxProjectorsMerger = new AuxProjectorsMerger<Projector>(
-                spaceIntersector,
                 ortsProjector,
                 cubeOrtsProjector
         );
@@ -150,7 +163,9 @@ public class ViewContainer {
     
     public void setFigure(FigureMovable figure) {
         figure.reset();
+        
         main4DProjector.reset();
+        movable3dSpaceIntersector.reset();
         
         cellSelector.setFigure(figure);
         this.figure = figure;
@@ -264,36 +279,43 @@ public class ViewContainer {
 
     // Figure manipulation methods
     public void moveFigure(UNIT_VECTORS direction, double amount) {
-        Vector vector = getVectorFrom(direction, amount);
+        Vector vector = Vector.createFrom(direction, amount);
+        
         figure.move(vector);
         moving4DProjector.move(vector);
+        movable3dSpaceIntersector.move(vector);
+        
         doFullProjection();
     }
 
-    public void rotateFigure(RotationPlane4DEnum rotationPlane, double amount) {
-        figure.rotate(rotationPlane, amount);
-        moving4DProjector.rotate(rotationPlane, amount);
+    public void rotateFigure(RotationPlane4DEnum rotationPlane, double radians) {
+        figure.rotate(rotationPlane, radians);
+        moving4DProjector.rotate(rotationPlane, radians);
+        movable3dSpaceIntersector.rotate(rotationPlane, radians, figure.getCentrum());
+        
         doFullProjection();
     }
 
-    public void rotateFigureDouble(RotationPlane4DEnum rotationPlane1, double amount1, 
-            RotationPlane4DEnum rotationPlane2, double amount2) {
-        figure.rotate(rotationPlane1, amount1);
-        moving4DProjector.rotate(rotationPlane1, amount1);
-        figure.rotate(rotationPlane2, amount2);
-        moving4DProjector.rotate(rotationPlane2, amount2);
+    public void rotateFigureDouble(RotationPlane4DEnum rotationPlane1, double radians1, 
+            RotationPlane4DEnum rotationPlane2, double radians2) {
+        figure.rotate(rotationPlane1, radians1);
+        moving4DProjector.rotate(rotationPlane1, radians1);
+        movable3dSpaceIntersector.rotate(rotationPlane1, radians1, figure.getCentrum());
+        figure.rotate(rotationPlane2, radians2);
+        moving4DProjector.rotate(rotationPlane2, radians2);
+        movable3dSpaceIntersector.rotate(rotationPlane2, radians2, figure.getCentrum());
         
         doFullProjection();
     }
 
     public void rotateFigureOneStep(RotationPlane4DEnum rotationPlane, boolean forward) {
-        double amount = forward ? ONE_ROTATE_STEP : -ONE_ROTATE_STEP;
-        rotateFigure(rotationPlane, amount);
+        double radians = forward ? ONE_ROTATE_STEP : -ONE_ROTATE_STEP;
+        rotateFigure(rotationPlane, radians);
     }
     
     public void moveFigureOneStep(UNIT_VECTORS vector, boolean forward) {
-        double amount = forward ? ONE_MOVE_STEP : -ONE_MOVE_STEP;
-        moveFigure(vector, amount);
+        double radians = forward ? ONE_MOVE_STEP : -ONE_MOVE_STEP;
+        moveFigure(vector, radians);
     }
 
     public void reset() {
@@ -301,6 +323,8 @@ public class ViewContainer {
         resetSelectedCell();
         
         main4DProjector.reset();
+        movable3dSpaceIntersector.reset();
+        
         halfOrtCuttingSelector.setUnitVector(CUTTING_FIGURE_ORT_DEFAULT);
         halfOrtCuttingSelector.setNegative(CUTTING_FIGURE_NEG_DEFAULT);
         
@@ -406,9 +430,9 @@ public class ViewContainer {
         doFullProjection();
     }
     
-    // Toggle methods
+    // Auxiliary projection methods
     public void toggle4dFigureProjection() {
-        mainAuxProjectorsMerger.enable(!mainAuxProjectorsMerger.isEnabled());
+        intersectorsMerger.enable(!intersectorsMerger.isEnabled());
         doFullProjection();
     }
     
@@ -448,6 +472,36 @@ public class ViewContainer {
         doFullProjection();
     }
     
+    public void toggleMovable3DIntersector() {
+        movable3dSpaceIntersector.enable(!movable3dSpaceIntersector.isEnabled());
+        doFullProjection();
+    }
+    
+    protected void moveMovable3DIntersector(UNIT_VECTORS direction, double amount) {
+        if (movable3dSpaceIntersector.isEnabled()) {
+            Vector vector = Vector.createFrom(direction, amount);
+            movable3dSpaceIntersector.move(vector);
+            doFullProjection();
+        }
+    }
+
+    protected void rotateMovable3DIntersector(RotationPlane4DEnum rotationPlane, double radians) {
+        if (movable3dSpaceIntersector.isEnabled()) {
+            movable3dSpaceIntersector.rotate(rotationPlane, radians, figure.getCentrum());
+            doFullProjection();
+        }
+    }
+
+    public void rotateMovable3DIntersectorOneStep(RotationPlane4DEnum rotationPlane, boolean forward) {
+        double radians = forward ? ONE_ROTATE_STEP : -ONE_ROTATE_STEP;
+        rotateMovable3DIntersector(rotationPlane, radians);
+    }
+    
+    public void moveMovable3DIntersectorOneStep(UNIT_VECTORS vector, boolean forward) {
+        double radians = forward ? ONE_MOVE_STEP : -ONE_MOVE_STEP;
+        moveMovable3DIntersector(vector, radians);
+    }
+
     // Selectors handling methods
     public void toggleSelector(int selectorNumber) {
         enableSelector(selectorNumber);
@@ -470,9 +524,23 @@ public class ViewContainer {
     }
 
     protected void enableSelector(int selectorNumber) {
-        List<AbstractEnablingSelector> selectors = selectorMain.getProjectors();
-        for (int i = 0; i < selectors.size(); i++) {
-            selectors.get(i).enable(i == selectorNumber);
+        entireFigureSelector.enable(false);
+        selectedCellsSelector.enable(false);
+        halfOrtCuttingSelector.enable(false);
+        halfOrtProjectorsMerger.enable(true);
+        
+        switch (selectorNumber) {
+        case ControlPanelSelectors.ENTIRE_FIGURE_SELECTOR_NUMBER:
+            entireFigureSelector.enable(true);
+            break;
+        case ControlPanelSelectors.CUTTING_NEGATIVE_W_SELECTOR_NUMBER:
+            entireFigureSelector.enable(true);
+            halfOrtCuttingSelector.enable(true);
+            halfOrtProjectorsMerger.enable(false);
+            break;
+        case ControlPanelSelectors.CUTTING_NONSELECTED_CELL_SELECTOR_NUMBER:
+            selectedCellsSelector.enable(true);
+            break;
         }
     }
 
@@ -494,8 +562,11 @@ public class ViewContainer {
     
     // Projection method
     public synchronized void doFullProjection() {
-        Figure selected = selectorMain.project(getFigure());
-        merged4dFigure = mainAuxProjectorsMerger.project(selected);
+        merged4dFigure = mainAuxProjectorsMerger.project(
+                halfOrtProjectorsMerger.project(
+                        intersectorsMerger.project(
+                                selectorFirst.project(
+                                        getFigure()))));
         
         doMain4DProjection(merged4dFigure);
         
@@ -538,19 +609,4 @@ public class ViewContainer {
         return needRepaint;
     }
     
-    // Auxiliary methods
-    private static Vector getVectorFrom(UNIT_VECTORS direction, double amount) {
-        if (direction == UNIT_VECTORS.X) {
-            return new Vector(amount, 0, 0, 0);
-        } else if (direction == UNIT_VECTORS.Y) {
-            return new Vector(0, amount, 0, 0);
-        } else if (direction == UNIT_VECTORS.Z) {
-            return new Vector(0, 0, amount, 0);
-        } else if (direction == UNIT_VECTORS.W) {
-            return new Vector(0, 0, 0, amount);
-        } else {
-            throw new IllegalArgumentException("The direction (" + direction + ") is invalid.");
-        }
-    }
-
 }

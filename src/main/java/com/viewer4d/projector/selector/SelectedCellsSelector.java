@@ -7,8 +7,8 @@ import com.viewer4d.geometry.figure.Edge;
 
 public class SelectedCellsSelector extends AbstractEnablingSelector {
 
-    public SelectedCellsSelector() {
-        super(true);
+    public SelectedCellsSelector(boolean enabled) {
+        super(enabled, true);
     }
     
     @Override
