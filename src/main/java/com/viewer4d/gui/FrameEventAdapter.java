@@ -53,7 +53,13 @@ KeyListener, MouseListener, MouseMotionListener, MouseWheelListener, WindowState
             UNIT_VECTORS vector = null;
             RotationPlane4DEnum rotationPlane = null;
             
-            if ((vector = getMotionVector(keyText)) != null) {
+            if (keyText.equals("slash")) {
+                viewContainer.toggleSiblingCells();
+            } else if (keyText.equals("comma")) {
+                viewContainer.selectPrevSiblingCell();
+            } else if (keyText.equals("period")) {
+                viewContainer.selectNextSiblingCell();
+            } else if ((vector = getMotionVector(keyText)) != null) {
                 mainFrame.stopFigureMovement();
                 mainFrame.stopCameraMovement();
                 viewContainer.moveMovable3DIntersectorOneStep(vector, !shiftPressed);
@@ -61,12 +67,6 @@ KeyListener, MouseListener, MouseMotionListener, MouseWheelListener, WindowState
                 mainFrame.stopFigureMovement();
                 mainFrame.stopCameraMovement();
                 viewContainer.rotateMovable3DIntersectorOneStep(rotationPlane, !shiftPressed);
-            } else if (keyText.equals("comma")) {
-                viewContainer.selectPrevSiblingCell();
-            } else if (keyText.equals("period")) {
-                viewContainer.selectNextSiblingCell();
-            } else if (keyText.equals("slash")) {
-                viewContainer.toggleSiblingCells();
             }
             if (viewContainer.needProjection()) {
                 paintingArea.repaint();

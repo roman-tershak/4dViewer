@@ -52,8 +52,10 @@ implements Transformer, Movable {
         super.setProjectorDistance(distance);
         
         Vector camVector = transformer.getC().sub(focus);
+        Vector camVectorCopy = new Vector(camVector.getCoords());
         camVector.setLength(distance);
-        transformer.move(camVector);
+        Vector delta = camVector.sub(camVectorCopy);
+        transformer.move(delta);
     }
     
     @Override

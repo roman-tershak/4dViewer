@@ -37,7 +37,9 @@ public class ViewContainer {
     public static final int W_4D_POSITION_DEFAULT = -10;
     
     public static final double CAMERA_DISTANCE_DEFAULT = 18;
-    public static final double CAMERA_EYES_DIST_DEFAULT = 1.0;
+    public static final double CAMERA_EYES_DIST_DEFAULT = 1.45;
+    public static final double CAMERA_DISTANCE_EYES_RATIO = 
+        CAMERA_EYES_DIST_DEFAULT / CAMERA_DISTANCE_DEFAULT * 1.25;
     public static final double CAMERA_FOV_DEFAULT = Math.tan(Math.PI/12);
     public static final double CAMERA_AZIMUTH_DEFAULT = -Math.PI/5;
     public static final double CAMERA_ALTITUDE_DEFAULT = Math.PI/8;
@@ -283,7 +285,6 @@ public class ViewContainer {
         
         figure.move(vector);
         moving4DProjector.move(vector);
-        movable3dSpaceIntersector.move(vector);
         
         doFullProjection();
     }
@@ -291,7 +292,6 @@ public class ViewContainer {
     public void rotateFigure(RotationPlane4DEnum rotationPlane, double radians) {
         figure.rotate(rotationPlane, radians);
         moving4DProjector.rotate(rotationPlane, radians);
-        movable3dSpaceIntersector.rotate(rotationPlane, radians, figure.getCentrum());
         
         doFullProjection();
     }
@@ -300,10 +300,8 @@ public class ViewContainer {
             RotationPlane4DEnum rotationPlane2, double radians2) {
         figure.rotate(rotationPlane1, radians1);
         moving4DProjector.rotate(rotationPlane1, radians1);
-        movable3dSpaceIntersector.rotate(rotationPlane1, radians1, figure.getCentrum());
         figure.rotate(rotationPlane2, radians2);
         moving4DProjector.rotate(rotationPlane2, radians2);
-        movable3dSpaceIntersector.rotate(rotationPlane2, radians2, figure.getCentrum());
         
         doFullProjection();
     }
@@ -402,6 +400,10 @@ public class ViewContainer {
         
         if (newDistance >= CAMERA_DISTANCE_LIMIT) {
             viewer.setDistance(newDistance);
+            if (viewer instanceof StereoscopicViewer) {
+                ((StereoscopicViewer) viewer).changeEyesDistance(
+                        delta * CAMERA_DISTANCE_EYES_RATIO);
+            }
             doCameraProjection();
         }
     }

@@ -50,6 +50,18 @@ public class Vector implements Dimensional {
         coords[3] *= koef;
     }
 
+    public Vector sub(Vector other) {
+        double[] ocoo = other.getCoords();
+        return new Vector(coords[0] - ocoo[0], coords[1] - ocoo[1], coords[2] - ocoo[2], coords[3] - ocoo[3]);
+    }
+
+    @Override
+    public String toString() {
+        StringBuffer sb = new StringBuffer(48);
+        sb.append("Vector:").append(Arrays.toString(getCoords()));
+        return sb.toString();
+    }
+
     public static Vector createFrom(UNIT_VECTORS unitVector, double len) {
         switch (unitVector) {
         case X:
@@ -63,12 +75,5 @@ public class Vector implements Dimensional {
         default:
             throw new IllegalArgumentException("Illegal or not implemented argument - " + unitVector);
         }
-    }
-
-    @Override
-    public String toString() {
-        StringBuffer sb = new StringBuffer(48);
-        sb.append("Vector:").append(Arrays.toString(getCoords()));
-        return sb.toString();
     }
 }
