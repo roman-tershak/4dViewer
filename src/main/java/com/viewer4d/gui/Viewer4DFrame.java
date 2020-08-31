@@ -1,27 +1,13 @@
 package com.viewer4d.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.GridLayout;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.swing.BorderFactory;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
-import sun.awt.VerticalBagLayout;
-
 import com.viewer4d.config.FigureFactory;
 import com.viewer4d.geometry.figure.FigureMovable;
 import com.viewer4d.view.ViewContainer;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.List;
+import java.util.*;
 
 @SuppressWarnings("serial")
 public class Viewer4DFrame extends JFrame {
@@ -134,7 +120,7 @@ public class Viewer4DFrame extends JFrame {
     }
 
     private void createControlPanel() {
-        controlPanel = new JPanel(new VerticalBagLayout());
+        controlPanel = new JPanel();
         controlPanel.setBackground(Color.LIGHT_GRAY);
         
         JPanel controlPanels = new JPanel(new GridLayout(1, 3));
