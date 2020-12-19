@@ -12,8 +12,8 @@ import java.util.*;
 @SuppressWarnings("serial")
 public class Viewer4DFrame extends JFrame {
 
-    public static final int FRAME_WIDTH = 1024;
-    public static final int FRAME_HEIGHT = 720;
+    public static final int FRAME_WIDTH = 1440;
+    public static final int FRAME_HEIGHT = 1024;
     
     public static final boolean SHOW_3D_SPACE_INTERSECTION_DEFAULT = true;
     public static final boolean SHOW_COORDINATE_ORTS_DEFAULT = true;
@@ -50,7 +50,8 @@ public class Viewer4DFrame extends JFrame {
             "square",
             "triangle",
             "segment",
-            "righthand"
+            "righthand",
+            "simplex-puzzle"
     ));
 
     protected static final Dimension FRAME_SIZE = new Dimension(FRAME_WIDTH, FRAME_HEIGHT);

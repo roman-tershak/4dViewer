@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<figure xmlns="tests:4DViewer:PlainFigureConfig">
+
+    <vertex name="a" coords="1.4, -0.808290376864, -0.7620634755314, -0.7620634755314" />
+    <vertex name="b" coords="0, 1.61658075373, -0.7620634755314, -0.7620634755314" />
+    <vertex name="c" coords="-1.4, -0.808290376864, -0.7620634755314, -0.7620634755314" />
+    <vertex name="d" coords="0, 0, 1.5241269510642, -0.7620634755314" />
+    <vertex name="e" coords="0, 0, 0, 1.5241269510642" />
+
+    <vertex name="ab" coords="0.933333333333333, 0, -0.7620634755314, -0.7620634755314" />
+    <vertex name="ac" coords="0.466666666666667, -0.808290376864, -0.7620634755314, -0.7620634755314" />
+    <vertex name="ad" coords="0.933333333333333, -0.538860251242667, 0, -0.7620634755314" />
+    <vertex name="ae" coords="0.933333333333333, -0.538860251242667, -0.508042317020933, 0" />
+
+    <vertex name="ba" coords="0.466666666666667, 0.808290376865334, -0.7620634755314, -0.7620634755314" />
+    <vertex name="bc" coords="-0.466666666666667, 0.808290376865334, -0.7620634755314, -0.7620634755314" />
+    <vertex name="bd" coords="0, 1.07772050248667, 0, -0.7620634755314" />
+    <vertex name="be" coords="0, 1.07772050248667, -0.508042317020933, 0" />
+
+    <vertex name="ca" coords="-0.466666666666667, -0.808290376864, -0.7620634755314, -0.7620634755314" />
+    <vertex name="cb" coords="-0.933333333333333, 0, -0.7620634755314, -0.7620634755314" />
+    <vertex name="cd" coords="-0.933333333333333, -0.538860251242667, 0, -0.7620634755314" />
+    <vertex name="ce" coords="-0.933333333333333, -0.538860251242667, -0.508042317020933, 0" />
+
+    <vertex name="da" coords="0.466666666666667, -0.269430125621333, 0.762063475532333, -0.7620634755314" />
+    <vertex name="db" coords="0, 0.538860251243333, 0.762063475532333, -0.7620634755314" />
+    <vertex name="dc" coords="-0.466666666666667, -0.269430125621333, 0.762063475532333, -0.7620634755314" />
+    <vertex name="de" coords="0, 0, 1.0160846340428, 0" />
+
+    <vertex name="ea" coords="0.466666666666667, -0.269430125621333, -0.254021158510467, 0.762063475532333" />
+    <vertex name="eb" coords="0, 0.538860251243333, -0.254021158510467, 0.762063475532333" />
+    <vertex name="ec" coords="-0.466666666666667, -0.269430125621333, -0.254021158510467, 0.762063475532333" />
+    <vertex name="ed" coords="0, 0, 0.5080423170214, 0.762063475532333" />
+
+    <edge name="ab" v1="a" v2="b"/>
+    <edge name="bc" v1="b" v2="c"/>
+    <edge name="ca" v1="c" v2="a"/>
+    <edge name="ad" v1="a" v2="d"/>
+    <edge name="bd" v1="b" v2="d"/>
+    <edge name="cd" v1="c" v2="d"/>
+    <edge name="ae" v1="a" v2="e"/>
+    <edge name="be" v1="b" v2="e"/>
+    <edge name="ce" v1="c" v2="e"/>
+    <edge name="de" v1="d" v2="e"/>
+
+    <!--  The first slice  -->
+    <edge name="abac" v1="ab" v2="ac"/>
+    <edge name="acad" v1="ac" v2="ad"/>
+    <edge name="adae" v1="ad" v2="ae"/>
+    <edge name="aeab" v1="ae" v2="ab"/>
+    <edge name="abad" v1="ab" v2="ad"/>
+    <edge name="acae" v1="ac" v2="ae"/>
+
+    <edge name="babc" v1="ba" v2="bc"/>
+    <edge name="bcbd" v1="bc" v2="bd"/>
+    <edge name="bdbe" v1="bd" v2="be"/>
+    <edge name="beba" v1="be" v2="ba"/>
+    <edge name="babd" v1="ba" v2="bd"/>
+    <edge name="bcbe" v1="bc" v2="be"/>
+
+    <edge name="cacb" v1="ca" v2="cb"/>
+    <edge name="cbcd" v1="cb" v2="cd"/>
+    <edge name="cdce" v1="cd" v2="ce"/>
+    <edge name="ceca" v1="ce" v2="ca"/>
+    <edge name="cacd" v1="ca" v2="cd"/>
+    <edge name="cbce" v1="cb" v2="ce"/>
+
+    <edge name="dadb" v1="da" v2="db"/>
+    <edge name="dbdc" v1="db" v2="dc"/>
+    <edge name="dcde" v1="dc" v2="de"/>
+    <edge name="deda" v1="de" v2="da"/>
+    <edge name="dadc" v1="da" v2="dc"/>
+    <edge name="dbde" v1="db" v2="de"/>
+
+    <edge name="eaeb" v1="ea" v2="eb"/>
+    <edge name="ebec" v1="eb" v2="ec"/>
+    <edge name="eced" v1="ec" v2="ed"/>
+    <edge name="edea" v1="ed" v2="ea"/>
+    <edge name="eaec" v1="ea" v2="ec"/>
+    <edge name="ebed" v1="eb" v2="ed"/>
+
+    <!--  The second slice  -->
+    <edge name="baca" v1="ba" v2="ca"/>
+    <edge name="cada" v1="ca" v2="da"/>
+    <edge name="daea" v1="da" v2="ea"/>
+    <edge name="eaba" v1="ea" v2="ba"/>
+    <edge name="bada" v1="ba" v2="da"/>
+    <edge name="caea" v1="ca" v2="ea"/>
+
+    <edge name="abcb" v1="ab" v2="cb"/>
+    <edge name="cbdb" v1="cb" v2="db"/>
+    <edge name="dbeb" v1="db" v2="eb"/>
+    <edge name="ebab" v1="eb" v2="ab"/>
+    <edge name="abdb" v1="ab" v2="db"/>
+    <edge name="cbeb" v1="cb" v2="eb"/>
+
+    <edge name="acbc" v1="ac" v2="bc"/>
+    <edge name="bcdc" v1="bc" v2="dc"/>
+    <edge name="dcec" v1="dc" v2="ec"/>
+    <edge name="ecac" v1="ec" v2="ac"/>
+    <edge name="acdc" v1="ac" v2="dc"/>
+    <edge name="bcec" v1="bc" v2="ec"/>
+
+    <edge name="adbd" v1="ad" v2="bd"/>
+    <edge name="bdcd" v1="bd" v2="cd"/>
+    <edge name="cded" v1="cd" v2="ed"/>
+    <edge name="edad" v1="ed" v2="ad"/>
+    <edge name="adcd" v1="ad" v2="cd"/>
+    <edge name="bded" v1="bd" v2="ed"/>
+
+    <edge name="aebe" v1="ae" v2="be"/>
+    <edge name="bece" v1="be" v2="ce"/>
+    <edge name="cede" v1="ce" v2="de"/>
+    <edge name="deae" v1="de" v2="ae"/>
+    <edge name="aece" v1="ae" v2="ce"/>
+    <edge name="bede" v1="be" v2="de"/>
+
+</figure>
