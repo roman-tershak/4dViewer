@@ -51,7 +51,8 @@ public class Viewer4DFrame extends JFrame {
             "triangle",
             "segment",
             "righthand",
-            "simplex-puzzle"
+            "simplex-puzzle",
+            "simplex-puzzle2"
     ));
 
     protected static final Dimension FRAME_SIZE = new Dimension(FRAME_WIDTH, FRAME_HEIGHT);
