@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<figure xmlns="tests:4DViewer:PlainFigureConfig">
+
+    <vertex name="vxy1" coords="1.5, 1.5, 0, 0"/>
+    <vertex name="vxy2" coords="-1.5, 1.5, 0, 0"/>
+    <vertex name="vxy3" coords="-1.5, -1.5, 0, 0"/>
+    <vertex name="vxy4" coords="1.5, -1.5, 0, 0"/>
+
+    <vertex name="vzw1" coords="0, 0, 1.5, 1.5"/>
+    <vertex name="vzw2" coords="0, 0, -1.5, 1.5"/>
+    <vertex name="vzw3" coords="0, 0, -1.5, -1.5"/>
+    <vertex name="vzw4" coords="0, 0, 1.5, -1.5"/>
+
+    <edge name="xy1-2" v1="vxy1" v2="vxy2"/>
+    <edge name="xy2-3" v1="vxy2" v2="vxy3"/>
+    <edge name="xy3-4" v1="vxy3" v2="vxy4"/>
+    <edge name="xy4-1" v1="vxy4" v2="vxy1"/>
+
+    <edge name="zw1-2" v1="vzw1" v2="vzw2"/>
+    <edge name="zw2-3" v1="vzw2" v2="vzw3"/>
+    <edge name="zw3-4" v1="vzw3" v2="vzw4"/>
+    <edge name="zw4-1" v1="vzw4" v2="vzw1"/>
+
+    <face name="xy" edges="xy1-2, xy2-3, xy3-4, xy4-1"/>
+    <face name="zw" edges="zw1-2, zw2-3, zw3-4, zw4-1"/>
+
+</figure>

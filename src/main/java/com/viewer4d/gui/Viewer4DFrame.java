@@ -47,6 +47,7 @@ public class Viewer4DFrame extends JFrame {
             "icosahedron",
             "octahedron",
             "tetrahedron",
+            "2d-planes-perpendicular",
             "square",
             "triangle",
             "segment",
